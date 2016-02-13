@@ -24,6 +24,11 @@ import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 
 import com.android.systemui.qs.tiles.CaffeineTile;
+<<<<<<< HEAD
+=======
+import com.android.systemui.qs.tiles.ExpandedDesktopTile;
+import com.android.systemui.qs.tiles.ImeTile;
+>>>>>>> c57a875... Add IME selector QS Tile
 import com.android.systemui.qs.tiles.SyncTile;
 
 public class SlimQSTileHost extends QSTileHost {
@@ -49,6 +54,8 @@ public class SlimQSTileHost extends QSTileHost {
         switch(tileSpec) {
             case "caffeine":
                 return new CaffeineTile(this);
+            case "ime":
+                return new ImeTile(this);
             case "sync":
                 return new SyncTile(this);
             default:
