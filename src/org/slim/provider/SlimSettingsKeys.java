@@ -26,6 +26,61 @@ public final class SlimSettingsKeys {
          */
         public static final String NAVIGATION_BAR_CONFIG = "navigation_bar_config";
 
+         /**
+         * Timeout for ambient display notification
+         * @hide
+         */
+        public static final String DOZE_TIMEOUT = "doze_timeout";
+
+        /** @hide */
+        public static final Validator DOZE_TIMEOUT_VALIDATOR = sNonNegativeIntegerValidator;
+
+        /**
+         * Use pick up gesture sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_PICKUP = "doze_trigger_pickup";
+
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_PICKUP_VALIDATOR = sBooleanValidator;
+
+        /**
+         * Use significant motion sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_SIGMOTION = "doze_trigger_sigmotion";
+
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_SIGMOTION_VALIDATOR = sBooleanValidator;
+
+        /**
+         * Use notifications as doze pulse triggers
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_NOTIFICATION = "doze_trigger_notification";
+
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_NOTIFICATION_VALIDATOR = sBooleanValidator;
+
+        /**
+         * Follow pre-configured doze pulse repeat schedule
+         * @hide
+         */
+        public static final String DOZE_SCHEDULE = "doze_schedule";
+
+        /** @hide */
+        public static final Validator DOZE_SCHEDULE_VALIDATOR = sBooleanValidator;
+
+        /**
+         * Doze pulse screen brightness level
+         * @hide
+         */
+        public static final String DOZE_BRIGHTNESS = "doze_brightness";
+
+        /** @hide */
+        public static final Validator DOZE_BRIGHTNESS_VALIDATOR =
+                new InclusiveFloatRangeValidator(0, 1);
+
     }
 
     public interface Secure {
