@@ -14,7 +14,7 @@ LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
 
 ## Slim Framework
-include frameworks/opt/slim/common.mk
+include frameworks/opt/slim/slim-framework.mk
 
 include $(BUILD_PACKAGE)
 
