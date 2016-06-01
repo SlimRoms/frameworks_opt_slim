@@ -12,7 +12,7 @@
     <!-- todo add: android:neverEncrypt="true" -->
 
         <provider android:name="SlimSettingsProvider"
-                  android:authorities="slimsettings"
+                  android:authorities="org.slim.providers.settings"
                   android:multiprocess="false"
                   android:exported="true"
                   android:singleUser="true"

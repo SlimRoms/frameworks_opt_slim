@@ -80,7 +80,7 @@ public final class SlimSettings {
     private static final String TAG = "SlimSettings";
     private static final boolean LOCAL_LOGV = true;
 
-    public static final String AUTHORITY = "slimsettings";
+    public static final String AUTHORITY = "org.slim.providers.settings";
 
     public static class SlimSettingNotFoundException extends AndroidException {
         public SlimSettingNotFoundException(String msg) {
