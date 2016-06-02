@@ -9,12 +9,11 @@ LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res
 
 LOCAL_JAVA_LIBRARIES := telephony-common ims-common
 
+LOCAL_STATIC_JAVA_LIBRARIES := org.slim.framework
+
 LOCAL_PACKAGE_NAME := SlimSettingsProvider
 LOCAL_CERTIFICATE := platform
 LOCAL_PRIVILEGED_MODULE := true
-
-## Slim Framework
-include frameworks/opt/slim/common.mk
 
 include $(BUILD_PACKAGE)
 
