@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ac40928_ee0f1f2d",
+        "filename": "Android.mk",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-02T22:28:30Z",
+      "side": 1,
+      "message": "Griff any reason you can think off include $(call all-makefiles-under,$(LOCAL_PATH)) won\u0027t call on slimsettings android.mk?",
+      "revId": "2d1f3eab219af5302d0d8844af69a7ff0f1f0a96",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ac40928_ce126358",
+        "filename": "packages/SlimSettingsProvider/Android.mk",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-02T22:28:30Z",
+      "side": 1,
+      "message": "LOCAL_JAVA_LIBRARIES :\u003d \\\ntelephony-common \\\nims-common \\\norg.slim.framework ???",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "2d1f3eab219af5302d0d8844af69a7ff0f1f0a96",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
