@@ -805,6 +805,14 @@ public final class SlimSettings {
         public static final Validator PROXIMITY_ON_WAKE_VALIDATOR = sBooleanValidator;
         /** @hide */
         public static final Validator WAKEUP_WHEN_PLUGGED_UNPLUGGED_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator PROXIMITY_AUTO_SPEAKER_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator PROXIMITY_AUTO_SPEAKER_DELAY_VALIDATOR =
+                sNonNegativeIntegerValidator;
+        /** @hide */
+        public static final Validator PROXIMITY_AUTO_SPEAKER_INCALL_ONLY_VALIDATOR =
+                sBooleanValidator;
 
         /**
          * These are all public system settings
