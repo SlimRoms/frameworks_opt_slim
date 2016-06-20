@@ -53,9 +53,11 @@
     <java-symbol type="string" name="shortcut_action_add" />
     <java-symbol type="string" name="shortcut_action_none" />
     <java-symbol type="string" name="shortcut_action_longpress" />
+    <java-symbol type="string" name="reset" />
 
     <!-- Drawables -->
     <java-symbol type="drawable" name="ic_menu_add" />
+    <java-symbol type="drawable" name="ic_settings_reset" />
 
     <!-- ShortcutPicker -->
     <java-symbol type="string" name="shortcuts_applications" />
