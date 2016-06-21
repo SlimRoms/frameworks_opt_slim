@@ -187,7 +187,7 @@ public class ActionListViewSettings extends ListFragment implements
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return View.inflate(mContext, R.layout.action_list_view_main, null);
+        return View.inflate(mContext, org.slim.framework.R.layout.action_list_view_main, null);
     }
 
     @Override
@@ -564,7 +564,7 @@ public class ActionListViewSettings extends ListFragment implements
         switch (mActionMode) {
             case NAV_BAR:
                 return ActionHelper.getNavBarConfigWithDescription(
-                    mActivity, mActionValuesKey, mActionEntriesKey);
+                    mContext, mActionValuesKey, mActionEntriesKey);
 /* Disabled for now till all features are back. Enable it step per step!!!!!!
             case POWER_MENU_SHORTCUT:
                 return ActionHelper.getPowerMenuConfigWithDescription(
@@ -617,6 +617,7 @@ public class ActionListViewSettings extends ListFragment implements
 
     private class ViewHolder {
         public TextView longpressActionDescriptionView;
+        public TextView clickActionDescriptionView;
         public ImageView iconView;
     }
 
@@ -628,13 +629,19 @@ public class ActionListViewSettings extends ListFragment implements
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
-            View v = super.getView(position, convertView, parent);
+            View v = View.inflate(mContext, R.layout.action_list_view_item, null);
+
+            ActionConfig ac = getItem(position);
+
+            Log.d("TEST", "click=" + ac.getClickActionDescription());
 
             if (v != convertView && v != null) {
                 ViewHolder holder = new ViewHolder();
 
                 TextView longpressActionDecription =
                     (TextView) v.findViewById(R.id.longpress_action_description);
+                TextView clickActionDescription =
+                    (TextView) v.findViewById(R.id.click_action_description);
                 ImageView icon = (ImageView) v.findViewById(R.id.list_item_icon);
 
                 if (mDisableLongpress) {
@@ -644,11 +651,14 @@ public class ActionListViewSettings extends ListFragment implements
                 }
 
                 holder.iconView = icon;
+                holder.clickActionDescriptionView = clickActionDescription;
 
                 v.setTag(holder);
             }
 
             ViewHolder holder = (ViewHolder) v.getTag();
+
+            holder.clickActionDescriptionView.setText(getItem(position).getClickActionDescription());
 
             if (!mDisableLongpress) {
                 holder.longpressActionDescriptionView.setText(
