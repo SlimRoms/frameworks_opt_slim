@@ -532,7 +532,7 @@ public class DragSortListView extends ListView {
                     bgColor = a.getColor(
                         R.styleable.DragSortListView_floatBackgroundColor,
                         Color.TRANSPARENT);
-                } catch (Resources.NotFoundException e) {
+                } catch (Exception e) {
                     bgColor = Color.TRANSPARENT;
                 }
 
