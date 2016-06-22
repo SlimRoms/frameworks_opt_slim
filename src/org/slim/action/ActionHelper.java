@@ -229,6 +229,12 @@ public class ActionHelper {
         } else if (clickAction.equals(ActionConstants.ACTION_CAMERA)) {
             resId = resources.getIdentifier(
                         SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_camera", null, null);
+        } else if (clickAction.equals(ActionConstants.ACTION_IME_NAVIGATION_RIGHT)) {
+            resId = resources.getIdentifier(
+                        SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_ime_right", null, null);
+        } else if (clickAction.equals)ActionConstants.ACTION_IME_NAVIGATION_LEFT)) {
+            resId = resources.getIdentifier(
+                        SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_ime_left", null, null);
         }/* else if (clickAction.equals(ActionConstants.ACTION_POWER_OFF)) {
             resId = com.android.internal.R.drawable.ic_lock_power_off_alpha;
         } else if (clickAction.equals(ActionConstants.ACTION_REBOOT)) {
