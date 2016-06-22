@@ -102,6 +102,12 @@ public final class SlimSettingsKeys {
                 "proximity_auto_speaker_incall_only";
 
         /**
+         * Whether to show the IME arrows in the status bar
+         * @hide
+         */
+        public static final String STATUS_BAR_IME_ARROWS = "status_bar_ime_arrows";
+
+        /**
          * Navigation bar button color
          * @hide
          */
