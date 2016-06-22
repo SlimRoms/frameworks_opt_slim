@@ -42,10 +42,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -101,6 +103,7 @@ public class ActionListViewSettings extends ListFragment implements
     private boolean mUseAppPickerOnly;
     private boolean mUseFullAppsOnly;
     private boolean mDisableLongpress;
+    private boolean mDisableDoubleTap;
     private boolean mDisableIconPicker;
     private boolean mDisableDeleteLastEntry;
 
@@ -119,6 +122,7 @@ public class ActionListViewSettings extends ListFragment implements
 
     private int mPendingIndex = -1;
     private boolean mPendingLongpress;
+    private boolean mPendingDoubleTap;
     private boolean mPendingNewAction;
 
     private String[] mActionDialogValues;
@@ -152,14 +156,14 @@ public class ActionListViewSettings extends ListFragment implements
                 mActionConfigsAdapter.remove(item);
                 if (mDisableDeleteLastEntry && mActionConfigs.size() == 0) {
                     mActionConfigsAdapter.add(item);
-                    showDialogInner(DLG_DELETION_NOT_ALLOWED, 0, false, false);
+                    showDialogInner(DLG_DELETION_NOT_ALLOWED, 0, false, false, false);
                 } else {
                     if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_BACK)) {
-                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false);
+                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
                     } else if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_HOME)) {
-                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false);
+                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
                     }
                     setConfig(mActionConfigs, false);
                     deleteIconFileIfPresent(item, true);
@@ -207,6 +211,7 @@ public class ActionListViewSettings extends ListFragment implements
         mActionValuesKey = getArguments().getString("actionValues", "shortcut_action_values");
         mActionEntriesKey = getArguments().getString("actionEntries", "shortcut_action_entries");
         mDisableLongpress = getArguments().getBoolean("disableLongpress", false);
+        mDisableDoubleTap = getArguments().getBoolean("disableDoubleTap", false);
         mUseAppPickerOnly = getArguments().getBoolean("useAppPickerOnly", false);
         mUseFullAppsOnly = getArguments().getBoolean("useOnlyFullAppPicker", false);
         mDisableIconPicker = getArguments().getBoolean("disableIconPicker", false);
@@ -238,64 +243,6 @@ public class ActionListViewSettings extends ListFragment implements
         listView.setDropListener(onDrop);
         listView.setRemoveListener(onRemove);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                    long arg3) {
-                if (mUseFullAppsOnly) {
-                    if (mPicker != null) {
-                        mPendingIndex = arg2;
-                        mPendingLongpress = false;
-                        mPendingNewAction = false;
-                        mPicker.pickShortcut(getId(), true);
-                    }
-                } else if (!mUseAppPickerOnly) {
-                    showDialogInner(DLG_SHOW_ACTION_DIALOG, arg2, false, false);
-                } else {
-                    if (mPicker != null) {
-                        mPendingIndex = arg2;
-                        mPendingLongpress = false;
-                        mPendingNewAction = false;
-                        mPicker.pickShortcut(getId());
-                    }
-                }
-                if (!ActionChecker.containsAction(mActivity, mActionConfigs.get(arg2),
-                        ActionConstants.ACTION_BACK)) {
-                    showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false);
-                } else if (!ActionChecker.containsAction(
-                        mActivity, mActionConfigs.get(arg2), ActionConstants.ACTION_HOME)) {
-                    showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false);
-                }
-            }
-        });
-
-        if (!mDisableLongpress) {
-            listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
-                        long arg3) {
-                    if (mUseFullAppsOnly) {
-                        if (mPicker != null) {
-                            mPendingIndex = arg2;
-                            mPendingLongpress = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId(), true);
-                        }
-                    } else if (!mUseAppPickerOnly) {
-                        showDialogInner(DLG_SHOW_ACTION_DIALOG, arg2, true, false);
-                    } else {
-                        if (mPicker != null) {
-                            mPendingIndex = arg2;
-                            mPendingLongpress = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId());
-                        }
-                    }
-                    return true;
-                }
-            });
-        }
-
         mActionConfigs = getConfig();
 
         if (mActionConfigs != null) {
@@ -313,7 +260,7 @@ public class ActionListViewSettings extends ListFragment implements
         if (!preferences.getBoolean("first_help_shown_mode_" + mActionMode, false)) {
             preferences.edit()
                     .putBoolean("first_help_shown_mode_" + mActionMode, true).commit();
-            showDialogInner(DLG_SHOW_HELP_SCREEN, 0, false, false);
+            showDialogInner(DLG_SHOW_HELP_SCREEN, 0, false, false, false);
         }
 
         setHasOptionsMenu(true);
@@ -355,7 +302,7 @@ public class ActionListViewSettings extends ListFragment implements
         if (mPendingIndex == -1) {
             return;
         }
-        if (bmp != null && !mPendingLongpress) {
+        if (bmp != null && !mPendingLongpress && !mPendingDoubleTap) {
             // Icon is present, save it for future use and add the file path to the action.
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
                 File folder = new File(Environment.getExternalStorageDirectory() + File.separator +
@@ -379,9 +326,10 @@ public class ActionListViewSettings extends ListFragment implements
         if (mPendingNewAction) {
             addNewAction(action, description);
         } else {
-            updateAction(action, description, null, mPendingIndex, mPendingLongpress);
+            updateAction(action, description, null, mPendingIndex, mPendingLongpress, mPendingDoubleTap);
         }
         mPendingLongpress = false;
+        mPendingDoubleTap = false;
         mPendingNewAction = false;
         mPendingIndex = -1;
     }
@@ -410,7 +358,7 @@ public class ActionListViewSettings extends ListFragment implements
                     String path = image.getAbsolutePath();
                     mImageTmp.renameTo(image);
                     image.setReadable(true, false);
-                    updateAction(null, null, path, mPendingIndex, false);
+                    updateAction(null, null, path, mPendingIndex, false, false);
                     mPendingIndex = -1;
                 }
             }
@@ -426,16 +374,16 @@ public class ActionListViewSettings extends ListFragment implements
     }
 
     private void updateAction(String action, String description, String icon,
-                int which, boolean longpress) {
+                int which, boolean longpress, boolean doubletap) {
 
-        if (!longpress && checkForDuplicateMainNavActions(action)) {
+        if (!longpress && !doubletap && checkForDuplicateMainNavActions(action)) {
             return;
         }
 
         ActionConfig actionConfig = mActionConfigsAdapter.getItem(which);
         mActionConfigsAdapter.remove(actionConfig);
 
-        if (!longpress) {
+        if (!longpress && !doubletap) {
             deleteIconFileIfPresent(actionConfig, false);
         }
 
@@ -445,6 +393,9 @@ public class ActionListViewSettings extends ListFragment implements
             if (longpress) {
                 actionConfig.setLongpressAction(action);
                 actionConfig.setLongpressActionDescription(description);
+            } else if (doubletap) {
+                actionConfig.setDoubleTapAction(action);
+                actionConfig.setDoubleTapActionDescription(description);
             } else {
                 deleteIconFileIfPresent(actionConfig, true);
                 actionConfig.setClickAction(action);
@@ -512,7 +463,7 @@ public class ActionListViewSettings extends ListFragment implements
                         mPicker.pickShortcut(getId(), true);
                     }
                 } else if (!mUseAppPickerOnly) {
-                    showDialogInner(DLG_SHOW_ACTION_DIALOG, 0, false, true);
+                    showDialogInner(DLG_SHOW_ACTION_DIALOG, 0, false, false, true);
                 } else {
                     if (mPicker != null) {
                         mPendingIndex = 0;
@@ -523,10 +474,10 @@ public class ActionListViewSettings extends ListFragment implements
                 }
                 break;
             case MENU_RESET:
-                    showDialogInner(DLG_RESET_TO_DEFAULT, 0, false, true);
+                    showDialogInner(DLG_RESET_TO_DEFAULT, 0, false, false, true);
                 break;
             case MENU_HELP:
-                    showDialogInner(DLG_SHOW_HELP_SCREEN, 0, false, true);
+                    showDialogInner(DLG_SHOW_HELP_SCREEN, 0, false, false, true);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -551,6 +502,8 @@ public class ActionListViewSettings extends ListFragment implements
         }
         ActionConfig actionConfig = new ActionConfig(
             action, description,
+            ActionConstants.ACTION_NULL,
+            mContext.getResources().getString(R.string.shortcut_action_none),
             ActionConstants.ACTION_NULL,
             mContext.getResources().getString(R.string.shortcut_action_none),
             ActionConstants.ICON_EMPTY);
@@ -616,8 +569,9 @@ public class ActionListViewSettings extends ListFragment implements
     }
 
     private class ViewHolder {
-        public TextView longpressActionDescriptionView;
         public TextView clickActionDescriptionView;
+        public TextView longpressActionDescriptionView;
+        public TextView doubleTapActionDescriptionView;
         public ImageView iconView;
     }
 
@@ -631,23 +585,27 @@ public class ActionListViewSettings extends ListFragment implements
         public View getView(final int position, View convertView, ViewGroup parent) {
             View v = View.inflate(mContext, R.layout.action_list_view_item, null);
 
-            ActionConfig ac = getItem(position);
-
-            Log.d("TEST", "click=" + ac.getClickActionDescription());
-
             if (v != convertView && v != null) {
                 ViewHolder holder = new ViewHolder();
 
-                TextView longpressActionDecription =
-                    (TextView) v.findViewById(R.id.longpress_action_description);
                 TextView clickActionDescription =
                     (TextView) v.findViewById(R.id.click_action_description);
+                TextView longpressActionDecription =
+                    (TextView) v.findViewById(R.id.longpress_action_description);
+                TextView doubleTapActionDescription =
+                    (TextView) v.findViewById(R.id.doubletap_action_description);
                 ImageView icon = (ImageView) v.findViewById(R.id.list_item_icon);
 
                 if (mDisableLongpress) {
                     longpressActionDecription.setVisibility(View.GONE);
                 } else {
                     holder.longpressActionDescriptionView = longpressActionDecription;
+                }
+
+                if (mDisableDoubleTap) {
+                    doubleTapActionDescription.setVisibility(View.GONE);
+                } else {
+                    holder.doubleTapActionDescriptionView = doubleTapActionDescription;
                 }
 
                 holder.iconView = icon;
@@ -665,6 +623,102 @@ public class ActionListViewSettings extends ListFragment implements
                     getContext().getResources().getString(R.string.shortcut_action_longpress)
                     + " " + getItem(position).getLongpressActionDescription());
             }
+            if (!mDisableDoubleTap) {
+                holder.doubleTapActionDescriptionView.setText(
+                    getContext().getResources().getString(R.string.shortcut_action_doubletap)
+                    + " " + getItem(position).getDoubleTapActionDescription());
+            }
+
+            final GestureDetector detector = new GestureDetector(mContext,
+                    new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDown(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, false, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                    if (!ActionChecker.containsAction(mActivity, mActionConfigs.get(position),
+                            ActionConstants.ACTION_BACK)) {
+                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
+                    } else if (!ActionChecker.containsAction(
+                            mActivity, mActionConfigs.get(position), ActionConstants.ACTION_HOME)) {
+                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
+                    }
+                    return true;
+                }
+
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    if (mDisableDoubleTap) return false;
+                    if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingDoubleTap = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, true, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingDoubleTap = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    if (mDisableLongpress) return;
+                    if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, true, false, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                }
+            });
+
+            v.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent ev) {
+                    return detector.onTouchEvent(ev);
+                }
+            });
 
             Drawable d = null;
             String iconUri = getItem(position).getIcon();
@@ -698,7 +752,7 @@ public class ActionListViewSettings extends ListFragment implements
                     @Override
                     public void onClick(View v) {
                         mPendingIndex = position;
-                        showDialogInner(DLG_SHOW_ICON_PICKER, 0, false, false);
+                        showDialogInner(DLG_SHOW_ICON_PICKER, 0, false, false, false);
                     }
                 });
             }
@@ -707,9 +761,9 @@ public class ActionListViewSettings extends ListFragment implements
         }
     }
 
-    private void showDialogInner(int id, int which, boolean longpress, boolean newAction) {
+    private void showDialogInner(int id, int which, boolean longpress, boolean doubletap, boolean newAction) {
         DialogFragment newFragment =
-            MyAlertDialogFragment.newInstance(id, which, longpress, newAction);
+            MyAlertDialogFragment.newInstance(id, which, longpress, doubletap, newAction);
         newFragment.setTargetFragment(this, 0);
         newFragment.show(getFragmentManager(), "dialog " + id);
     }
@@ -717,12 +771,13 @@ public class ActionListViewSettings extends ListFragment implements
     public static class MyAlertDialogFragment extends DialogFragment {
 
         public static MyAlertDialogFragment newInstance(int id,
-                int which, boolean longpress, boolean newAction) {
+                int which, boolean longpress, boolean doubletap, boolean newAction) {
             MyAlertDialogFragment frag = new MyAlertDialogFragment();
             Bundle args = new Bundle();
             args.putInt("id", id);
             args.putInt("which", which);
             args.putBoolean("longpress", longpress);
+            args.putBoolean("doubletap", doubletap);
             args.putBoolean("newAction", newAction);
             frag.setArguments(args);
             return frag;
@@ -737,6 +792,7 @@ public class ActionListViewSettings extends ListFragment implements
             int id = getArguments().getInt("id");
             final int which = getArguments().getInt("which");
             final boolean longpress = getArguments().getBoolean("longpress");
+            final boolean doubletap = getArguments().getBoolean("doubletap");
             final boolean newAction = getArguments().getBoolean("newAction");
             switch (id) {
                 case DLG_RESET_TO_DEFAULT:
@@ -769,7 +825,7 @@ public class ActionListViewSettings extends ListFragment implements
                             // does not work in this case.
                             if (newConfigsSize == 0) {
                                 ActionConfig emptyAction =
-                                    new ActionConfig(null, null, null, null, null);
+                                    new ActionConfig(null, null, null, null, null, null, null);
                                 getOwner().mActionConfigsAdapter.add(emptyAction);
                                 getOwner().mActionConfigsAdapter.remove(emptyAction);
                             }
@@ -828,6 +884,8 @@ public class ActionListViewSettings extends ListFragment implements
                     int title;
                     if (longpress) {
                         title = R.string.shortcut_action_select_action_longpress;
+                    } else if (doubletap) {
+                        title = R.string.shortcut_action_select_action_doubletap;
                     } else if (newAction) {
                         title = R.string.shortcut_action_select_action_newaction;
                     } else {
@@ -870,6 +928,7 @@ public class ActionListViewSettings extends ListFragment implements
                                 if (getOwner().mPicker != null) {
                                     getOwner().mPendingIndex = which;
                                     getOwner().mPendingLongpress = longpress;
+                                    getOwner().mPendingDoubleTap = doubletap;
                                     getOwner().mPendingNewAction = newAction;
                                     getOwner().mPicker.pickShortcut(getOwner().getId());
                                 }
@@ -880,7 +939,7 @@ public class ActionListViewSettings extends ListFragment implements
                                 } else {
                                     getOwner().updateAction(finalDialogValues[item],
                                             finalDialogEntries[item],
-                                            null, which, longpress);
+                                            null, which, longpress, doubletap);
                                 }
                             }
                         }
@@ -897,7 +956,7 @@ public class ActionListViewSettings extends ListFragment implements
                                 case 0: // Default
                                     getOwner().updateAction(null, null,
                                         ActionConstants.ICON_EMPTY,
-                                        getOwner().mPendingIndex, false);
+                                        getOwner().mPendingIndex, false, false);
                                     getOwner().mPendingIndex = -1;
                                     break;
                                 case 1: // System defaults
@@ -914,7 +973,7 @@ public class ActionListViewSettings extends ListFragment implements
                                             IconAdapter adapter = (IconAdapter) parent.getAdapter();
                                             getOwner().updateAction(null, null,
                                                 adapter.getItemReference(position),
-                                                getOwner().mPendingIndex, false);
+                                                getOwner().mPendingIndex, false, false);
                                             getOwner().mPendingIndex = -1;
                                             holoDialog.cancel();
                                         }
