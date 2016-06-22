@@ -30,4 +30,7 @@
     <item type="id" name="yellow_panel" />
     <item type="id" name="hex" />
     <item type="id" name="enter" />
+
+    <!-- DSLV -->
+    <item type="id" name="doubletap_action_description" />
 </resources>
