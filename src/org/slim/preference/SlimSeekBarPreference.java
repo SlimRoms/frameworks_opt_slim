@@ -61,6 +61,10 @@ public class SlimSeekBarPreference extends Preference
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        if (mContext != null) {
+            mContext = new ContextThemeWrapper(mContext, getContext().getTheme());
+        }
+
     }
 
     @Override
