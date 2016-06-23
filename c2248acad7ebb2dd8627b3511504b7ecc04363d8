@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ace114c_335827fa",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-23T18:37:37Z",
+      "side": 1,
+      "message": "shouldn\u0027t have removed the 3rd ,false",
+      "range": {
+        "startLine": 165,
+        "startChar": 20,
+        "endLine": 165,
+        "endChar": 78
+      },
+      "revId": "c2248acad7ebb2dd8627b3511504b7ecc04363d8",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_535db3e8",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-23T18:37:37Z",
+      "side": 1,
+      "message": "shouldn\u0027t have removed the 3rd ,false",
+      "range": {
+        "startLine": 169,
+        "startChar": 20,
+        "endLine": 169,
+        "endChar": 78
+      },
+      "revId": "c2248acad7ebb2dd8627b3511504b7ecc04363d8",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_f3713f78",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-23T18:37:37Z",
+      "side": 1,
+      "message": "shouldn\u0027t have removed the 3rd ,false",
+      "range": {
+        "startLine": 264,
+        "startChar": 22,
+        "endLine": 264,
+        "endChar": 83
+      },
+      "revId": "c2248acad7ebb2dd8627b3511504b7ecc04363d8",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_136f2b94",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-23T18:37:37Z",
+      "side": 1,
+      "message": "shouldn\u0027t have removed the 3rd ,false",
+      "range": {
+        "startLine": 267,
+        "startChar": 24,
+        "endLine": 267,
+        "endChar": 83
+      },
+      "revId": "c2248acad7ebb2dd8627b3511504b7ecc04363d8",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_b36bb784",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-06-23T18:37:37Z",
+      "side": 1,
+      "message": "shouldn\u0027t have removed the 3rd ,false",
+      "range": {
+        "startLine": 269,
+        "startChar": 24,
+        "endLine": 269,
+        "endChar": 84
+      },
+      "revId": "c2248acad7ebb2dd8627b3511504b7ecc04363d8",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
