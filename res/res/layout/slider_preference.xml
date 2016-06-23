@@ -17,7 +17,6 @@
 <!-- Layout used by SeekBarPreference for the seekbar widget style. -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:theme="@org.slim.framework:style/Theme.SlimSeekBarPreference"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="?android:attr/listPreferredItemPaddingStart"
@@ -55,7 +54,7 @@
             android:layout_below="@android:id/summary"
             android:layout_alignLeft="@android:id/summary">
             <TextView
-                android:id="@org.slim.framework:id/monitor_box"
+                android:id="@id/monitor_box"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:gravity="center_vertical"
@@ -63,7 +62,7 @@
                 android:textAppearance="?android:attr/textAppearanceListItemSecondary"
                 android:textColor="?android:attr/textColorSecondary" />
             <SeekBar
-                android:id="@org.slim.framework:id/seek_bar"
+                android:id="@id/seek_bar"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:max="100"

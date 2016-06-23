@@ -39,7 +39,7 @@
         android:layout_marginTop="20dip"
         android:layout_gravity="center"
         android:gravity="center_horizontal"
-        android:text="@org.slim.framework:string/shortcut_action_disable_message"
+        android:text="@string/shortcut_action_disable_message"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:visibility="gone" />
     <org.slim.preference.dslv.DragSortListView
@@ -59,10 +59,10 @@
         settings:slideShuffleSpeed="0.3"
         settings:trackDragSort="false"
         settings:useDefaultController="true"
-        settings:dragHandleId="@org.slim.framework:id/drag_handle"
+        settings:dragHandleId="@id/drag_handle"
         settings:sortEnabled="true"
         settings:removeEnabled="true"
         settings:dragStartMode="onMove"
         settings:removeMode="flingRemove"
-        settings:floatBackgroundColor="@org.slim.framework:color/dslv_float_background_color" />
+        settings:floatBackgroundColor="@color/dslv_float_background_color" />
 </LinearLayout>

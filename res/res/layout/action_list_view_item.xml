@@ -24,10 +24,10 @@
     android:paddingTop="8dip"
     android:paddingBottom="8dip" >
     <ImageView
-        android:id="@org.slim.framework:id/drag_handle"
+        android:id="@id/drag_handle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@*org.slim.framework:drawable/ic_grabber"
+        android:background="@*drawable/ic_grabber"
         android:layout_marginEnd="8dip"
         android:layout_gravity="center_vertical"
         android:scaleType="centerInside"
