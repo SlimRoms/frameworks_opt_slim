@@ -22,6 +22,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 
 import java.net.URISyntaxException;
 
@@ -133,6 +134,20 @@ public class AppHelper {
         }
 
         return uri;
+    }
+
+    public Context getSlimFrameworkContext() {
+        Context context = getContext();
+        try {
+            context = getContext().createPackageContext("org.slim.framework",
+                    Context.CONTEXT_RESTRICTED);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (context != null) {
+            context = new ContextThemeWrapper(context, getContext().getTheme());
+        }
+        return context;
     }
 
 }
