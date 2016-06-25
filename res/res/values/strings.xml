@@ -172,4 +172,6 @@
     <string name="set">Set</string>
     <string name="color_default">Default</string>
 
+    <string name="slimroms_system_label">SlimRoms system</string>
+
 </resources>

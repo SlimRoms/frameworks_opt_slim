@@ -14,7 +14,9 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.slim.framework">
+    package="org.slim.framework"
+    coreApp="true" android:sharedUserId="android.uid.system"
+    android:sharedUserLabel="@string/slimroms_system_label">
 
     <!-- Allows an application to write to Slim system settings -->
     <permission android:name="slim.permission.WRITE_SETTINGS"
