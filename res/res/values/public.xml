@@ -45,10 +45,6 @@
   <public type="id" name="hex" id="0x02020011" />
   <public type="id" name="enter" id="0x02020012" />
 
-  <!-- DSLV -->
-  <public type="id" name="drag_handle" id="0x02020013" />
-  <public type="id" name="doubletap_action_description" id="0x02020014" />
-
   <!-- style (start with 0x02030000) -->
 
   <!-- string (start with 0x02040000) -->
