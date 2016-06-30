@@ -597,6 +597,17 @@ public class DragSortListView extends ListView {
         return mCurrFloatAlpha;
     }
 
+
+    public void setOnItemTouchedCallback(DragSortController.OnItemTouchedCallback callback) {
+        if (!(mFloatViewManager instanceof DragSortController)) {
+            return;
+        }
+        DragSortController controller = (DragSortController) mFloatViewManager;
+        if (controller != null) {
+            controller.setOnItemTouchedCallback(callback);
+        }
+    }
+
     /**
      * Set maximum drag scroll speed in positions/second. Only applies
      * if using default ScrollSpeedProfile.
