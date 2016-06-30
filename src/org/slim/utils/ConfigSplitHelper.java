@@ -97,8 +97,9 @@ public class ConfigSplitHelper {
             if (!isShortcut) {
                 finalConfig += actionConfig.getLongpressAction()
                     + ActionConstants.ACTION_DELIMITER;
+                finalConfig += actionConfig.getDoubleTapAction()
+                    + ActionConstants.ACTION_DELIMITER;
             }
-            finalConfig += actionConfig.getDoubleTapAction() + ActionConstants.ACTION_DELIMITER;
             finalConfig += actionConfig.getIcon();
         }
 
