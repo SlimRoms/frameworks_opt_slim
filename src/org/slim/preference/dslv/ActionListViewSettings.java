@@ -251,6 +251,85 @@ public class ActionListViewSettings extends ListFragment implements
             showDisableMessage(mActionConfigs.size() == 0);
         }
 
+        listView.setOnItemTouchedCallback(new DragSortController.OnItemTouchedCallback() {
+            @Override
+            public boolean onDoubleTap(int position) {
+                if (mDisableDoubleTap) return false;
+                    if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingDoubleTap = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, true, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingDoubleTap = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                return true;
+            }
+
+            @Override
+            public boolean onSingleClick(int position) {
+                if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, false, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = false;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                    if (!ActionChecker.containsAction(mActivity, mActionConfigs.get(position),
+                            ActionConstants.ACTION_BACK)) {
+                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
+                    } else if (!ActionChecker.containsAction(
+                            mActivity, mActionConfigs.get(position), ActionConstants.ACTION_HOME)) {
+                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
+                    }
+                return true;
+            }
+
+            @Override
+            public boolean onLongClick(int position) {
+                if (mDisableLongpress) return false;
+                    if (mUseFullAppsOnly) {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId(), true);
+                        }
+                    } else if (!mUseAppPickerOnly) {
+                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, true, false, false);
+                    } else {
+                        if (mPicker != null) {
+                            mPendingIndex = position;
+                            mPendingLongpress = true;
+                            mPendingNewAction = false;
+                            mPicker.pickShortcut(getId());
+                        }
+                    }
+                return true;
+            }
+        });
+
         mDivider = (View) view.findViewById(R.id.divider);
         loadAdditionalFragment();
 
@@ -629,97 +708,6 @@ public class ActionListViewSettings extends ListFragment implements
                     + " " + getItem(position).getDoubleTapActionDescription());
             }
 
-            final GestureDetector detector = new GestureDetector(mContext,
-                    new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onDown(MotionEvent e) {
-                    return true;
-                }
-
-                @Override
-                public boolean onSingleTapConfirmed(MotionEvent e) {
-                    if (mUseFullAppsOnly) {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = false;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId(), true);
-                        }
-                    } else if (!mUseAppPickerOnly) {
-                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, false, false);
-                    } else {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = false;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId());
-                        }
-                    }
-                    if (!ActionChecker.containsAction(mActivity, mActionConfigs.get(position),
-                            ActionConstants.ACTION_BACK)) {
-                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
-                    } else if (!ActionChecker.containsAction(
-                            mActivity, mActionConfigs.get(position), ActionConstants.ACTION_HOME)) {
-                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
-                    }
-                    return true;
-                }
-
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-                    if (mDisableDoubleTap) return false;
-                    if (mUseFullAppsOnly) {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = false;
-                            mPendingDoubleTap = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId(), true);
-                        }
-                    } else if (!mUseAppPickerOnly) {
-                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, true, false);
-                    } else {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = false;
-                            mPendingDoubleTap = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId());
-                        }
-                    }
-                    return true;
-                }
-
-                @Override
-                public void onLongPress(MotionEvent e) {
-                    if (mDisableLongpress) return;
-                    if (mUseFullAppsOnly) {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId(), true);
-                        }
-                    } else if (!mUseAppPickerOnly) {
-                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, true, false, false);
-                    } else {
-                        if (mPicker != null) {
-                            mPendingIndex = position;
-                            mPendingLongpress = true;
-                            mPendingNewAction = false;
-                            mPicker.pickShortcut(getId());
-                        }
-                    }
-                }
-            });
-
-            v.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent ev) {
-                    return detector.onTouchEvent(ev);
-                }
-            });
-
             Drawable d = null;
             String iconUri = getItem(position).getIcon();
             /*if (mActionMode == POWER_MENU_SHORTCUT) {
@@ -743,7 +731,7 @@ public class ActionListViewSettings extends ListFragment implements
                 }
             //}
             if (iconUri != null && iconUri.startsWith(ActionConstants.SYSTEM_ICON_IDENTIFIER)) {
-                d.setTint(getContext().getResources().getColor(R.color.dslv_icon_dark));
+                if (d != null) d.setTint(getContext().getResources().getColor(R.color.dslv_icon_dark));
             }
             holder.iconView.setImageBitmap(ImageHelper.drawableToBitmap(d));
 
