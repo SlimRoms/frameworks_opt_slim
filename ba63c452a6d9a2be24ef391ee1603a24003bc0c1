@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ace114c_e2ede7f0",
+        "filename": "src/org/slim/preference/colorpicker/AlphaPatternDrawable.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:00:56Z",
+      "side": 1,
+      "message": "I assume we didn\u0027t modify this? We should also add licencing",
+      "range": {
+        "startLine": 3,
+        "startChar": 1,
+        "endLine": 3,
+        "endChar": 2
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_c2f0ebcb",
+        "filename": "src/org/slim/preference/colorpicker/ColorPickerDialog.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:00:56Z",
+      "side": 1,
+      "message": "2013-2016 SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 30
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_22e44f0c",
+        "filename": "src/org/slim/preference/colorpicker/ColorPickerPanelView.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:00:56Z",
+      "side": 1,
+      "message": "2013-2016 SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 30
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_02e7d313",
+        "filename": "src/org/slim/preference/colorpicker/ColorPickerPreference.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:00:56Z",
+      "side": 1,
+      "message": "2013-2016 SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 30
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_62e25705",
+        "filename": "src/org/slim/preference/colorpicker/ColorPickerView.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:00:56Z",
+      "side": 1,
+      "message": "2013-2016 SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 17,
+        "endLine": 3,
+        "endChar": 30
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
