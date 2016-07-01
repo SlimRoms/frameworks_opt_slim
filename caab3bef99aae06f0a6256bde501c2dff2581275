@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ace114c_a2bfdfcf",
+        "filename": "src/org/slim/action/ActionChecker.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:02:55Z",
+      "side": 1,
+      "message": "2 lines",
+      "range": {
+        "startLine": 46,
+        "startChar": 20,
+        "endLine": 46,
+        "endChar": 101
+      },
+      "revId": "caab3bef99aae06f0a6256bde501c2dff2581275",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_42b4fbf1",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-01T02:02:55Z",
+      "side": 1,
+      "message": "two lines",
+      "range": {
+        "startLine": 661,
+        "startChar": 12,
+        "endLine": 661,
+        "endChar": 101
+      },
+      "revId": "caab3bef99aae06f0a6256bde501c2dff2581275",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
