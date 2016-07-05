@@ -104,6 +104,13 @@ public final class SlimSettingsKeys {
     }
 
     public interface Secure {
+
+        /**
+         * Chamber on / off (custom setting shortcuts)
+         * @hide
+         */
+        public static final String CHAMBER_OF_SECRETS = "chamber_of_secrets";
+
     }
 
     public interface Global {
