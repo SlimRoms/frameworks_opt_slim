@@ -155,14 +155,15 @@ public class ActionListViewSettings extends ListFragment implements
                 if (mDisableDeleteLastEntry && mActionConfigs.size() == 0) {
                     mActionConfigsAdapter.add(item);
                     showDialogInner(DLG_DELETION_NOT_ALLOWED, 0, false, false, false);
-                } else {
-                    if (!ActionChecker.containsAction(
+                } else if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_BACK)) {
-                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
-                    } else if (!ActionChecker.containsAction(
+                    mActionConfigsAdapter.add(item);
+                    showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
+                } else if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_HOME)) {
-                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
-                    }
+                    mActionConfigsAdapter.add(item);
+                    showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
+                } else {
                     setConfig(mActionConfigs, false);
                     deleteIconFileIfPresent(item, true);
                     if (mActionConfigs.size() == 0) {
@@ -279,7 +280,16 @@ public class ActionListViewSettings extends ListFragment implements
                             mPicker.pickShortcut(getId(), true);
                         }
                     } else if (!mUseAppPickerOnly) {
-                        showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, false, false);
+                        ActionConfig actionConfig = mActionConfigsAdapter.getItem(position);
+                        if (ActionConstants.ACTION_BACK.equals(
+                                actionConfig.getClickAction())) {
+                            showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
+                        } else if (ActionConstants.ACTION_HOME.equals(
+                                actionConfig.getClickAction())) {
+                            showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
+                        } else {
+                            showDialogInner(DLG_SHOW_ACTION_DIALOG, position, false, false, false);
+                        }
                     } else {
                         if (mPicker != null) {
                             mPendingIndex = position;
@@ -287,13 +297,6 @@ public class ActionListViewSettings extends ListFragment implements
                             mPendingNewAction = false;
                             mPicker.pickShortcut(getId());
                         }
-                    }
-                    if (!ActionChecker.containsAction(mActivity, mActionConfigs.get(position),
-                            ActionConstants.ACTION_BACK)) {
-                        showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
-                    } else if (!ActionChecker.containsAction(
-                            mActivity, mActionConfigs.get(position), ActionConstants.ACTION_HOME)) {
-                        showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
                     }
                 return true;
             }
@@ -1000,7 +1003,7 @@ public class ActionListViewSettings extends ListFragment implements
                     } else {
                         msg = R.string.no_back_key;
                     }
-                    return new AlertDialog.Builder(getOwner().getContext())
+                    return new AlertDialog.Builder(getActivity())
                     .setTitle(getOwner().getContext().getString(R.string.attention))
                     .setMessage(getOwner().getContext().getString(msg))
                     .setPositiveButton(android.R.string.ok, null)
