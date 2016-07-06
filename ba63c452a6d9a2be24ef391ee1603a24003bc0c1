@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3ace114c_e272c748",
+        "filename": "res/res/values/strings.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-06T19:53:02Z",
+      "side": 1,
+      "message": "String should just say Menu.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 61
+      },
+      "revId": "ba63c452a6d9a2be24ef391ee1603a24003bc0c1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3ace114c_e2ede7f0",
         "filename": "src/org/slim/preference/colorpicker/AlphaPatternDrawable.java",
         "patchSetId": 9
