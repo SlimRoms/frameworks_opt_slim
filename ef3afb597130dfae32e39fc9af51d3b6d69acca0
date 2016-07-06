@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ace114c_3d447073",
+        "filename": "res/res/layout-land/dialog_color_picker.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-06T19:53:02Z",
+      "side": 1,
+      "message": "Update",
+      "range": {
+        "startLine": 3,
+        "startChar": 5,
+        "endLine": 3,
+        "endChar": 32
+      },
+      "revId": "ef3afb597130dfae32e39fc9af51d3b6d69acca0",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ace114c_5d493c8a",
+        "filename": "res/res/layout/dialog_color_picker.xml",
+        "patchSetId": 11
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-06T19:53:02Z",
+      "side": 1,
+      "message": "update",
+      "range": {
+        "startLine": 3,
+        "startChar": 5,
+        "endLine": 3,
+        "endChar": 32
+      },
+      "revId": "ef3afb597130dfae32e39fc9af51d3b6d69acca0",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
