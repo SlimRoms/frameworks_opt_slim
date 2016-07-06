@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3ace114c_186502e1",
+        "filename": "res/res/values/symbols.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-06T23:42:52Z",
+      "side": 1,
+      "message": "Shouldn\u0027t need both public and symbols. One of them should allow it to show up elsewhere",
+      "range": {
+        "startLine": 21,
+        "startChar": 4,
+        "endLine": 21,
+        "endChar": 71
+      },
+      "revId": "a98e54e411a77938111c6d626681e6cd01c6070f",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
