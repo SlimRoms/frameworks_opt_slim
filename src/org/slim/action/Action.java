@@ -212,6 +212,15 @@ public class Action {
                 } catch (RemoteException e) {
                 }
                 return;
+            } else if (action.equals(ActionConstants.ACTION_ASSIST)
+                    || action.equals(ActionConstants.ACTION_KEYGUARD_SEARCH)) {
+                Intent intent = ((SearchManager) context.getSystemService(Context.SEARCH_SERVICE))
+                  .getAssistIntent(true);
+                if (intent == null) {
+                    intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                }
+                startActivity(context, intent, barService, isKeyguardShowing);
+                return;
             } else if (action.equals(ActionConstants.ACTION_VOICE_SEARCH)) {
                 // launch the search activity
                 Intent intent = new Intent(Intent.ACTION_SEARCH_LONG_PRESS);
