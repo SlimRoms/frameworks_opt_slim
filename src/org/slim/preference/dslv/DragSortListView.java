@@ -438,23 +438,12 @@ public class DragSortListView extends ListView {
     private boolean mUseRemoveVelocity;
     private float mRemoveVelocityX = 0;
 
-    private Context mContext;
-
     public DragSortListView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         int defaultDuration = 150;
         int removeAnimDuration = defaultDuration; // ms
         int dropAnimDuration = defaultDuration; // ms
-
-        try {
-            mContext = getContext().createPackageContext("org.slim.framework", 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (mContext != null) {
-            mContext = new ContextThemeWrapper(mContext, getContext().getTheme());
-        }
 
         if (attrs != null) {
             TypedArray a = mContext.obtainStyledAttributes(attrs,
