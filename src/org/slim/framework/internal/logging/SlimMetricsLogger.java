@@ -29,4 +29,5 @@ public class SlimMetricsLogger extends MetricsLogger {
     public static final int STATUS_BAR_SETTINGS = BASE + 3;
     public static final int NAVIGATION_SETTINGS = BASE + 4;
     public static final int HARDWAREKEYS_SETTINGS = BASE + 5;
+    public static final int CLOCK_SETTINGS = BASE + 10;
 }
