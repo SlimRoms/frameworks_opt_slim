@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_4e4af384",
+        "filename": "src/org/slim/provider/SlimSettingsKeys.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000321
+      },
+      "writtenOn": "2016-07-27T01:08:05Z",
+      "side": 1,
+      "message": "I think this is just a simple derp, this isn\u0027t part of this commit.",
+      "range": {
+        "startLine": 249,
+        "startChar": 35,
+        "endLine": 249,
+        "endChar": 57
+      },
+      "revId": "746a0bdbb7412bba42ac7b8fef73714fb94dc0a2",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
