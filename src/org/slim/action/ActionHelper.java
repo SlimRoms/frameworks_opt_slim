@@ -134,8 +134,7 @@ public class ActionHelper {
 
         if (customIcon != null && customIcon.startsWith(ActionConstants.SYSTEM_ICON_IDENTIFIER)) {
             resId = resources.getIdentifier(customIcon.substring(
-                        ActionConstants.SYSTEM_ICON_IDENTIFIER.length()),
-                                            "drawable", "org.slim.framework");
+                        ActionConstants.SYSTEM_ICON_IDENTIFIER.length()), "drawable", "android");
             if (resId > 0) {
                 return resources.getDrawable(resId);
             }
