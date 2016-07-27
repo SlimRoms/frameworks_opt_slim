@@ -446,7 +446,7 @@ public class DragSortListView extends ListView {
         int dropAnimDuration = defaultDuration; // ms
 
         if (attrs != null) {
-            TypedArray a = mContext.obtainStyledAttributes(attrs,
+            TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.DragSortListView, 0, 0);
 
             mItemHeightCollapsed = Math.max(1, a.getDimensionPixelSize(
