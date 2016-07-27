@@ -37,8 +37,7 @@ import android.widget.AdapterView;
  * {@link DragSortListView} instance.
  */
 public class DragSortController extends SimpleFloatViewManager
-        implements View.OnTouchListener, GestureDetector.OnGestureListener,
-                GestureDetector.OnDoubleTapListener {
+        implements View.OnTouchListener, GestureDetector.OnGestureListener {
 
     /**
      * Drag init mode enum.
@@ -100,14 +99,6 @@ public class DragSortController extends SimpleFloatViewManager
     private DragSortListView mDslv;
     private int mPositionX;
 
-    private OnItemTouchedCallback mItemTouchedCallback;
-
-    public interface OnItemTouchedCallback {
-        boolean onLongClick(int pos);
-        boolean onSingleClick(int pos);
-        boolean onDoubleTap(int pos);
-    }
-
     /**
      * Calls {@link #DragSortController(DragSortListView, int)} with a
      * 0 drag handle id, FLING_RIGHT_REMOVE remove mode,
@@ -152,9 +143,6 @@ public class DragSortController extends SimpleFloatViewManager
         setDragInitMode(dragInitMode);
     }
 
-    public void setOnItemTouchedCallback(OnItemTouchedCallback callback) {
-        mItemTouchedCallback = callback;
-    }
 
     public int getDragInitMode() {
         return mDragInitMode;
@@ -300,28 +288,6 @@ public class DragSortController extends SimpleFloatViewManager
         return false;
     }
 
-    @Override
-    public boolean onDoubleTap(MotionEvent e) {
-        if (mItemTouchedCallback != null) {
-            View v = getViewForEvent(e);
-            if (v != null) {
-                int position = mDslv.getPositionForView(v);
-                mItemTouchedCallback.onDoubleTap(position);
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onDoubleTapEvent(MotionEvent e) {
-        return false;
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        return false;
-    }
-
     /**
      * Overrides to provide fading when slide removal is enabled.
      */
@@ -372,21 +338,7 @@ public class DragSortController extends SimpleFloatViewManager
         return viewIdHitPosition(ev, mFlingHandleId);
     }
 
-    private int getTouchPos(MotionEvent ev) {
-        final int x = (int) ev.getX();
-        final int y = (int) ev.getY();
-
-        return mDslv.pointToPosition(x, y); //includes headers/footers
-    }
-
-    private View getViewForEvent(MotionEvent ev) {
-        int touchPos = getTouchPos(ev);
-
-        return wasItemClicked(ev) ?
-                mDslv.getChildAt(touchPos - mDslv.getFirstVisiblePosition()) : null;
-    }
-
-    public boolean wasItemClicked(MotionEvent ev) {
+    public int viewIdHitPosition(MotionEvent ev, int id) {
         final int x = (int) ev.getX();
         final int y = (int) ev.getY();
 
@@ -396,16 +348,12 @@ public class DragSortController extends SimpleFloatViewManager
         final int numFooters = mDslv.getFooterViewsCount();
         final int count = mDslv.getCount();
 
-        return touchPos != AdapterView.INVALID_POSITION && touchPos >= numHeaders
-                && touchPos < (count - numFooters);
-    }
-
-    public int viewIdHitPosition(MotionEvent ev, int id) {
         // Log.d("mobeta", "touch down on position " + itemnum);
         // We're only interested if the touch was on an
         // item that's not a header or footer.
-        if (wasItemClicked(ev)) {
-            final View item = getViewForEvent(ev);
+        if (touchPos != AdapterView.INVALID_POSITION && touchPos >= numHeaders
+                && touchPos < (count - numFooters)) {
+            final View item = mDslv.getChildAt(touchPos - mDslv.getFirstVisiblePosition());
             final int rawX = (int) ev.getRawX();
             final int rawY = (int) ev.getRawY();
 
@@ -420,7 +368,7 @@ public class DragSortController extends SimpleFloatViewManager
                     mItemX = item.getLeft();
                     mItemY = item.getTop();
 
-                    return getTouchPos(ev);
+                    return touchPos;
                 }
             }
         }
@@ -486,14 +434,6 @@ public class DragSortController extends SimpleFloatViewManager
         if (mHitPos != MISS && mDragInitMode == ON_LONG_PRESS) {
             mDslv.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
             startDrag(mHitPos, mCurrX - mItemX, mCurrY - mItemY);
-        } else {
-            if (mItemTouchedCallback != null) {
-                View v = getViewForEvent(e);
-                if (v != null) {
-                    int position = mDslv.getPositionForView(v);
-                    mItemTouchedCallback.onLongClick(position);
-                }
-            }
         }
     }
 
@@ -506,18 +446,10 @@ public class DragSortController extends SimpleFloatViewManager
 
     // complete the OnGestureListener interface
     @Override
-    public boolean onSingleTapConfirmed(MotionEvent ev) {
+    public boolean onSingleTapUp(MotionEvent ev) {
         if (mRemoveEnabled && mRemoveMode == CLICK_REMOVE) {
             if (mClickRemoveHitPos != MISS) {
                 mDslv.removeItem(mClickRemoveHitPos - mDslv.getHeaderViewsCount());
-            }
-        } else {
-            if (mItemTouchedCallback != null) {
-                View v = getViewForEvent(ev);
-                if (v != null) {
-                    int position = mDslv.getPositionForView(v);
-                    mItemTouchedCallback.onSingleClick(position);
-                }
             }
         }
         return true;

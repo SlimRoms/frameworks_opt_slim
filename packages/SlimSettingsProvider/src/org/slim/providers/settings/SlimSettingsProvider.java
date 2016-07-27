@@ -682,7 +682,6 @@ public class SlimSettingsProvider extends ContentProvider {
         SlimSettings.Validator validator = SlimSettings.System.VALIDATORS.get(name);
         if (validator == null) {
             return; // TEMP
-            //throw new IllegalArgumentException("Invalid setting: " + name);
         }
 
         if (!validator.validate(value)) {

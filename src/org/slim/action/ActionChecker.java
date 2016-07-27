@@ -18,7 +18,6 @@ package org.slim.action;
 
 import android.content.Context;
 import android.os.UserHandle;
-import android.text.TextUtils;
 
 import java.util.ArrayList;
 
@@ -45,8 +44,6 @@ public class ActionChecker {
         for (int i = 0; i < mConfigs.size(); i++) {
             String configsString = SlimSettings.System.getStringForUser(context.getContentResolver(),
                     mConfigs.get(i), UserHandle.USER_CURRENT);
-
-            if (TextUtils.isEmpty(configsString)) continue;
 
             if (configsString.contains(ActionConstants.ACTION_BACK)) {
                 String input = configsString;

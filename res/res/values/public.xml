@@ -59,15 +59,10 @@
 
   <!-- DSLV -->
   <public type="string" name="shortcut_action_disable_message" id="0x02040004" />
-  <public type="string" name="shortcut_action_doubletap" id="0x02040005" />
-  <public type="string" name="shortcut_action_select_action_doubletap" id="0x02040006" />
 
   <!-- dimen (start with 0x02050000) -->
 
   <!-- color (start with 0x02060000) -->
-
-  <!-- DSLV -->
-  <public type="color" name="dslv_float_background_color" id="0x02060000" />
 
   <!-- array (start with 0x02070000) -->
   <public type="array" name="icon_color_mode_entries" id="0x02070000" />
@@ -87,10 +82,6 @@
 
   <!-- ColorPickerDialog @hide -->
   <public type="layout" name="dialog_color_picker" id="0x02090001" />
-
-  <!-- DSLV -->
-  <public type="layout" name="action_list_view_item" id="0x02090002" />
-  <public type="layout" name="action_list_view_main" id="0x02090003" />
 
   <!-- anim (start with 0x020a0000) -->
 

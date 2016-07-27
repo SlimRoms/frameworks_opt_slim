@@ -28,7 +28,7 @@ import org.slim.action.ActionConstants;
 
 public class ConfigSplitHelper {
 
-    private static final String SLIM_METADATA_NAME = "org.slim.framework";
+    private static final String SETTINGS_METADATA_NAME = "com.android.settings";
 
     public static ArrayList<ActionConfig> getActionConfigValues(Context context, String config,
                 String values, String entries, boolean isShortcut) {
@@ -38,11 +38,11 @@ public class ConfigSplitHelper {
         ActionConfig actionConfig = null;
 
         PackageManager pm = context.getPackageManager();
-        Resources slimResources = null;
+        Resources settingsResources = null;
         try {
-            slimResources = pm.getResourcesForApplication(SLIM_METADATA_NAME);
+            settingsResources = pm.getResourcesForApplication(SETTINGS_METADATA_NAME);
         } catch (Exception e) {
-            Log.e("ConfigSplitHelper", "can't access slim framework resources",e);
+            Log.e("ConfigSplitHelper", "can't access settings resources",e);
         }
 
         // Split out the config to work with and add to the list
@@ -50,8 +50,8 @@ public class ConfigSplitHelper {
             counter++;
             if (counter == 1) {
                 actionConfig = new ActionConfig(configValue,
-                            AppHelper.getProperSummary(context, pm, slimResources,
-                            configValue, values, entries), null, null, null, null, null);
+                            AppHelper.getProperSummary(context, pm, settingsResources,
+                            configValue, values, entries), null, null, null);
             }
             if (counter == 2) {
                 if (isShortcut) {
@@ -62,17 +62,11 @@ public class ConfigSplitHelper {
                 } else {
                     actionConfig.setLongpressAction(configValue);
                     actionConfig.setLongpressActionDescription(
-                            AppHelper.getProperSummary(context, pm, slimResources,
+                            AppHelper.getProperSummary(context, pm, settingsResources,
                             configValue, values, entries));
                 }
             }
             if (counter == 3) {
-                actionConfig.setDoubleTapAction(configValue);
-                actionConfig.setDoubleTapActionDescription(
-                        AppHelper.getProperSummary(context, pm, slimResources,
-                        configValue, values, entries));
-            }
-            if (counter == 4) {
                 actionConfig.setIcon(configValue);
                 actionConfigList.add(actionConfig);
                 //reset counter due that iteration of full config action is finished
@@ -96,8 +90,6 @@ public class ConfigSplitHelper {
             finalConfig += actionConfig.getClickAction() + ActionConstants.ACTION_DELIMITER;
             if (!isShortcut) {
                 finalConfig += actionConfig.getLongpressAction()
-                    + ActionConstants.ACTION_DELIMITER;
-                finalConfig += actionConfig.getDoubleTapAction()
                     + ActionConstants.ACTION_DELIMITER;
             }
             finalConfig += actionConfig.getIcon();
