@@ -1,0 +1,376 @@
+package com.android.systemui.statusbar.slim;
+
+import android.app.ActivityManagerNative;
+import android.app.IActivityManager;
+import android.content.ContentResolver;
+import android.content.res.Configuration;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.RemoteException;
+import android.os.UserHandle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.TextView;
+
+import com.android.systemui.BatteryMeterView;
+import com.android.systemui.FontSizeUtils;
+import com.android.systemui.recents.ScreenPinningRequest;
+import com.android.systemui.statusbar.phone.NavigationBarView;
+import com.android.systemui.statusbar.phone.PhoneStatusBar;
+import com.android.systemui.statusbar.phone.PhoneStatusBarView;
+import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
+import com.android.systemui.statusbar.policy.KeyButtonView;
+
+import com.android.systemui.R;
+
+import org.slim.action.ActionConfig;
+import org.slim.action.ActionConstants;
+import org.slim.action.ActionHelper;
+import org.slim.provider.SlimSettings;
+import org.slim.utils.DeviceUtils;
+
+public class SlimStatusBar extends PhoneStatusBar {
+
+    static final String TAG = "SlimStatusBar";
+
+    private BatteryMeterView mBatteryView;
+    private TextView mBatteryLevel;
+
+    private boolean mHasNavigationBar = false;
+    boolean mDisableHomeLongpress;
+
+    private long mLastLockToAppLongPress;
+
+    private boolean mShowBatteryText;
+    private boolean mShowBatteryTextCharging;
+    private boolean mBatteryIsCharging;
+    private int mBatteryChargeLevel;
+
+    class SettingsObserver extends ContentObserver {
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void observe() {
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_SHOW),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_CONFIG),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_CAN_MOVE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.MENU_LOCATION),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.MENU_VISIBILITY),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
+                    UserHandle.USER_ALL);
+            update();
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+
+            update();
+
+            if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT))
+                || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE))
+                || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_CONFIG))
+                || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT))
+                || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.MENU_LOCATION))
+                || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.MENU_VISIBILITY))) {
+                if (mNavigationBarView != null) {
+                    mNavigationBarView.recreateNavigationBar();
+                    prepareNavigationBarView();
+                }
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_CAN_MOVE))) {
+                prepareNavigationBarView();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.NAVIGATION_BAR_SHOW))) {
+                updateNavigationBarVisibility();
+            } else if (uri.equals(SlimSettings.Secure.getUriFor(
+                            SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT)) ||
+                            uri.equals(SlimSettings.Secure.getUriFor(
+                            SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE))) {
+                        mBatteryView.updateBatteryIconSettings();
+                        mHeader.updateBatteryIconSettings();
+                        mKeyguardStatusBar.updateBatteryIconSettings();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS))) {
+                updateRecents();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR))
+                    || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR))) {
+                rebuildRecentsScreen();
+            }
+            Log.d(TAG, "uri=" + uri);
+        }
+
+        public void update() {
+            loadShowBatteryTextSetting();
+            updateBatteryLevelText();
+            mBatteryLevel.setVisibility(mShowBatteryText ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    private void loadShowBatteryTextSetting() {
+        ContentResolver resolver = mContext.getContentResolver();
+        mShowBatteryText = SlimSettings.Secure.getInt(resolver,
+                SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT, 0) == 2;
+        int batteryStyle = SlimSettings.Secure.getInt(resolver,
+                SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE, 0);
+        switch (batteryStyle) {
+            case 4:
+                //meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+                mShowBatteryText = false;
+                mShowBatteryTextCharging = false;
+                break;
+
+            case 6:
+                //meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
+                mShowBatteryText = true;
+                mShowBatteryTextCharging = true;
+                break;
+
+            default:
+                mShowBatteryTextCharging = false;
+                break;
+        }
+    }
+
+    private void updateBatteryLevelText() {
+        if (mBatteryIsCharging & mShowBatteryTextCharging) {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template_charging, mBatteryChargeLevel));
+        } else {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template, mBatteryChargeLevel));
+        }
+    }
+
+    @Override
+    public void start() {
+        super.start();
+
+        updateNavigationBarVisibility();
+
+        SettingsObserver observer = new SettingsObserver(mHandler);
+        observer.observe();
+
+        mScreenPinningRequest.setCallback(mScreenPinningCallback);
+    }
+
+    @Override
+    protected PhoneStatusBarView makeStatusBarView() {
+        PhoneStatusBarView statusBarView = super.makeStatusBarView();
+
+        Log.d(TAG, "makeStatusBarView");
+
+        if (mNavigationBarView == null) {
+            mNavigationBarView = (NavigationBarView)
+                    View.inflate(mContext, R.layout.navigation_bar, null);
+
+            mNavigationBarView.setDisabledFlags(mDisabled1);
+            mNavigationBarView.setBar(this);
+            mNavigationBarView.setOnVerticalChangedListener(
+                    new NavigationBarView.OnVerticalChangedListener() {
+                @Override
+                public void onVerticalChanged(boolean isVertical) {
+                    if (mAssistManager != null) {
+                        mAssistManager.onConfigurationChanged();
+                    }
+                    mNotificationPanel.setQsScrimEnabled(!isVertical);
+                }
+            });
+            mNavigationBarView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    checkUserAutohide(v, event);
+                    return false;
+                }
+            });
+        }
+
+        mBatteryLevel = (TextView) statusBarView.findViewById(R.id.battery_level_text);
+        mBatteryView = (BatteryMeterView) statusBarView.findViewById(R.id.battery);
+        mBatteryView.setBatteryController(mBatteryController);
+
+        if (mBatteryController != null) {
+            mBatteryController.addStateChangedCallback(new BatteryStateChangeCallback() {
+                @Override
+                public void onPowerSaveChanged() {
+                }
+                @Override
+                public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
+                    mBatteryIsCharging = charging;
+                    mBatteryChargeLevel = level;
+                    loadShowBatteryTextSetting();
+                    updateBatteryLevelText();
+                    mHeader.updateBatteryLevel(level, charging);
+                    mKeyguardStatusBar.updateBatteryLevel(level, charging);
+                }
+                /*@Override
+                public void onBatteryStyleChanged(int style, int percentMode, int percentLowOnly) {
+                    // noop
+                    //TOFIX 
+                } No battery styles here! */
+            });
+        }
+        return statusBarView;
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        FontSizeUtils.updateFontSize(mBatteryLevel, R.dimen.battery_level_text_size);
+    }
+
+    private KeyButtonView.LongClickCallback mLongClickCallback =
+            new KeyButtonView.LongClickCallback() {
+        @Override
+        public boolean onLongClick(View v) {
+            return handleLongPressBackRecents(v);
+        }
+    };
+
+    private ScreenPinningRequest.ScreenPinningCallback mScreenPinningCallback =
+            new ScreenPinningRequest.ScreenPinningCallback() {
+        @Override
+        public void onStartLockTask() {
+            mNavigationBarView.setOverrideMenuKeys(true);
+        }
+    };
+
+    private void updateNavigationBarVisibility() {
+        final int showByDefault = mContext.getResources().getBoolean(
+                    com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0;
+        mHasNavigationBar = SlimSettings.System.getIntForUser(mContext.getContentResolver(),
+                    SlimSettings.System.NAVIGATION_BAR_SHOW, showByDefault,
+                    UserHandle.USER_CURRENT) == 1;
+
+        if (mHasNavigationBar) {
+            addNavigationBar();
+        } else {
+            if (mNavigationBarView.isAttachedToWindow()) {
+                mWindowManager.removeView(mNavigationBarView);
+            }
+        }
+    }
+
+    @Override
+    protected void prepareNavigationBarView() {
+        mNavigationBarView.reorient();
+
+        View home = mNavigationBarView.getHomeButton();
+        View recents = mNavigationBarView.getRecentsButton();
+
+        mNavigationBarView.setPinningCallback(mLongClickCallback);
+
+        /*if (recents != null) {
+            recents.setOnClickListener(mRecentsClickListener);
+            recents.setOnTouchListener(mRecentsPreloadOnTouchListener);
+        }
+        if (home != null) {
+            home.setOnTouchListener(mHomeActionListener);
+        }*/
+
+        mAssistManager.onConfigurationChanged();
+    }
+
+    protected void addNavigationBar() {
+        if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mNavigationBarView);
+        if (mNavigationBarView == null) return;
+
+        prepareNavigationBarView();
+
+        if (!mNavigationBarView.isAttachedToWindow()) {
+            try {
+                mWindowManager.addView(mNavigationBarView, getNavigationBarLayoutParams());
+            } catch (Exception e) {}
+        }
+    }
+
+    private boolean handleLongPressBackRecents(View v) {
+        try {
+            boolean sendBackLongPress = false;
+            IActivityManager activityManager = ActivityManagerNative.getDefault();
+            boolean isAccessiblityEnabled = mAccessibilityManager.isEnabled();
+            if (activityManager.isInLockTaskMode() && !isAccessiblityEnabled) {
+                // If we recently long-pressed the other button then they were
+                // long-pressed 'together'
+                if (mNavigationBarView.getRightMenuButton().isPressed()
+                        && mNavigationBarView.getLeftMenuButton().isPressed()) {
+                    activityManager.stopLockTaskModeOnCurrent();
+                    // When exiting refresh disabled flags.
+                    mNavigationBarView.setDisabledFlags(mDisabled1, true);
+                    mNavigationBarView.setOverrideMenuKeys(false);
+                } else if ((v.getId() == mNavigationBarView.getLeftMenuButton().getId())
+                        && !mNavigationBarView.getRightMenuButton().isPressed()) {
+                    // If we aren't pressing recents right now then they presses
+                    // won't be together, so send the standard long-press action.
+                    sendBackLongPress = true;
+                }
+            } else {
+                // If this is back still need to handle sending the long-press event.
+                long time = System.currentTimeMillis();
+                if (( time - mLastLockToAppLongPress) < 2000) {
+                    if (v.getId() == mNavigationBarView.getLeftMenuButton().getId()
+                        || v.getId() == mNavigationBarView.getRightMenuButton().getId()) {
+                        sendBackLongPress = true;
+                    }
+                } else if (isAccessiblityEnabled && activityManager.isInLockTaskMode()) {
+                    // When in accessibility mode a long press that is recents (not back)
+                    // should stop lock task.
+                    activityManager.stopLockTaskModeOnCurrent();
+                    // When exiting refresh disabled flags.
+                    mNavigationBarView.setDisabledFlags(mDisabled1, true);
+                    mNavigationBarView.setOverrideMenuKeys(false);
+                }
+                mLastLockToAppLongPress = time;
+            }
+            return sendBackLongPress;
+        } catch (RemoteException e) {
+            Log.d(TAG, "Unable to reach activity manager", e);
+            return false;
+        }
+    }
+}
