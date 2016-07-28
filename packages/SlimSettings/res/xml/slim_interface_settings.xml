@@ -27,5 +27,13 @@
         android:key="recent_panel"
         android:fragment="com.android.settings.slim.RecentPanel"
         android:title="@string/recent_panel_category" />
+    <PreferenceScreen
+        android:key="quick_settings"
+        android:title="@string/quick_settings">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetPackage="com.android.systemui"
+            android:targetClass="com.android.systemui.tuner.TunerActivity$QsTunerActivity" />
+    </PreferenceScreen>
   
 </PreferenceScreen>

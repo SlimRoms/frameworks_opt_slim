@@ -12,15 +12,12 @@
         <activity
             android:name="com.slim.settings.activities.InterfaceSettingsActivity"
             android:label="@string/interface_settings_title"
+            android:icon="@drawable/ic_settings_interface"
             android:theme="@android:style/Theme.Material.Settings" >
 
             <intent-filter>
                 <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
             </intent-filter>
-
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_settings_interface" />
 
             <meta-data
                 android:name="com.android.settings.category"
@@ -31,15 +28,12 @@
         <activity
             android:name="com.slim.settings.activities.NavigationSettingsActivity"
             android:label="@string/navigation_settings_title"
+            android:icon="@drawable/ic_settings_navigation"
             android:theme="@android:style/Theme.Material.Settings" >
 
             <intent-filter>
                 <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
             </intent-filter>
-
-            <meta-data
-                android:name="com.android.settings.icon"
-                android:resource="@drawable/ic_settings_navigation" />
 
             <meta-data
                 android:name="com.android.settings.category"
