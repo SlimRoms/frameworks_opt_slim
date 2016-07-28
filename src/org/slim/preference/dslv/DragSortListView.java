@@ -44,11 +44,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.slim.framework.internal.R;
+import org.slim.utils.AttributeHelper;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * ListView subclass that mediates drag and drop resorting of items.
@@ -446,8 +449,7 @@ public class DragSortListView extends ListView {
         int dropAnimDuration = defaultDuration; // ms
 
         if (attrs != null) {
-            TypedArray a = mContext.obtainStyledAttributes(attrs,
-                    R.styleable.DragSortListView, 0, 0);
+            AttributeHelper a = new AttributeHelper(context, attrs, R.styleable.DragSortListView);// context.obtainStyledAttributes(attrs, R.styleable.DragSortListView);
 
             mItemHeightCollapsed = Math.max(1, a.getDimensionPixelSize(
                     R.styleable.DragSortListView_collapsedHeight, 1));
@@ -535,8 +537,6 @@ public class DragSortListView extends ListView {
                 mFloatViewManager = controller;
                 setOnTouchListener(controller);
             }
-
-            a.recycle();
         }
 
         mDragScroller = new DragScroller();
