@@ -45,6 +45,29 @@
       "revId": "9f4c0b48e869925a81d13d46b11d0792a5d82397",
       "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_f1e38003",
+        "filename": "src/org/slim/preference/dslv/DragSortListView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 452,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T17:52:33Z",
+      "side": 1,
+      "message": "should be better formated",
+      "range": {
+        "startLine": 452,
+        "startChar": 98,
+        "endLine": 452,
+        "endChar": 169
+      },
+      "revId": "9f4c0b48e869925a81d13d46b11d0792a5d82397",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
     }
   ]
 }
