@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_91fb1c47",
+        "filename": "packages/SlimSettings/Android.mk",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "licensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 1,
+        "endLine": 1,
+        "endChar": 28
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_b1f8984a",
+        "filename": "packages/SlimSettings/res/values/slim_dimens.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "format",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 3
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_5195b4e2",
+        "filename": "packages/SlimSettings/res/xml/recent_panel_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "date",
+      "range": {
+        "startLine": 2,
+        "startChar": 19,
+        "endLine": 2,
+        "endChar": 23
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_719a3016",
+        "filename": "packages/SlimSettings/res/xml/slim_interface_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "dead space",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 30,
+        "endChar": 2
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_119f2c05",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/RecentPanel.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "date",
+      "range": {
+        "startLine": 2,
+        "startChar": 17,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_31a4a856",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/StatusBarClockStyle.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "date and SlimRoms",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 38
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_d188c4c8",
+        "filename": "packages/SlimSettings/src/com/slim/settings/SettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "SlimRoms Project",
+      "range": {
+        "startLine": 2,
+        "startChar": 22,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_f185c0ad",
+        "filename": "packages/SlimSettings/src/com/slim/settings/activities/DozeSettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "Licensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 37
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_91923cf5",
+        "filename": "packages/SlimSettings/src/com/slim/settings/activities/InterfaceSettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "licensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 37
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_b18f38cc",
+        "filename": "packages/SlimSettings/src/com/slim/settings/activities/NavigationSettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T23:28:56Z",
+      "side": 1,
+      "message": "licensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 37
+      },
+      "revId": "60ae2824624f493ba8d8e5483e1312b172882990",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
