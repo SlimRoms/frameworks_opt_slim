@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_b1edf8f1",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T18:42:07Z",
+      "side": 1,
+      "message": "Needs a if deviceKeys \u003d! 0 here",
+      "range": {
+        "startLine": 160,
+        "startChar": 20,
+        "endLine": 160,
+        "endChar": 52
+      },
+      "revId": "f0d648cba4bd7a90ff268285e9fd79c8127122f1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_51ba94e2",
+        "filename": "src/org/slim/preference/dslv/ActionListViewSettings.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-07-28T18:42:07Z",
+      "side": 1,
+      "message": "and here",
+      "range": {
+        "startLine": 164,
+        "startChar": 20,
+        "endLine": 164,
+        "endChar": 52
+      },
+      "revId": "f0d648cba4bd7a90ff268285e9fd79c8127122f1",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
