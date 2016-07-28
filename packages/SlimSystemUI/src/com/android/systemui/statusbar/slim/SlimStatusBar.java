@@ -2,6 +2,7 @@ package com.android.systemui.statusbar.slim;
 
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
+import android.app.StatusBarManager;
 import android.content.ContentResolver;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
@@ -22,6 +23,7 @@ import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
 import com.android.systemui.statusbar.policy.KeyButtonView;
+import com.android.systemui.statusbar.stack.StackStateAnimator;
 
 import com.android.systemui.R;
 
@@ -37,6 +39,8 @@ public class SlimStatusBar extends PhoneStatusBar {
 
     private BatteryMeterView mBatteryView;
     private TextView mBatteryLevel;
+
+    private SlimNavigationBarView mSlimNavigationBarView;
 
     private boolean mHasNavigationBar = false;
     boolean mDisableHomeLongpress;
@@ -115,8 +119,8 @@ public class SlimStatusBar extends PhoneStatusBar {
                     SlimSettings.System.MENU_LOCATION))
                 || uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.MENU_VISIBILITY))) {
-                if (mNavigationBarView != null) {
-                    mNavigationBarView.recreateNavigationBar();
+                if (mSlimNavigationBarView != null) {
+                    mSlimNavigationBarView.recreateNavigationBar();
                     prepareNavigationBarView();
                 }
             } else if (uri.equals(SlimSettings.System.getUriFor(
@@ -204,30 +208,41 @@ public class SlimStatusBar extends PhoneStatusBar {
 
         Log.d(TAG, "makeStatusBarView");
 
-        if (mNavigationBarView == null) {
-            mNavigationBarView = (NavigationBarView)
-                    View.inflate(mContext, R.layout.navigation_bar, null);
-
-            mNavigationBarView.setDisabledFlags(mDisabled1);
-            mNavigationBarView.setBar(this);
-            mNavigationBarView.setOnVerticalChangedListener(
-                    new NavigationBarView.OnVerticalChangedListener() {
-                @Override
-                public void onVerticalChanged(boolean isVertical) {
-                    if (mAssistManager != null) {
-                        mAssistManager.onConfigurationChanged();
-                    }
-                    mNotificationPanel.setQsScrimEnabled(!isVertical);
-                }
-            });
-            mNavigationBarView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    checkUserAutohide(v, event);
-                    return false;
-                }
-            });
+        if (mNavigationBarView != null) {
+            if (mNavigationBarView.isAttachedToWindow()) {
+                try {
+                    mWindowManager.removeView(mNavigationBarView);
+                } catch (Exception e) {}
+            }
+            mNavigationBarView = null;
         }
+
+        if (mSlimNavigationBarView == null) {
+            mSlimNavigationBarView = (SlimNavigationBarView)
+                    View.inflate(mContext, R.layout.slim_navigation_bar, null);
+        }
+
+        mSlimNavigationBarView.setDisabledFlags(mDisabled1);
+        mSlimNavigationBarView.setBar(this);
+        mSlimNavigationBarView.setOnVerticalChangedListener(
+                new NavigationBarView.OnVerticalChangedListener() {
+            @Override
+            public void onVerticalChanged(boolean isVertical) {
+                if (mAssistManager != null) {
+                    mAssistManager.onConfigurationChanged();
+                }
+                mNotificationPanel.setQsScrimEnabled(!isVertical);
+            }
+        });
+        mSlimNavigationBarView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                checkUserAutohide(v, event);
+                return false;
+            }
+        });
+
+        mNavigationBarView = mSlimNavigationBarView;
 
         mBatteryLevel = (TextView) statusBarView.findViewById(R.id.battery_level_text);
         mBatteryView = (BatteryMeterView) statusBarView.findViewById(R.id.battery);
@@ -276,7 +291,7 @@ public class SlimStatusBar extends PhoneStatusBar {
             new ScreenPinningRequest.ScreenPinningCallback() {
         @Override
         public void onStartLockTask() {
-            mNavigationBarView.setOverrideMenuKeys(true);
+            mSlimNavigationBarView.setOverrideMenuKeys(true);
         }
     };
 
@@ -290,20 +305,20 @@ public class SlimStatusBar extends PhoneStatusBar {
         if (mHasNavigationBar) {
             addNavigationBar();
         } else {
-            if (mNavigationBarView.isAttachedToWindow()) {
-                mWindowManager.removeView(mNavigationBarView);
+            if (mSlimNavigationBarView.isAttachedToWindow()) {
+                mWindowManager.removeView(mSlimNavigationBarView);
             }
         }
     }
 
     @Override
     protected void prepareNavigationBarView() {
-        mNavigationBarView.reorient();
+        mSlimNavigationBarView.reorient();
 
-        View home = mNavigationBarView.getHomeButton();
-        View recents = mNavigationBarView.getRecentsButton();
+        View home = mSlimNavigationBarView.getHomeButton();
+        View recents = mSlimNavigationBarView.getRecentsButton();
 
-        mNavigationBarView.setPinningCallback(mLongClickCallback);
+        mSlimNavigationBarView.setPinningCallback(mLongClickCallback);
 
         /*if (recents != null) {
             recents.setOnClickListener(mRecentsClickListener);
@@ -317,14 +332,14 @@ public class SlimStatusBar extends PhoneStatusBar {
     }
 
     protected void addNavigationBar() {
-        if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mNavigationBarView);
-        if (mNavigationBarView == null) return;
+        if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mSlimNavigationBarView);
+        if (mSlimNavigationBarView == null) return;
 
         prepareNavigationBarView();
 
-        if (!mNavigationBarView.isAttachedToWindow()) {
+        if (!mSlimNavigationBarView.isAttachedToWindow()) {
             try {
-                mWindowManager.addView(mNavigationBarView, getNavigationBarLayoutParams());
+                mWindowManager.addView(mSlimNavigationBarView, getNavigationBarLayoutParams());
             } catch (Exception e) {}
         }
     }
@@ -337,14 +352,14 @@ public class SlimStatusBar extends PhoneStatusBar {
             if (activityManager.isInLockTaskMode() && !isAccessiblityEnabled) {
                 // If we recently long-pressed the other button then they were
                 // long-pressed 'together'
-                if (mNavigationBarView.getRightMenuButton().isPressed()
-                        && mNavigationBarView.getLeftMenuButton().isPressed()) {
+                if (mSlimNavigationBarView.getRightMenuButton().isPressed()
+                        && mSlimNavigationBarView.getLeftMenuButton().isPressed()) {
                     activityManager.stopLockTaskModeOnCurrent();
                     // When exiting refresh disabled flags.
-                    mNavigationBarView.setDisabledFlags(mDisabled1, true);
-                    mNavigationBarView.setOverrideMenuKeys(false);
-                } else if ((v.getId() == mNavigationBarView.getLeftMenuButton().getId())
-                        && !mNavigationBarView.getRightMenuButton().isPressed()) {
+                    mSlimNavigationBarView.setDisabledFlags(mDisabled1, true);
+                    mSlimNavigationBarView.setOverrideMenuKeys(false);
+                } else if ((v.getId() == mSlimNavigationBarView.getLeftMenuButton().getId())
+                        && !mSlimNavigationBarView.getRightMenuButton().isPressed()) {
                     // If we aren't pressing recents right now then they presses
                     // won't be together, so send the standard long-press action.
                     sendBackLongPress = true;
@@ -353,8 +368,8 @@ public class SlimStatusBar extends PhoneStatusBar {
                 // If this is back still need to handle sending the long-press event.
                 long time = System.currentTimeMillis();
                 if (( time - mLastLockToAppLongPress) < 2000) {
-                    if (v.getId() == mNavigationBarView.getLeftMenuButton().getId()
-                        || v.getId() == mNavigationBarView.getRightMenuButton().getId()) {
+                    if (v.getId() == mSlimNavigationBarView.getLeftMenuButton().getId()
+                        || v.getId() == mSlimNavigationBarView.getRightMenuButton().getId()) {
                         sendBackLongPress = true;
                     }
                 } else if (isAccessiblityEnabled && activityManager.isInLockTaskMode()) {
@@ -362,8 +377,8 @@ public class SlimStatusBar extends PhoneStatusBar {
                     // should stop lock task.
                     activityManager.stopLockTaskModeOnCurrent();
                     // When exiting refresh disabled flags.
-                    mNavigationBarView.setDisabledFlags(mDisabled1, true);
-                    mNavigationBarView.setOverrideMenuKeys(false);
+                    mSlimNavigationBarView.setDisabledFlags(mDisabled1, true);
+                    mSlimNavigationBarView.setOverrideMenuKeys(false);
                 }
                 mLastLockToAppLongPress = time;
             }
@@ -372,5 +387,5 @@ public class SlimStatusBar extends PhoneStatusBar {
             Log.d(TAG, "Unable to reach activity manager", e);
             return false;
         }
-    }
+    }  
 }
