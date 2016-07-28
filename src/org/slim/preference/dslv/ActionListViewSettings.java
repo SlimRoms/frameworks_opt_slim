@@ -128,6 +128,9 @@ public class ActionListViewSettings extends ListFragment implements
     private String mActionValuesKey;
     private String mActionEntriesKey;
 
+    private int mTempActionIndex = -1;
+    private ActionConfig mTempActionConfig;
+
     private Activity mActivity;
     private ShortcutPickerHelper mPicker;
 
@@ -157,11 +160,13 @@ public class ActionListViewSettings extends ListFragment implements
                     showDialogInner(DLG_DELETION_NOT_ALLOWED, 0, false, false, false);
                 } else if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_BACK)) {
-                    mActionConfigsAdapter.add(item);
+                    mTempActionConfig = item;
+                    mTempActionIndex = which;
                     showDialogInner(DLG_BACK_WARNING_DIALOG, 0, false, false, false);
                 } else if (!ActionChecker.containsAction(
                             mActivity, item, ActionConstants.ACTION_HOME)) {
-                    mActionConfigsAdapter.add(item);
+                    mTempActionConfig = item;
+                    mTempActionIndex = which;
                     showDialogInner(DLG_HOME_WARNING_DIALOG, 0, false, false, false);
                 } else {
                     setConfig(mActionConfigs, false);
@@ -1006,7 +1011,24 @@ public class ActionListViewSettings extends ListFragment implements
                     return new AlertDialog.Builder(getActivity())
                     .setTitle(getOwner().getContext().getString(R.string.attention))
                     .setMessage(getOwner().getContext().getString(msg))
-                    .setPositiveButton(android.R.string.ok, null)
+                    .setPositiveButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getOwner().mTempActionConfig = null;
+                            getOwner().mTempActionIndex = -1;
+                            dialog.cancel();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            getOwner().mActionConfigsAdapter.insert(
+                                    getOwner().mTempActionConfig, getOwner().mTempActionIndex);
+                            getOwner().mTempActionConfig = null;
+                            getOwner().mTempActionIndex = -1;
+                            dialog.cancel();
+                        }
+                    })
                     .create();
             }
             throw new IllegalArgumentException("unknown id " + id);
