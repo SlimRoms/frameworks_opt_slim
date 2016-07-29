@@ -18,6 +18,7 @@ package com.android.settings.slim;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -145,7 +146,8 @@ public class NavBarButtonStyle extends SettingsPreferenceFragment implements
         }
     }
 
-    private void resetToDefault() {
+    @Override
+    public Dialog onCreateDialog(int dialogId) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
         alertDialog.setTitle(org.slim.framework.internal.R.string.reset);
         alertDialog.setMessage(R.string.navbar_button_style_reset_message);
@@ -161,7 +163,11 @@ public class NavBarButtonStyle extends SettingsPreferenceFragment implements
             }
         });
         alertDialog.setNegativeButton(android.R.string.cancel, null);
-        alertDialog.create().show();
+        return alertDialog.create();
+    }
+
+    private void resetToDefault() {
+        showDialog(0);
     }
 
     @Override

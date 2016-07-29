@@ -124,6 +124,9 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private Preference mAppSwitchLongPressAction;
     private Preference mAppSwitchDoubleTapAction;
 
+    private String mSettingsKey;
+    private int mDialogTitleId;
+
     private boolean mCheckPreferences;
     private Map<String, String> mKeySettings = new HashMap<String, String>();
 
@@ -547,76 +550,53 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
     }
 
-    private void showDialogInner(int id, String settingsKey, int dialogTitle) {
-        DialogFragment newFragment =
-                MyAlertDialogFragment.newInstance(id, settingsKey, dialogTitle);
-        newFragment.setTargetFragment(this, 0);
-        newFragment.show(getFragmentManager(), "dialog " + id);
-    }
-
-    public static class MyAlertDialogFragment extends DialogFragment {
-
-        public static MyAlertDialogFragment newInstance(
-                int id, String settingsKey, int dialogTitle) {
-            MyAlertDialogFragment frag = new MyAlertDialogFragment();
-            Bundle args = new Bundle();
-            args.putInt("id", id);
-            args.putString("settingsKey", settingsKey);
-            args.putInt("dialogTitle", dialogTitle);
-            frag.setArguments(args);
-            return frag;
-        }
-
-        HardwareKeysSettings getOwner() {
-            return (HardwareKeysSettings) getTargetFragment();
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            int id = getArguments().getInt("id");
-            final String settingsKey = getArguments().getString("settingsKey");
-            int dialogTitle = getArguments().getInt("dialogTitle");
-            switch (id) {
-                case DLG_SHOW_WARNING_DIALOG:
-                    return new AlertDialog.Builder(getActivity())
+    @Override
+    public Dialog onCreateDialog(int id) {
+        final String settingsKey = mSettingsKey;
+        mSettingsKey = null;
+        int dialogTitle = mDialogTitleId;
+        mDialogTitleId = -1;
+        switch (id) {
+            case DLG_SHOW_WARNING_DIALOG:
+                return new AlertDialog.Builder(getActivity())
                     .setTitle(org.slim.framework.internal.R.string.attention)
                     .setMessage(org.slim.framework.internal.R.string.no_home_key)
                     .setPositiveButton(android.R.string.ok, null)
                     .create();
-                case DLG_SHOW_ACTION_DIALOG:
-                    if (sFinalActionDialogArray == null) {
-                        return null;
-                    }
-                    return new AlertDialog.Builder(getActivity())
+            case DLG_SHOW_ACTION_DIALOG:
+                if (sFinalActionDialogArray == null) {
+                    return null;
+                }
+                return new AlertDialog.Builder(getActivity())
                     .setTitle(dialogTitle)
                     .setNegativeButton(android.R.string.cancel, null)
-                    .setItems(getOwner().sFinalActionDialogArray.entries,
+                    .setItems(sFinalActionDialogArray.entries,
                         new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
-                            if (getOwner().sFinalActionDialogArray.values[item]
+                            if (sFinalActionDialogArray.values[item]
                                     .equals(ActionConstants.ACTION_APP)) {
-                                if (getOwner().mPicker != null) {
-                                    getOwner().mPendingSettingsKey = settingsKey;
-                                    getOwner().mPicker.pickShortcut(getOwner().getId());
+                                if (mPicker != null) {
+                                    mPendingSettingsKey = settingsKey;
+                                    mPicker.pickShortcut(getId());
                                 }
                             } else {
                                 SlimSettings.System.putString(getActivity().getContentResolver(),
                                         settingsKey,
-                                        getOwner().sFinalActionDialogArray.values[item]);
-                                getOwner().reloadSettings();
+                                        sFinalActionDialogArray.values[item]);
+                                reloadSettings();
                             }
                         }
                     })
                     .create();
-                case DLG_RESET_TO_DEFAULT:
-                    return new AlertDialog.Builder(getActivity())
+            case DLG_RESET_TO_DEFAULT:
+                return new AlertDialog.Builder(getActivity())
                     .setTitle(org.slim.framework.internal.R.string.shortcut_action_reset)
                     .setMessage(org.slim.framework.internal.R.string.reset_message)
                     .setNegativeButton(android.R.string.cancel, null)
                     .setPositiveButton(android.R.string.ok,
                         new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            getOwner().resetToDefault();
+                            resetToDefault();
                         }
                     })
                     .create();
@@ -624,9 +604,10 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
             throw new IllegalArgumentException("unknown id " + id);
         }
 
-        @Override
-        public void onCancel(DialogInterface dialog) {
-        }
+    private void showDialogInner(int id, String settingsKey, int dialogTitle) {
+        mSettingsKey = settingsKey;
+        mDialogTitleId = dialogTitle;
+        showDialog(id);
     }
 
     @Override
