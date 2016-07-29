@@ -21,6 +21,12 @@
     <string name="menu_save">Save</string>
     <string name="menu_cancel">Discard</string>
 
+    <!-- Off/On/Toggle -->
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="toggle">Toggle</string>
+    <string name="shortcut_toggle_title">Action to perform</string>
+
     <!-- Slim settings screens -->
     <string name="navigation_settings_title">Navigation</string>
     <string name="interface_settings_title">Interface</string>
@@ -315,6 +321,21 @@
     <!-- Chamber of Secrets -->
     <string name="chamber_title">Chamber of secrets</string>
     <string name="chamber_toast">The chamber of secrets has opened</string>
+    <string name="shortcut_picker">Slim Shortcuts</string>
+    <string name="chamber_disabled">Chamber of secrets is closed</string>
+    <string name="chamber_input_title">Input Settings string</string>
+    <string name="chamber_message">Input a Settings string that is either an on and off (checkbox) function or possibly a list-preference. For example, doze_enabled or similar. Settings can be found in the Settings.java file. WARNING: This process is dangerous!</string>
+    <string name="chamber_slim_title">Slim Setting</string>
+    <string name="chamber_slim_message">The setting was found in both aosp and slim settings providers.  Is this a slim setting?</string>
+    <string name="chamber_invalid">This is an invalid input. Be careful.</string>
+    <string name="chamber_invalid_setting">Try toggling the setting manually to ensure the settings database for this action exists.</string>
+    <string name="chamber_checkbox">Switch</string>
+    <string name="chamber_chk_message">Is this setting a switch setting?</string>
+    <string name="chamber_int">Input values</string>
+    <string name="chamber_int_message">Input the values you\'d like the setting to toggle between. Separate each value with a comma. Color settings accept hex-values such as #FF00aacc or basic color values like red, green, and yellow.</string>
+    <string name="chamber_name_title">Shortcut name</string>
+    <string name="chamber_name_message">Give the shortcut a name to display with the icon.</string>
+    <string name="chamber_name_toast">Using default name</string>
 
     <!-- Device specific settings -->
     <string name="screen_off_gesture_settings_title">Screen off gestures</string>
