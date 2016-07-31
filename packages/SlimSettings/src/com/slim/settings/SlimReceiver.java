@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.android.settings.slim.HardwareKeysSettings;
 import com.slim.settings.activities.AdvancedSettingsActivity;
 
 public class SlimReceiver extends BroadcastReceiver {
@@ -27,5 +28,6 @@ public class SlimReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         AdvancedSettingsActivity.checkSettings(ctx);
+        HardwareKeysSettings.restore(ctx);
     }
 }
