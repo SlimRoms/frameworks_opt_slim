@@ -20,6 +20,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,6 +29,7 @@ import android.content.res.Resources;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.SwitchPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -34,9 +37,11 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.settings.SettingsPreferenceFragment;
 import com.slim.settings.R;
@@ -47,8 +52,22 @@ import org.slim.provider.SlimSettings;
 import org.slim.utils.AppHelper;
 import org.slim.utils.DeviceUtils;
 import org.slim.utils.DeviceUtils.FilteredDeviceFeaturesArray;
+import org.slim.utils.FileUtil;
 import org.slim.utils.HwKeyHelper;
 import org.slim.utils.ShortcutPickerHelper;
+import org.slim.utils.StreamUtil;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileFilter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -67,6 +86,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final String CATEGORY_MENU = "button_keys_menu";
     private static final String CATEGORY_ASSIST = "button_keys_assist";
     private static final String CATEGORY_APPSWITCH = "button_keys_appSwitch";
+    private static final String CATEGORY_VOLUME = "button_keys_volume";
 
     private static final String KEYS_CATEGORY_BINDINGS = "keys_bindings";
     private static final String KEYS_ENABLE_CUSTOM = "enable_hardware_rebind";
@@ -89,6 +109,12 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final String KEYS_APP_SWITCH_LONG_PRESS = "keys_app_switch_long_press";
     private static final String KEYS_APP_SWITCH_DOUBLE_TAP = "keys_app_switch_double_tap";
 
+    private static final String KEY_HARDWARE_KEYS = "button_settings";
+    private static final String KEY_HARDWARE_KEYS_ENABLE = "enable_hardware_keys";
+    private static final String KEY_BUTTON_BACKLIGHT = "button_backlight";
+
+//    private static final String KEY_HARDWARE_KEYS_REBIND = "enable_hardware_rebind";
+
     private static final int DLG_SHOW_WARNING_DIALOG = 0;
     private static final int DLG_SHOW_ACTION_DIALOG  = 1;
     private static final int DLG_RESET_TO_DEFAULT    = 2;
@@ -104,6 +130,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final int KEY_MASK_APP_SWITCH = 0x10;
     private static final int KEY_MASK_CAMERA     = 0x20;
 
+    private SwitchPreference mEnableHardwareKeys;
     private SwitchPreference mEnableCustomBindings;
     private Preference mBackPressAction;
     private Preference mBackLongPressAction;
@@ -131,6 +158,12 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private String mPendingSettingsKey;
     private static FilteredDeviceFeaturesArray sFinalActionDialogArray;
 
+    private String mKeyPath;
+    private boolean mUpdateKeys;
+    private boolean mKeysSupported;
+
+    Toast mHardwareKeysToast;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,6 +188,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
     private PreferenceScreen reloadSettings() {
         mCheckPreferences = false;
+        mUpdateKeys = false;
         PreferenceScreen prefs = getPreferenceScreen();
         if (prefs != null) {
             prefs.removeAll();
@@ -188,6 +222,11 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 (PreferenceCategory) prefs.findPreference(CATEGORY_ASSIST);
         PreferenceCategory keysAppSwitchCategory =
                 (PreferenceCategory) prefs.findPreference(CATEGORY_APPSWITCH);
+        mEnableHardwareKeys = (SwitchPreference) findPreference(
+                KEY_HARDWARE_KEYS_ENABLE);
+        ButtonBacklightBrightness backlight = (
+                ButtonBacklightBrightness) prefs.findPreference(
+                KEY_BUTTON_BACKLIGHT);
 
         mEnableCustomBindings = (SwitchPreference) prefs.findPreference(
                 KEYS_ENABLE_CUSTOM);
@@ -227,6 +266,10 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 KEYS_APP_SWITCH_LONG_PRESS);
         mAppSwitchDoubleTapAction = (Preference) prefs.findPreference(
                 KEYS_APP_SWITCH_DOUBLE_TAP);
+
+        if (!backlight.isButtonSupported() && !backlight.isKeyboardSupported()) {
+                prefs.removePreference(backlight);
+        }
 
         if (hasBackKey) {
             // Back key
@@ -342,6 +385,56 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
             prefs.removePreference(keysAppSwitchCategory);
         }
 
+        // Create a bool for whether to show the HwKeys Category or not...
+        mKeysSupported = hasBackKey || hasHomeKey || hasMenuKey || hasAssistKey
+                 || hasAppSwitchKey || hasCameraKey;
+
+        Resources res = getResources();
+
+        if (mKeysSupported) {
+            boolean enableHardwareKeys = SlimSettings.System.getInt(
+                    getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEYS_ENABLED, 1) == 1;
+            mEnableHardwareKeys = (SwitchPreference) findPreference(
+                    KEY_HARDWARE_KEYS_ENABLE);
+            mEnableHardwareKeys.setChecked(enableHardwareKeys);
+            mEnableHardwareKeys.setOnPreferenceChangeListener(this);
+
+            // Get overlay path to keys file
+            mKeyPath = res.getString(
+                org.slim.framework.internal.R.string.config_deviceHardwareKeysFilePath);
+
+            // Check for overlay validity
+            File varTmpDir = new File(mKeyPath);
+            boolean exists = varTmpDir.exists();
+
+            if (mKeyPath != null && exists) {
+
+                // Read the hardware keys
+                File f = null;
+                f = new File(mKeyPath);
+                String val = null;
+                try {
+                    val = FileUtil.readStringFromFile(f);
+                } catch(IOException ie) {
+                    Log.i(TAG, "Failed to read mKeyPath:" +val);
+                    ie.printStackTrace();
+                }
+                val = val.trim();
+                int i = Integer.parseInt(val);
+
+                // Toggle the hardware keys
+                if (enableHardwareKeys && i == 0) {
+                    FileUtil.writeValue(mKeyPath, "1");
+                    mUpdateKeys = true;
+                } else if (!enableHardwareKeys && i > 0) {
+                    FileUtil.writeValue(mKeyPath, "0");
+                    mUpdateKeys = true;
+                }
+            } else {
+                Log.i(TAG, "HW KeysFilePath overlay value is null or invalid!");
+            }
+
         boolean enableHardwareRebind = SlimSettings.System.getInt(getContentResolver(),
                 SlimSettings.System.HARDWARE_KEY_REBINDING, 0) == 1;
         mEnableCustomBindings = (SwitchPreference) findPreference(KEYS_ENABLE_CUSTOM);
@@ -360,8 +453,37 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                     .putBoolean("no_home_action", false).commit();
         }
 
+        } else {
+            prefs.removePreference(keysCategory);
+            prefs.removePreference(mEnableHardwareKeys);
+            prefs.removePreference(mEnableCustomBindings);
+        }
         mCheckPreferences = true;
         return prefs;
+    }
+
+
+    public void hideHwKeys() {
+
+        int deviceKeys = getResources().getInteger(
+                org.slim.framework.internal.R.integer.config_deviceHardwareKeys);
+
+        // Hide Hardware Keys menu if device doesn't have any
+        PreferenceScreen hardwareKeys = (PreferenceScreen) findPreference(
+                KEY_HARDWARE_KEYS);
+//        PreferenceCategory hwkeysCategory = (PreferenceCategory) findPreference(
+//                KEY_HARDWARE_KEYS_REBIND);
+        SwitchPreference mEnableHardwareKeys = (SwitchPreference) findPreference(
+                KEY_HARDWARE_KEYS_ENABLE);
+        SwitchPreference hwkeysEnable = (SwitchPreference) findPreference(
+                KEYS_ENABLE_CUSTOM);
+
+        // Check deviceKeys for 0 (no keys at all) or 64 (only volume keys)
+        if ((deviceKeys == 0 || deviceKeys == 64) && hardwareKeys != null) {
+            hardwareKeys.removePreference(hardwareKeys);
+            hardwareKeys.removePreference(mEnableHardwareKeys);
+            hardwareKeys.removePreference(hwkeysEnable);
+        }
     }
 
     private void setupOrUpdatePreference(
@@ -466,11 +588,48 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (!mCheckPreferences) {
             return false;
-        }
-        if (preference == mEnableCustomBindings) {
+        } else if (preference == mEnableHardwareKeys) {
+            boolean value = (Boolean) newValue;
+            boolean isNavBarVisible = SlimSettings.System.getInt(
+                    getContentResolver(),
+                    SlimSettings.System.NAVIGATION_BAR_SHOW, 0) == 1;
+            boolean areHwKeysEnabled = SlimSettings.System.getInt(
+                    getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEYS_ENABLED, 1) == 1;
+            if (mHardwareKeysToast != null) {
+                mHardwareKeysToast.cancel();
+            }
+
+          if (!isNavBarVisible && areHwKeysEnabled && !value) {
+                // Warn if no Navbar when disabling the Hardware Keys
+                mHardwareKeysToast = Toast.makeText(getActivity(),
+                    "Disabling Hardware Keys, ensure Navbar is enabled!",
+                    Toast.LENGTH_LONG);
+                SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEYS_ENABLED, value ? 1 : 0);
+
+            } else if (!areHwKeysEnabled && value) {
+                // Just turn on the Hardware Keys
+                mHardwareKeysToast = Toast.makeText(getActivity(),
+                    "Enabling Hardware keys...", Toast.LENGTH_LONG);
+                SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEYS_ENABLED, value ? 1 : 0);
+
+            } else if (isNavBarVisible && areHwKeysEnabled && !value) {
+                // Navbar is visible, it's OK to disable the hardware keys
+                mHardwareKeysToast = Toast.makeText(getActivity(),
+                    "Disabling Hardware Keys, Navbar is already enabled...",
+                    Toast.LENGTH_LONG);
+                SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEYS_ENABLED, value ? 1 : 0);
+            }
+            mHardwareKeysToast.show();
+            reloadSettings();
+            return true;
+        } else if (preference == mEnableCustomBindings) {
             boolean value = (Boolean) newValue;
             SlimSettings.System.putInt(getContentResolver(),
-                                       SlimSettings.System.HARDWARE_KEY_REBINDING, value ? 1 : 0);
+                    SlimSettings.System.HARDWARE_KEY_REBINDING, value ? 1 : 0);
             return true;
         }
         return false;
@@ -495,6 +654,10 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
             }
         }
         SlimSettings.System.putInt(getContentResolver(),
+                SlimSettings.System.HARDWARE_KEYS_ENABLED, 1);
+        SlimSettings.System.putInt(getContentResolver(),
+                SlimSettings.System.HARDWARE_KEY_LIGHTS_ENABLED, 1);
+        SlimSettings.System.putInt(getContentResolver(),
                 SlimSettings.System.HARDWARE_KEY_REBINDING, 1);
         reloadSettings();
     }
@@ -502,6 +665,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        mHardwareKeysToast = null;
     }
 
     @Override
@@ -545,6 +709,44 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 // Use the reset icon
                 .setIcon(org.slim.framework.internal.R.drawable.ic_settings_reset)
                 .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+    }
+
+    public static void restore(Context context) {
+        // Get overlay path to keys file
+        String mKeyPath = context.getResources().getString(
+            org.slim.framework.internal.R.string.config_deviceHardwareKeysFilePath);
+
+        // Check for overlay validity
+        File varTmpDir = new File(mKeyPath);
+        boolean exists = varTmpDir.exists();
+
+        boolean enableHardwareKeys = SlimSettings.System.getInt(
+                context.getContentResolver(),
+                SlimSettings.System.HARDWARE_KEYS_ENABLED, 1) == 1;
+
+        if (mKeyPath != null && exists) {
+
+            // Read the hardware keys
+            File f = null;
+            f = new File(mKeyPath);
+            String val = null;
+            try {
+                val = FileUtil.readStringFromFile(f);
+            } catch(IOException ie) {
+                ie.printStackTrace();
+            }
+            val = val.trim();
+            int i = Integer.parseInt(val);
+
+            // Restore the hardware keys
+            if (!enableHardwareKeys) {
+                FileUtil.writeValue(mKeyPath, "0");
+            } else if (enableHardwareKeys) {
+                FileUtil.writeValue(mKeyPath, "1");
+            }
+        } else {
+            Log.e(TAG, "Hardware keys could not be restored using " +mKeyPath);
+        }
     }
 
     private void showDialogInner(int id, String settingsKey, int dialogTitle) {
