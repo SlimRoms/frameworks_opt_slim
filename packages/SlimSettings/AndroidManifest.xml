@@ -80,5 +80,12 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".slim.BootReceiver" android:enabled="true"
+        		android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter android:priority="100">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 </manifest>
