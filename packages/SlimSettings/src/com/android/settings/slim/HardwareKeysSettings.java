@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,16 +28,20 @@ import android.content.res.Resources;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.preference.SwitchPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.settings.SettingsPreferenceFragment;
 import com.slim.settings.R;
@@ -49,6 +54,18 @@ import org.slim.utils.DeviceUtils;
 import org.slim.utils.DeviceUtils.FilteredDeviceFeaturesArray;
 import org.slim.utils.HwKeyHelper;
 import org.slim.utils.ShortcutPickerHelper;
+
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.FileFilter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -88,6 +105,9 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final String KEYS_APP_SWITCH_PRESS = "keys_app_switch_press";
     private static final String KEYS_APP_SWITCH_LONG_PRESS = "keys_app_switch_long_press";
     private static final String KEYS_APP_SWITCH_DOUBLE_TAP = "keys_app_switch_double_tap";
+
+    private static final String KEY_ENABLE_HWKEYS = "enable_hw_keys";
+    private static final String KEY_BUTTON_BACKLIGHT = "button_backlight";
 
     private static final int DLG_SHOW_WARNING_DIALOG = 0;
     private static final int DLG_SHOW_ACTION_DIALOG  = 1;
@@ -189,6 +209,13 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         PreferenceCategory keysAppSwitchCategory =
                 (PreferenceCategory) prefs.findPreference(CATEGORY_APPSWITCH);
 
+        ButtonBacklightBrightness backlight = (ButtonBacklightBrightness)
+                prefs.findPreference(KEY_BUTTON_BACKLIGHT);
+
+        mEnableHwKeys = (SwitchPreference) prefs.findPreference(
+                KEY_ENABLE_HWKEYS);
+        mEnableHwKeys.setOnPreferenceChangeListener(this);
+
         mEnableCustomBindings = (SwitchPreference) prefs.findPreference(
                 KEYS_ENABLE_CUSTOM);
         mBackPressAction = (Preference) prefs.findPreference(
@@ -227,6 +254,10 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 KEYS_APP_SWITCH_LONG_PRESS);
         mAppSwitchDoubleTapAction = (Preference) prefs.findPreference(
                 KEYS_APP_SWITCH_DOUBLE_TAP);
+
+        if (!backlight.isButtonSupported() && !backlight.isKeyboardSupported()) {
+                prefs.removePreference(backlight);
+        }
 
         if (hasBackKey) {
             // Back key
@@ -467,10 +498,27 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         if (!mCheckPreferences) {
             return false;
         }
+
         if (preference == mEnableCustomBindings) {
             boolean value = (Boolean) newValue;
             SlimSettings.System.putInt(getContentResolver(),
-                                       SlimSettings.System.HARDWARE_KEY_REBINDING, value ? 1 : 0);
+                    SlimSettings.System.HARDWARE_KEY_REBINDING, value ? 1 : 0);
+            return true;
+        } else if (preference == mEnableHwKeys) {
+            boolean value = (Boolean) newValue;
+            SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.DISABLE_HW_KEYS, value ? 0 : 1);
+            if (!value) {
+                Settings.System.putInt(getContentResolver(),
+                        Settings.System.BUTTON_BRIGHTNESS, 0);
+            } else {
+                int defBright = getResources().getInteger(
+                        com.android.internal.R.integer.config_buttonBrightnessSettingDefault);
+                int oldBright = PreferenceManager.getDefaultSharedPreferences(getActivity())
+                        .getInt(ButtonBacklightBrightness.KEY_BUTTON_BACKLIGHT, defBright);
+                Settings.System.putInt(getContentResolver(),
+                        Settings.System.BUTTON_BRIGHTNESS, oldBright);
+            }
             return true;
         }
         return false;
@@ -494,6 +542,8 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 settingsKey, null);
             }
         }
+        SlimSettings.System.putInt(getContentResolver(),
+                SlimSettings.System.DISABLE_HW_KEYS, 0);
         SlimSettings.System.putInt(getContentResolver(),
                 SlimSettings.System.HARDWARE_KEY_REBINDING, 1);
         reloadSettings();
