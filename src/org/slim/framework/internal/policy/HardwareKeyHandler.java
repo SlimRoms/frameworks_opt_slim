@@ -810,7 +810,7 @@ public class HardwareKeyHandler {
 
     private void preloadRecentApps() {
         mPreloadedRecentApps = true;
-        try {
+        /*try {
             IStatusBarService statusbar = getStatusBarService();
             if (statusbar != null) {
                 statusbar.preloadRecentApps();
@@ -819,13 +819,13 @@ public class HardwareKeyHandler {
             Slog.e(TAG, "RemoteException when preloading recent apps", e);
             // re-acquire status bar service next time it is needed.
             mStatusBarService = null;
-        }
+        }*/
     }
 
     private void cancelPreloadRecentApps() {
         if (mPreloadedRecentApps) {
             mPreloadedRecentApps = false;
-            try {
+            /*try {
                 IStatusBarService statusbar = getStatusBarService();
                 if (statusbar != null) {
                     statusbar.cancelPreloadRecentApps();
@@ -834,7 +834,7 @@ public class HardwareKeyHandler {
                 Slog.e(TAG, "RemoteException when cancelling recent apps preload", e);
                 // re-acquire status bar service next time it is needed.
                 mStatusBarService = null;
-            }
+            }*/
         }
     }
 
