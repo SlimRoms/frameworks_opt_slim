@@ -7,6 +7,7 @@ import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.content.ServiceConnection;
@@ -22,6 +23,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
 import android.util.Slog;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 
 import com.android.systemui.R;
 import com.android.systemui.recents.ScreenPinningRequest;
+import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
@@ -52,11 +55,14 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     private PhoneStatusBarView mStatusBarView;
     private SlimNavigationBarView mSlimNavigationBarView;
+    private RecentController mSlimRecents;
     private SlimCommandQueue mSlimCommandQueue;
     private Handler mHandler = new H();
+    private Display mDisplay;
 
     private boolean mHasNavigationBar;
     private boolean mAttached;
+    private boolean mUseSlimRecents = true;
 
     private long mLastLockToAppLongPress;
 
@@ -107,6 +113,15 @@ public class SlimStatusBar extends PhoneStatusBar implements
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.MENU_VISIBILITY),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
+                    UserHandle.USER_ALL);
         }
 
         @Override
@@ -135,6 +150,14 @@ public class SlimStatusBar extends PhoneStatusBar implements
             } else if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_SHOW))) {
                 updateNavigationBarVisibility();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS))) {
+                updateRecents();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR))
+                    || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR))) {
+                rebuildRecentsScreen();
             }
         }
     }
@@ -142,6 +165,9 @@ public class SlimStatusBar extends PhoneStatusBar implements
     @Override
     public void start() {
         super.start();
+
+        mDisplay = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
 
         ISlimStatusBarService barService = SlimStatusBarManager.getService();
 
@@ -151,6 +177,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
         } catch (RemoteException e) {
             // if the system process isn't there we're doomed anyway.
         }
+
+        updateRecents();
 
         SettingsObserver observer = new SettingsObserver(mHandler);
         observer.observe();
@@ -204,6 +232,62 @@ public class SlimStatusBar extends PhoneStatusBar implements
         updateNavigationBarVisibility();
 
         return mStatusBarView;
+    }
+
+    @Override
+    protected void hideRecents(boolean triggeredFromAltTab, boolean triggeredFromHomeKey) {
+        if (mSlimRecents != null) {
+            mSlimRecents.hideRecents(triggeredFromHomeKey);
+        } else {
+            super.hideRecents(triggeredFromAltTab, triggeredFromHomeKey);
+        }
+    }
+
+    @Override
+    protected void toggleRecents() {
+        if (mSlimRecents != null) {
+            sendCloseSystemWindows(mContext, SYSTEM_DIALOG_REASON_RECENT_APPS);
+            mSlimRecents.toggleRecents(mDisplay, mLayoutDirection, getStatusBarView());
+        } else {
+            super.toggleRecents();
+        }
+    }
+
+    @Override
+    protected void preloadRecents() {
+        if (mSlimRecents != null) {
+            mSlimRecents.preloadRecentTasksList();
+        } else {
+            super.preloadRecents();
+        }
+    }
+
+    @Override
+    protected void cancelPreloadingRecents() {
+        if (mSlimRecents != null) {
+            mSlimRecents.cancelPreloadingRecentTasksList();
+        } else {
+            super.cancelPreloadingRecents();
+        }
+    }
+
+    protected void rebuildRecentsScreen() {
+        if (mSlimRecents != null) {
+            mSlimRecents.rebuildRecentsScreen();
+        }
+    }
+
+    protected void updateRecents() {
+        boolean slimRecents = SlimSettings.System.getIntForUser(mContext.getContentResolver(),
+                SlimSettings.System.USE_SLIM_RECENTS, 1, UserHandle.USER_CURRENT) == 1;
+
+        if (slimRecents) {
+            mSlimRecents = new RecentController(mContext, mLayoutDirection);
+            mSlimRecents.setCallback(this);
+            rebuildRecentsScreen();
+        } else {
+            mSlimRecents = null;
+        }
     }
 
     private void updateNavigationBarVisibility() {
@@ -329,6 +413,15 @@ public class SlimStatusBar extends PhoneStatusBar implements
         } catch (RemoteException e) {
             Log.d(TAG, "Unable to reach activity manager", e);
             return false;
+        }
+    }
+
+    private static void sendCloseSystemWindows(Context context, String reason) {
+        if (ActivityManagerNative.isSystemReady()) {
+            try {
+                ActivityManagerNative.getDefault().closeSystemDialogs(reason);
+            } catch (RemoteException e) {
+            }
         }
     }
 
