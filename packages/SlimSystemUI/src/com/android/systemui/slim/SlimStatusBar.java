@@ -142,6 +142,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
     public void start() {
         super.start();
 
+        Log.d(TAG, "start");
+
         ISlimStatusBarService barService = SlimStatusBarManager.getService();
 
         mSlimCommandQueue = new SlimCommandQueue(this);
@@ -150,8 +152,6 @@ public class SlimStatusBar extends PhoneStatusBar implements
         } catch (RemoteException e) {
             // if the system process isn't there we're doomed anyway.
         }
-
-        updateNavigationBarVisibility();
 
         SettingsObserver observer = new SettingsObserver(mHandler);
         observer.observe();
@@ -199,10 +199,15 @@ public class SlimStatusBar extends PhoneStatusBar implements
             mNavigationBarView = mSlimNavigationBarView;
         }
 
+        updateNavigationBarVisibility();
+
         return mStatusBarView;
     }
 
     private void updateNavigationBarVisibility() {
+
+        Log.d(TAG, "updateNavigationBarVisibility");
+
         final int showByDefault = mContext.getResources().getBoolean(
                     com.android.internal.R.bool.config_showNavigationBar) ? 1 : 0;
         mHasNavigationBar = SlimSettings.System.getIntForUser(mContext.getContentResolver(),
@@ -218,7 +223,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
         }
     }
 
-    private void prepareNavigationBarView() {
+    @Override
+    protected void prepareNavigationBarView() {
         mSlimNavigationBarView.reorient();
 
         View home = mSlimNavigationBarView.getHomeButton();
@@ -237,7 +243,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
         mAssistManager.onConfigurationChanged();
     }
 
-    private void addNavigationBar() {
+    @Override
+    protected void addNavigationBar() {
         if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mSlimNavigationBarView);
         if (mSlimNavigationBarView == null) return;
 
@@ -250,7 +257,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
         }
     }
 
-    private void repositionNavigationBar() {
+    @Override
+    protected void repositionNavigationBar() {
         if (mSlimNavigationBarView == null
                 || !mSlimNavigationBarView.isAttachedToWindow()) return;
 
