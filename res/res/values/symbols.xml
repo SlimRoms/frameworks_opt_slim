@@ -179,4 +179,7 @@
     <java-symbol type="id" name="doubletap_action_description" />
     <java-symbol type="id" name="list_item_icon" />
 
+    <!-- Hardware key rebinding -->
+    <java-symbol type="integer" name="config_deviceHardwareKeys" />
+
 </resources>
