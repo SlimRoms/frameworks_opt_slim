@@ -1,6 +1,7 @@
 PRODUCT_PACKAGES += \
     org.slim.framework \
     org.slim.framework-res \
+    services.slim \
     SlimSettingsProvider \
     SlimSettings
 
