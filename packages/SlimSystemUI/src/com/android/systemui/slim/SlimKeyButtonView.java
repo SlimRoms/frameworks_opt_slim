@@ -225,7 +225,7 @@ public class SlimKeyButtonView extends KeyButtonView {
                 mDownTime = SystemClock.uptimeMillis();
                 mIsLongpressed = false;
                 setPressed(true);
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                //performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 if (mClickAction.equals(ActionConstants.ACTION_RECENTS)) {
                     try {
                         mStatusBar.preloadRecentApps();
@@ -287,10 +287,6 @@ public class SlimKeyButtonView extends KeyButtonView {
                     } else {
                         // no key code, it is a custom click action
                         if (doIt && !hasDoubleTapAction()) {
-                            if (mClickAction != null
-                                && !Action.isActionKeyEvent(mClickAction)) {
-                                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-                            }
                             performClick();
                         }
                     }
@@ -310,6 +306,7 @@ public class SlimKeyButtonView extends KeyButtonView {
             mDoubleTapAction != ActionConstants.ACTION_NULL;
     }
 
+    @Override
     public void playSoundEffect(int soundConstant) {
         mAudioManager.playSoundEffect(soundConstant, ActivityManager.getCurrentUser());
     };
