@@ -35,4 +35,10 @@
         <item>org.slim.service.SlimStatusBarService</item>
     </string-array>
 
+    <!-- The duration (in milliseconds) of recent app screen animation. -->
+    <integer name="config_recentDefaultDur">300</integer>
+
+    <!-- The duration (in milliseconds) of recent app screen exit animation. -->
+    <integer name="config_recentExitDur">450</integer>
+
 </resources>
