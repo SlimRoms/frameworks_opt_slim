@@ -51,6 +51,9 @@ import com.android.internal.statusbar.IStatusBarService;
 
 import java.net.URISyntaxException;
 
+import org.slim.framework.internal.statusbar.ISlimStatusBarService;
+import org.slim.statusbar.SlimStatusBarManager;
+
 public class Action {
 
     private static final int MSG_INJECT_KEY_DOWN = 1066;
@@ -85,6 +88,12 @@ public class Action {
                     ServiceManager.getService(Context.STATUS_BAR_SERVICE));
             if (barService == null) {
                 return; // ouch
+            }
+
+            ISlimStatusBarService slimBarService = SlimStatusBarManager.getService();
+            if (slimBarService == null) {
+                Log.wtf("SlimActions", "Slim Bar Service is null");
+                return;
             }
 
             final IWindowManager windowManagerService = IWindowManager.Stub.asInterface(
@@ -184,7 +193,7 @@ public class Action {
                     return;
                 }
                 try {
-                    barService.toggleKillApp();
+                    slimBarService.toggleKillApp();
                 } catch (RemoteException e) {
                 }
                 return;
@@ -193,13 +202,13 @@ public class Action {
                     return;
                 }
                 try {
-                    barService.toggleLastApp();
+                    slimBarService.toggleLastApp();
                 } catch (RemoteException e) {
                 }
                 return;
             } else if (action.equals(ActionConstants.ACTION_SCREENSHOT)) {
                 try {
-                    barService.toggleScreenshot();
+                    slimBarService.toggleScreenshot();
                 } catch (RemoteException e) {
                 }
                 return;
@@ -224,7 +233,7 @@ public class Action {
                     if (searchManager != null) {
                         searchManager.stopSearch();
                     }
-                    startActivity(context, intent, barService, isKeyguardShowing);
+                    startActivity(context, intent, slimBarService, isKeyguardShowing);
                 } catch (ActivityNotFoundException e) {
                     Log.e("Action:", "No activity to handle assist long press action.", e);
                 }
@@ -291,7 +300,7 @@ public class Action {
                 // ToDo: Send for secure keyguard secure camera intent.
                 // We need to add support for it first.
                 Intent intent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA, null);
-                startActivity(context, intent, barService, isKeyguardShowing);
+                startActivity(context, intent, slimBarService, isKeyguardShowing);
                 return;
             } else if (action.equals(ActionConstants.ACTION_MEDIA_PREVIOUS)) {
                 dispatchMediaKeyWithWakeLock(KeyEvent.KEYCODE_MEDIA_PREVIOUS, context);
@@ -318,7 +327,7 @@ public class Action {
                     Log.e("Action:", "URISyntaxException: [" + action + "]");
                     return;
                 }
-                startActivity(context, intent, barService, isKeyguardShowing);
+                startActivity(context, intent, slimBarService, isKeyguardShowing);
                 return;
             }
 
@@ -337,7 +346,7 @@ public class Action {
     }
 
     private static void startActivity(Context context, Intent intent,
-            IStatusBarService barService, boolean isKeyguardShowing) {
+            ISlimStatusBarService barService, boolean isKeyguardShowing) {
         if (intent == null) {
             return;
         }
@@ -385,7 +394,7 @@ public class Action {
             || keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
             downflags = upflags = KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE;
         } else {
-            downflags = upflags = KeyEvent.FLAG_FROM_SYSTEM | KeyEvent.FLAG_VIRTUAL_HARD_KEY;
+            downflags = upflags = KeyEvent.FLAG_FROM_SYSTEM;
         }
         if (longpress) {
             downflags |= KeyEvent.FLAG_LONG_PRESS;
