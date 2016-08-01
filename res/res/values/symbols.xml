@@ -186,6 +186,7 @@
     <java-symbol type="anim" name="recent_screen_fade_out" />
 
     <!-- Hardware key rebinding -->
+    <java-symbol type="integer" name="config_deviceHardwareKeys" />
     <java-symbol type="string" name="config_deviceHardwareKeysFilePath" />
 
 </resources>

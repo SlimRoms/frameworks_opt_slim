@@ -22,6 +22,9 @@ import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.content.ServiceConnection;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.net.Uri;
@@ -29,6 +32,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
+import android.util.Slog;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,6 +42,8 @@ import android.view.WindowManager;
 import com.android.systemui.R;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.phone.SlimNavigationBarView;
+import com.android.systemui.recents.ScreenPinningRequest;
+import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
@@ -96,6 +102,15 @@ public class SlimStatusBar extends PhoneStatusBar {
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.MENU_VISIBILITY),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
+                    UserHandle.USER_ALL);
         }
 
         @Override
@@ -132,6 +147,14 @@ public class SlimStatusBar extends PhoneStatusBar {
             } else if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_SHOW))) {
                 updateNavigationBarVisibility();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.USE_SLIM_RECENTS))) {
+                updateRecents();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_BG_COLOR))
+                    || uri.equals(SlimSettings.System.getUriFor(
+                    SlimSettings.System.RECENT_CARD_TEXT_COLOR))) {
+                rebuildRecentsScreen();
             }
         }
     }
@@ -144,6 +167,8 @@ public class SlimStatusBar extends PhoneStatusBar {
                 .getDefaultDisplay();
 
         updateNavigationBarVisibility();
+
+        updateRecents();
 
         updateRecents();
 
