@@ -52,6 +52,17 @@
 
         </activity>
 
+        <activity
+            android:name="com.slim.settings.activities.AdvancedSettingsActivity"
+            android:label="@string/advanced_options_settings_title"
+            android:theme="@android:style/Theme.Material.Settings" >
+
+            <intent-filter>
+                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+            </intent-filter>
+
+        </activity>
+
         <activity android:name=".SubSettings"
                 android:theme="@android:style/Theme.Material.Settings"
                 android:taskAffinity="com.slim.settings">
