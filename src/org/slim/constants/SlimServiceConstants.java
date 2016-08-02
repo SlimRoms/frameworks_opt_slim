@@ -20,5 +20,5 @@ public final class SlimServiceConstants {
 
     public static final String SLIM_STATUS_BAR_SERVICE = "slimstatusbar";
     public static final String CM_HARDWARE_SERVICE = "cmhardware";
-
+    public static final String CM_LIVEDISPLAY_SERVICE = "cmlivedisplay";
 }

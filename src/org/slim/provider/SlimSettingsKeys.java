@@ -16,9 +16,118 @@
 
 package org.slim.provider;
 
+import org.slim.provider.SlimSettings.InclusiveFloatRangeValidator;
+import org.slim.provider.SlimSettings.InclusiveIntegerRangeValidator;
+import org.slim.provider.SlimSettings.Validator;
+
 public final class SlimSettingsKeys {
 
     public interface System {
+
+        /**
+         * Color temperature of the display during the day
+         */
+        public static final String DISPLAY_TEMPERATURE_DAY = "display_temperature_day";
+
+        /** @hide */
+        public static final Validator DISPLAY_TEMPERATURE_DAY_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 100000);
+
+        /**
+         * Color temperature of the display at night
+         */
+        public static final String DISPLAY_TEMPERATURE_NIGHT = "display_temperature_night";
+
+        /** @hide */
+        public static final Validator DISPLAY_TEMPERATURE_NIGHT_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 100000);
+
+        /**
+         * Display color temperature adjustment mode, one of DAY (default), NIGHT, or AUTO.
+         */
+        public static final String DISPLAY_TEMPERATURE_MODE = "display_temperature_mode";
+
+        /** @hide */
+        public static final Validator DISPLAY_TEMPERATURE_MODE_VALIDATOR =
+                new InclusiveIntegerRangeValidator(0, 4);
+
+        /**
+         * Automatic outdoor mode
+         * 0 = 0ff, 1 = on
+         */
+        public static final String DISPLAY_AUTO_OUTDOOR_MODE = "display_auto_outdoor_mode";
+
+        /** @hide */
+        public static final Validator DISPLAY_AUTO_OUTDOOR_MODE_VALIDATOR =
+                SlimSettings.sBooleanValidator;
+
+        /**
+         * Use display power saving features such as CABC or CABL
+         * 0 = 0ff, 1 = on
+         */
+        public static final String DISPLAY_CABC = "display_low_power";
+
+        /**
+         * @deprecated
+         */
+        public static final String DISPLAY_LOW_POWER = DISPLAY_CABC;
+
+        /** @hide */
+        public static final Validator DISPLAY_CABC_VALIDATOR =
+                SlimSettings.sBooleanValidator;
+
+        /**
+         * Use color enhancement feature of display
+         * 0 = 0ff, 1 = on
+         */
+        public static final String DISPLAY_COLOR_ENHANCE = "display_color_enhance";
+
+        /** @hide */
+        public static final Validator DISPLAY_COLOR_ENHANCE_VALIDATOR =
+                SlimSettings.sBooleanValidator;
+
+        /**
+         * Use auto contrast optimization feature of display
+         * 0 = 0ff, 1 = on
+         */
+        public static final String DISPLAY_AUTO_CONTRAST = "display_auto_contrast";
+
+        /** @hide */
+        public static final Validator DISPLAY_AUTO_CONTRAST_VALIDATOR =
+                SlimSettings.sBooleanValidator;
+
+        /**
+         * Manual display color adjustments (RGB values as floats, separated by spaces)
+         */
+        public static final String DISPLAY_COLOR_ADJUSTMENT = "display_color_adjustment";
+
+        /** @hide */
+        public static final Validator DISPLAY_COLOR_ADJUSTMENT_VALIDATOR =
+                new Validator() {
+                    @Override
+                    public boolean validate(String value) {
+                        String[] colorAdjustment = value == null ?
+                                null : value.split(" ");
+                        if (colorAdjustment != null && colorAdjustment.length != 3) {
+                            return false;
+                        }
+                        Validator floatValidator = new InclusiveFloatRangeValidator(0, 1);
+                        return colorAdjustment == null ||
+                                floatValidator.validate(colorAdjustment[0]) &&
+                                floatValidator.validate(colorAdjustment[1]) &&
+                                floatValidator.validate(colorAdjustment[2]);
+                    }
+                };
+
+        /**
+         * Did we tell about how they can stop breaking their eyes?
+         * @hide
+         */
+        public static final String LIVE_DISPLAY_HINTED = "live_display_hinted";
+
+        /** @hide */
+        public static final Validator LIVE_DISPLAY_HINTED_VALIDATOR =
+                new InclusiveIntegerRangeValidator(-3, 1);
 
         /**
          * Custom navigation bar intent and action configuration

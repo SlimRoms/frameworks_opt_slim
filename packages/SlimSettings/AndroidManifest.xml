@@ -5,6 +5,9 @@
           android:versionCode="1"
           android:versionName="1" >
 
+    <uses-permission android:name="slim.permission.HARDWARE_ABSTRACTION_ACCESS" />
+    <uses-permission android:name="slim.permission.MANAGE_LIVEDISPLAY" />
+
     <application
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="SlimSettings" >
@@ -52,10 +55,27 @@
 
         </activity>
 
+        <!-- Screen color Settings Controls -->
+        <activity android:name=".ScreenColorSettings" android:label="@string/screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+        <activity android:name=".CustomScreenColor" android:label="@string/custom_screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+
         <activity android:name=".SubSettings"
                 android:theme="@android:style/Theme.Material.Settings"
                 android:taskAffinity="com.slim.settings">
         </activity>
+
+        <!-- LiveDisplay settings -->
+         <activity android:name="com.slim.settings.activities.LiveDisplayActivity"
+             android:label="@string/live_display_title"
+             android:theme="@android:style/Theme.Material.Settings"
+             android:excludeFromRecents="true">
+       </activity>
 
         <!-- Slim Shortcuts -->
         <activity
