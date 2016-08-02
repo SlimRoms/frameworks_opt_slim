@@ -57,6 +57,7 @@ import com.android.systemui.R;
 
 import java.util.ArrayList;
 
+import org.slim.action.ActionConfig;
 import org.slim.action.ActionConstants;
 import org.slim.action.Action;
 
@@ -80,6 +81,8 @@ public class SlimKeyButtonView extends KeyButtonView {
     private boolean mGestureAborted;
     private KeyButtonRipple mRipple;
     private LongClickCallback mCallback;
+    private boolean mEditing;
+    private ActionConfig mConfig;
 
     private IStatusBarService mStatusBar;
 
@@ -139,6 +142,18 @@ public class SlimKeyButtonView extends KeyButtonView {
         setBackground(mRipple = new KeyButtonRipple(context, this));
     }
 
+    public void setEditing(boolean edit) {
+        mEditing = edit;
+    }
+
+    public void setConfig(ActionConfig config) {
+        mConfig = config;
+    }
+
+    public ActionConfig getConfig() {
+        return mConfig;
+    }
+
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -189,6 +204,13 @@ public class SlimKeyButtonView extends KeyButtonView {
         mDoubleTapAction = action;
     }
 
+    public void updateFromConfig() {
+        if (mConfig == null) return;
+        setClickAction(mConfig.getClickAction());
+        setLongpressAction(mConfig.getLongpressAction());
+        setDoubleTapAction(mConfig.getDoubleTapAction());
+    }
+
     @Override
     public boolean performAccessibilityActionInternal(int action, Bundle arguments) {
         if (action == ACTION_CLICK && mCode != 0) {
@@ -211,6 +233,7 @@ public class SlimKeyButtonView extends KeyButtonView {
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
+        if (mEditing) return false;
         final int action = ev.getAction();
         int x, y;
         if (action == MotionEvent.ACTION_DOWN) {

@@ -31,4 +31,8 @@
     <!-- Used by selector -->
     <color name="card_pressed">#7e3c3c3c</color>
 
+    <!-- PopupWindows -->
+    <color name="smartbar_editor_popup_background">@android:color/white</color>
+    <color name="smartbar_editor_popup_text">@android:color/black</color>
+
 </resources>

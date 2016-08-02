@@ -76,4 +76,6 @@ public class SettingsActivity extends Activity implements
     public Fragment getFragment() {
         return null;
     }
+
+    public static class LiveDisplayActivity extends SubSettings { }
 }
