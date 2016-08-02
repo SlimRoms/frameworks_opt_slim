@@ -24,6 +24,14 @@
     <string name="permlab_writeSecureSettings">modify Slim secure system settings</string>
     <string name="permdesc_writeSecureSettings">Allows an app to modify Slim secure system settings. Not for use by normal apps.</string>
 
+    <!-- Labels for the HARDWARE_ABSTRACTION_ACCESS permission. -->
+    <string name="permlab_useHardwareFramework">use hardware framework</string>
+    <string name="permdesc_useHardwareFramework">Allows an app access to the CM hardware framework.</string>
+
+    <!-- Labels for the MANAGE_PERSISTENT_STORAGE permission. -->
+    <string name="permlab_managePersistentStorage">manage persistent storage</string>
+    <string name="permdesc_managePersistentStorage">Allows an app to read or write properties which may persist thrοugh a factory reset.</string>
+
     <!-- General Strings -->
     <string name="reset">Reset</string>
     <string name="disabled">Disabled</string>

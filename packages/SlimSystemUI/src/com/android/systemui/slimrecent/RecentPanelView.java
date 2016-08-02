@@ -529,9 +529,10 @@ public class RecentPanelView {
      */
     private Bundle getAnimation() {
         return ActivityOptions.makeCustomAnimation(mContext,
-                mMainGravity == Gravity.RIGHT ? com.android.internal.R.anim.recent_screen_enter
-                        : com.android.internal.R.anim.recent_screen_enter_left,
-                com.android.internal.R.anim.recent_screen_fade_out).toBundle();
+                mMainGravity == Gravity.RIGHT ?
+                org.slim.framework.internal.R.anim.recent_screen_enter
+                : org.slim.framework.internal.R.anim.recent_screen_enter_left,
+                org.slim.framework.internal.R.anim.recent_screen_fade_out).toBundle();
     }
 
     /**

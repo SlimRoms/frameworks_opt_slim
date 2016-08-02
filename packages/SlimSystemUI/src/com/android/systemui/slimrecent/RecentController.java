@@ -398,9 +398,10 @@ public class RecentController implements RecentPanelView.OnExitListener,
 
         // Set animation for our recent window.
         if (mMainGravity == Gravity.LEFT) {
-            params.windowAnimations = com.android.internal.R.style.Animation_RecentScreen_Left;
+            params.windowAnimations =
+                    org.slim.framework.internal.R.style.Animation_RecentScreen_Left;
         } else {
-            params.windowAnimations = com.android.internal.R.style.Animation_RecentScreen;
+            params.windowAnimations = org.slim.framework.internal.R.style.Animation_RecentScreen;
         }
 
         // This title is for debugging only. See: dumpsys window
@@ -473,7 +474,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
                 mAnimationState = ANIMATION_STATE_OUT;
                 mHandler.removeCallbacks(mRecentRunnable);
                 mHandler.postDelayed(mRecentRunnable, mContext.getResources().getInteger(
-                        com.android.internal.R.integer.config_recentDefaultDur));
+                        org.slim.framework.internal.R.integer.config_recentDefaultDur));
                 mWindowManager.removeView(mParentView);
                 return true;
             }
