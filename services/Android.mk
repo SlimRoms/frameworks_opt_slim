@@ -9,6 +9,7 @@ LOCAL_PROGUARD_ENABLED:= disabled
 
 LOCAL_JAVA_LIBRARIES := \
     org.slim.framework \
+    org.cyanogenmod.hardware \
     services
 
 include $(BUILD_JAVA_LIBRARY)
