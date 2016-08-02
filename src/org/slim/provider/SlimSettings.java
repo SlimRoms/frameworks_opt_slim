@@ -88,6 +88,16 @@ public final class SlimSettings {
         }
     }
 
+    /**
+     * Activity Action: Show LiveDisplay settings
+     * <p>
+     * Input: Nothing.
+     * <p>
+     * Output: Nothing.
+     */
+    public static final String ACTION_LIVEDISPLAY_SETTINGS =
+            "slim.settings.LIVEDISPLAY_SETTINGS";
+
     // region Call Methods
 
     /**
@@ -132,7 +142,7 @@ public final class SlimSettings {
         public boolean validate(String value);
     }
 
-    private static final Validator sBooleanValidator =
+    protected static final Validator sBooleanValidator =
             new DiscreteValueValidator(new String[] {"0", "1"});
 
     private static final Validator sThreewayValidator =
@@ -184,7 +194,7 @@ public final class SlimSettings {
         }
     }
 
-    private static final class InclusiveIntegerRangeValidator implements Validator {
+    protected static final class InclusiveIntegerRangeValidator implements Validator {
         private final int mMin;
         private final int mMax;
 
@@ -204,7 +214,7 @@ public final class SlimSettings {
         }
     }
 
-    private static final class InclusiveFloatRangeValidator implements Validator {
+    protected static final class InclusiveFloatRangeValidator implements Validator {
         private final float mMin;
         private final float mMax;
 
