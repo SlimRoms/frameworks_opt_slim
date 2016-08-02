@@ -22,8 +22,6 @@ import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.android.server.SystemService;
-
 import java.io.File;
 import java.util.Arrays;
 
@@ -54,7 +52,6 @@ import org.slim.hardware.CMHardwareManager;
 import org.slim.hardware.IThermalListenerCallback;
 import org.slim.hardware.ThermalListenerCallback;
 
-/** @hide */
 public class CMHardwareService extends SlimSystemService implements ThermalUpdateCallback {
 
     private static final boolean DEBUG = true;
