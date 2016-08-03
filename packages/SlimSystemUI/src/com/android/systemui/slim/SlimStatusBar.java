@@ -28,9 +28,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.systemui.R;
+import com.android.systemui.BatteryMeterView;
+import com.android.systemui.statusbar.phone.KeyguardStatusBarView;
+import com.android.systemui.statusbar.phone.StatusBarHeaderView;
+import com.android.systemui.statusbar.policy.BatteryController;
+import com.android.systemui.statusbar.policy.BatteryController.BatteryStateChangeCallback;
 import com.android.systemui.recents.ScreenPinningRequest;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.phone.NavigationBarView;
@@ -59,6 +65,13 @@ public class SlimStatusBar extends PhoneStatusBar implements
     private SlimCommandQueue mSlimCommandQueue;
     private Handler mHandler = new H();
     private Display mDisplay;
+
+    private BatteryMeterView mBatteryView;
+    private TextView mBatteryLevel;
+    private boolean mShowBatteryText;
+    private boolean mShowBatteryTextCharging;
+    private boolean mBatteryIsCharging;
+    private int mBatteryChargeLevel;
 
     private boolean mHasNavigationBar;
     private boolean mAttached;
@@ -122,13 +135,27 @@ public class SlimStatusBar extends PhoneStatusBar implements
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
                     UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE),
+                    false, this, UserHandle.USER_ALL);
         }
 
         @Override
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
 
-            if (uri.equals(SlimSettings.System.getUriFor(
+            if (uri.equals(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT)) ||
+                    uri.equals(SlimSettings.Secure.getUriFor(
+                    SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE))) {
+                updateBatterySettings();
+                mBatteryView.updateBatteryIconSettings();
+                getStatusBarHeader().updateBatteryIconSettings();
+                getKeyguardStatusBar().updateBatteryIconSettings();
+            } else if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT))
                 || uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE))
@@ -162,6 +189,44 @@ public class SlimStatusBar extends PhoneStatusBar implements
         }
     }
 
+    private void updateBatterySettings() {
+        ContentResolver resolver = mContext.getContentResolver();
+        mShowBatteryText = SlimSettings.Secure.getInt(resolver,
+                SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT, 0) == 2;
+        int batteryStyle = SlimSettings.Secure.getInt(resolver,
+                SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE, 0);
+        switch (batteryStyle) {
+            case 4:
+                //meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+                mShowBatteryText = false;
+                mShowBatteryTextCharging = false;
+                break;
+
+            case 6:
+                //meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
+                mShowBatteryText = true;
+                mShowBatteryTextCharging = true;
+                break;
+
+            default:
+                mShowBatteryTextCharging = false;
+                break;
+        }
+
+        updateBatteryLevelText();
+    }
+
+    private void updateBatteryLevelText() {
+        if (mBatteryIsCharging & mShowBatteryTextCharging) {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template_charging, mBatteryChargeLevel));
+        } else {
+            mBatteryLevel.setText(mContext.getResources().getString(
+                    R.string.battery_level_template, mBatteryChargeLevel));
+        }
+        mBatteryLevel.setVisibility(mShowBatteryText ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void start() {
         super.start();
@@ -191,6 +256,28 @@ public class SlimStatusBar extends PhoneStatusBar implements
         mStatusBarView = super.makeStatusBarView();
 
         Log.d(TAG, "makeStatusBarView");
+
+        mBatteryLevel = (TextView) mStatusBarView.findViewById(R.id.battery_level_text);
+        mBatteryView = (BatteryMeterView) mStatusBarView.findViewById(R.id.battery);
+
+        BatteryController batteryController = mBatteryView.getBatteryController();
+        if (batteryController != null) {
+            batteryController.addStateChangedCallback(new BatteryStateChangeCallback() {
+                @Override
+                public void onPowerSaveChanged() {
+                    // noop
+                }
+
+                @Override
+                public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
+                    mBatteryIsCharging = charging;
+                    mBatteryChargeLevel = level;
+                    updateBatterySettings();
+                    getStatusBarHeader().updateBatteryLevel(level, charging);
+                    getKeyguardStatusBar().updateBatteryLevel(level, charging);
+                }
+            });
+        }
 
         if (mSlimNavigationBarView == null) {
             mSlimNavigationBarView = (SlimNavigationBarView)
@@ -232,6 +319,14 @@ public class SlimStatusBar extends PhoneStatusBar implements
         updateNavigationBarVisibility();
 
         return mStatusBarView;
+    }
+
+    private StatusBarHeaderView getStatusBarHeader() {
+        return (StatusBarHeaderView) mStatusBarWindowContent.findViewById(R.id.header);
+    }
+
+    private KeyguardStatusBarView getKeyguardStatusBar() {
+        return (KeyguardStatusBarView) mStatusBarWindowContent.findViewById(R.id.keyguard_header);
     }
 
     @Override
