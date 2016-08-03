@@ -159,6 +159,8 @@ public class SlimNavigationBarView extends NavigationBarView {
     public SlimNavigationBarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        Log.d(TAG, "SlimNavigationBarView instantiated");
+
         mDisplay = ((WindowManager)context.getSystemService(
                 Context.WINDOW_SERVICE)).getDefaultDisplay();
 
@@ -197,6 +199,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void notifyScreenOn(boolean screenOn) {
+        Log.d(TAG, "notifyScreenOn(" + "screenOn" + ")");
         setDisabledFlags(mDisabledFlags, true);
     }
 
@@ -240,6 +243,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void setLayoutDirection(int layoutDirection) {
+        Log.d(TAG, "setLayoutDirection");
         updateSettings(true);
 
         super.setLayoutDirection(layoutDirection);
@@ -250,6 +254,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     }
 
     private void makeBar() {
+        Log.d(TAG, "makeBar");
         if (mButtonsConfig.isEmpty() || mButtonsConfig == null) {
             return;
         }
@@ -484,6 +489,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void setNavigationIconHints(int hints, boolean force) {
+        Log.d(TAG, "setNavigationIconHints(" + hints + ", " + force + ")");
         if (!force && hints == mNavigationIconHints) return;
         final boolean backAlt = (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0;
         if ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0 && !backAlt) {
@@ -524,6 +530,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void setDisabledFlags(int disabledFlags, boolean force) {
+        Log.d(TAG, "setDisabledFlags(" + disabledFlags + ", " + force + ")");
         if (!force && mDisabledFlags == disabledFlags) return;
 
         mDisabledFlags = disabledFlags;
@@ -571,18 +578,21 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     protected void setUseFadingAnimations(boolean useFadingAnimations) {
+        Log.d(TAG, "setUseFadingAnimations");
         if (!isAttachedToWindow()) return;
         super.setUseFadingAnimations(useFadingAnimations);
     }
 
     @Override
     public void setSlippery(boolean newSlippery) {
+        Log.d(TAG, "setSlippery");
         if (!isAttachedToWindow()) return;
         super.setSlippery(newSlippery);
     }
 
     @Override
     public void setMenuVisibility(final boolean show, final boolean force) {
+        Log.d(TAG, "setMenuVisibility(" + show + ", " + force + ")");
         if (!force && mShowMenu == show) {
             return;
         }
@@ -611,6 +621,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void onFinishInflate() {
+        Log.d(TAG, "onFinishInflate");
         mRot0 = (FrameLayout) findViewById(R.id.rot0);
         mRot90 = (FrameLayout) findViewById(R.id.rot90);
 
@@ -632,6 +643,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void reorient() {
+        Log.d(TAG, "reorient");
         final int rot = mDisplay.getRotation();
         for (int i=0; i<4; i++) {
             mRotatedViews[i].setVisibility(View.GONE);
@@ -663,11 +675,12 @@ public class SlimNavigationBarView extends NavigationBarView {
 
         updateTaskSwitchHelper();
 
-        //setNavigationIconHints(mNavigationIconHints, true);
+        setNavigationIconHints(mNavigationIconHints, true);
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        Log.d(TAG, "onLayout");
         super.onLayout(changed, l, t, r, b);
         List<View> views = new ArrayList<View>();
         final View back = getBackButton();
@@ -691,6 +704,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     }
 
     protected void adjustExtraKeyGravity(View navBar, boolean isLayoutRtl) {
+        Log.d(TAG, "adjustExtraKeyGravity");
         View menu = navBar.findViewById(R.id.menu);
         View imeSwitcher = navBar.findViewById(R.id.ime_switcher);
 
@@ -759,6 +773,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     }
 
     private void updateSettings(boolean recreate) {
+        Log.d(TAG, "updateSettings(" + recreate + ")");
         ContentResolver resolver = mContext.getContentResolver();
 
         mNavBarButtonColor = SlimSettings.System.getIntForUser(resolver,

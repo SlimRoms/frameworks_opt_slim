@@ -167,6 +167,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
                 || uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.MENU_VISIBILITY))) {
                 if (mSlimNavigationBarView != null) {
+                    Log.d(TAG, "Navigation settings updated");
                     mSlimNavigationBarView.recreateNavigationBar();
                     prepareNavigationBarView();
                 }
@@ -230,6 +231,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
     public void start() {
         super.start();
 
+        Log.d(TAG, "start");
+
         mDisplay = ((WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
 
@@ -278,6 +281,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
             });
         }
 
+        Log.d(TAG, "mSlimNavigationBarView=" + (mSlimNavigationBarView == null));
         if (mSlimNavigationBarView == null) {
             mSlimNavigationBarView = (SlimNavigationBarView)
                     View.inflate(mContext, R.layout.slim_navigation_bar, null);
@@ -309,6 +313,9 @@ public class SlimStatusBar extends PhoneStatusBar implements
                     mWindowManager.removeView(mNavigationBarView);
                 } catch (Exception e) {}
             }
+        }
+
+        if (mSlimNavigationBarView != mNavigationBarView) {
             mNavigationBarView = mSlimNavigationBarView;
         }
 
@@ -388,6 +395,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
                     SlimSettings.System.NAVIGATION_BAR_SHOW, showByDefault,
                     UserHandle.USER_CURRENT) == 1;
 
+        Log.d(TAG, "updateNavigationBarVisibility : mHasNavigationBar=" + mHasNavigationBar);
+
         if (mHasNavigationBar) {
             addNavigationBar();
         } else {
@@ -399,6 +408,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     @Override
     protected void prepareNavigationBarView() {
+        Log.d(TAG, "prepareNavigationBarView");
         mSlimNavigationBarView.reorient();
 
         View home = mSlimNavigationBarView.getHomeButton();
@@ -419,7 +429,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     @Override
     protected void addNavigationBar() {
-        if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mSlimNavigationBarView);
+        Log.v(TAG, "addNavigationBar: about to add " + mSlimNavigationBarView);
         if (mSlimNavigationBarView == null) return;
 
         prepareNavigationBarView();
@@ -433,6 +443,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     @Override
     protected void repositionNavigationBar() {
+        Log.d(TAG, "repositionNavigationBar");
         if (mSlimNavigationBarView == null
                 || !mSlimNavigationBarView.isAttachedToWindow()) return;
 
