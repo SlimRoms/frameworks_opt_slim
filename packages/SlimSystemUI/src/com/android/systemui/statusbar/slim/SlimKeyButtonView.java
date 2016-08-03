@@ -57,6 +57,7 @@ import com.android.systemui.statusbar.policy.KeyButtonView;
 
 import java.util.ArrayList;
 
+import slim.action.ActionConfig;
 import slim.action.ActionConstants;
 import slim.action.Action;
 import slim.action.SlimActionsManager;
@@ -80,6 +81,8 @@ public class SlimKeyButtonView extends KeyButtonView {
     private boolean mGestureAborted;
     private SlimKeyButtonRipple mRipple;
     private LongClickCallback mCallback;
+    private boolean mEditing;
+    private ActionConfig mConfig;
 
     private final Handler mHandler = new Handler();
 
@@ -137,6 +140,19 @@ public class SlimKeyButtonView extends KeyButtonView {
         setBackground(mRipple = new SlimKeyButtonRipple(context, this));
     }
 
+    public void setEditing(boolean edit) {
+        mEditing = edit;
+    }
+
+    public void setConfig(ActionConfig config) {
+        mConfig = config;
+        updateFromConfig();
+    }
+
+    public ActionConfig getConfig() {
+        return mConfig;
+    }
+
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -171,11 +187,27 @@ public class SlimKeyButtonView extends KeyButtonView {
         mDoubleTapAction = action;
     }
 
+    public void updateFromConfig() {
+        if (mConfig == null) return;
+        if (mConfig.getClickAction().equals(ActionConstants.ACTION_SPACE)) {
+            setClickable(false);
+            setClickAction(null);
+            setLongpressAction(null);
+            setDoubleTapAction(null);
+        } else {
+            setClickable(true);
+            setClickAction(mConfig.getClickAction());
+            setLongpressAction(mConfig.getLongpressAction());
+            setDoubleTapAction(mConfig.getDoubleTapAction());
+        }
+    }
+
     public void setRippleColor(int color) {
         mRipple.setColor(color);
     }
 
     public boolean onTouchEvent(MotionEvent ev) {
+        if (mEditing) return false;
         final int action = ev.getAction();
         int x, y;
         if (action == MotionEvent.ACTION_DOWN) {
