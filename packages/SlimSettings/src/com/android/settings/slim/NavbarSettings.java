@@ -17,9 +17,11 @@
 package com.android.settings.slim;
 
 import android.os.Bundle;
+import android.content.Intent;
 import android.preference.SwitchPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceScreen;
@@ -45,13 +47,14 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
 
     private int mNavBarMenuDisplayValue;
 
-    ListPreference mMenuDisplayLocation;
-    ListPreference mNavBarMenuDisplay;
     SwitchPreference mEnableNavigationBar;
     SwitchPreference mNavigationBarCanMove;
     PreferenceScreen mButtonPreference;
     PreferenceScreen mButtonStylePreference;
     PreferenceScreen mStyleDimenPreference;
+
+    private boolean mEdit = false;
+    private final static Intent mIntent = new Intent("android.intent.action.NAVBAR_EDIT");
 
     @Override
     protected int getMetricsCategory() {
@@ -66,19 +69,6 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
         addPreferencesFromResource(R.xml.navbar_settings);
 
         PreferenceScreen prefs = getPreferenceScreen();
-
-        mMenuDisplayLocation = (ListPreference) findPreference(PREF_MENU_LOCATION);
-        mMenuDisplayLocation.setValue(SlimSettings.System.getInt(getActivity()
-                .getContentResolver(), SlimSettings.System.MENU_LOCATION,
-                0) + "");
-        mMenuDisplayLocation.setOnPreferenceChangeListener(this);
-
-        mNavBarMenuDisplay = (ListPreference) findPreference(PREF_NAVBAR_MENU_DISPLAY);
-        mNavBarMenuDisplayValue = SlimSettings.System.getInt(getActivity()
-                .getContentResolver(), SlimSettings.System.MENU_VISIBILITY,
-                2);
-        mNavBarMenuDisplay.setValue(mNavBarMenuDisplayValue + "");
-        mNavBarMenuDisplay.setOnPreferenceChangeListener(this);
 
         mButtonPreference = (PreferenceScreen) findPreference(PREF_BUTTON);
         mButtonStylePreference = (PreferenceScreen) findPreference(PREF_BUTTON_STYLE);
@@ -102,32 +92,30 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
                 DeviceUtils.isPhone(getActivity()) ? 1 : 0) == 0);
         mNavigationBarCanMove.setOnPreferenceChangeListener(this);
 
+        findPreference("navbar_editor").setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                mEdit = !mEdit;
+                mIntent.putExtra("edit", mEdit);
+                mIntent.putExtra("save", mEdit);
+                getActivity().sendBroadcast(mIntent);
+                return true;
+           }
+        });
+
         updateNavbarPreferences(enableNavigationBar);
     }
 
     private void updateNavbarPreferences(boolean show) {
-        mNavBarMenuDisplay.setEnabled(show);
         mButtonPreference.setEnabled(show);
         mButtonStylePreference.setEnabled(show);
         mStyleDimenPreference.setEnabled(show);
         mNavigationBarCanMove.setEnabled(show);
-        mMenuDisplayLocation.setEnabled(show
-            && mNavBarMenuDisplayValue != 1);
     }
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mMenuDisplayLocation) {
-            SlimSettings.System.putInt(getActivity().getContentResolver(),
-                    SlimSettings.System.MENU_LOCATION, Integer.parseInt((String) newValue));
-            return true;
-        } else if (preference == mNavBarMenuDisplay) {
-            mNavBarMenuDisplayValue = Integer.parseInt((String) newValue);
-            SlimSettings.System.putInt(getActivity().getContentResolver(),
-                    SlimSettings.System.MENU_VISIBILITY, mNavBarMenuDisplayValue);
-            mMenuDisplayLocation.setEnabled(mNavBarMenuDisplayValue != 1);
-            return true;
-        } else if (preference == mEnableNavigationBar) {
+        if (preference == mEnableNavigationBar) {
             SlimSettings.System.putInt(getActivity().getContentResolver(),
                     SlimSettings.System.NAVIGATION_BAR_SHOW,
                     ((Boolean) newValue) ? 1 : 0);
