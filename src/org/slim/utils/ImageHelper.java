@@ -19,6 +19,7 @@ package org.slim.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -35,9 +36,28 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.util.TypedValue;
 
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class ImageHelper {
+
+    public static final String ACTION_IMAGE_PICKED = "slim.intent.action.ACTION_IMAGE_PICKED";
+
+    private static File mFolder = new File(Environment.getExternalStorageDirectory() +
+                File.separator + ".slim" + File.separator + "icons");
+
+    static {
+        if (!mFolder.exists()) {
+            mFolder.mkdirs();
+        }
+    }
 
     public static Drawable getColoredDrawable(Drawable d, int color) {
         if (d == null) {
@@ -191,4 +211,40 @@ public class ImageHelper {
         return output;
     }
 
+    /**
+     * @param context callers context
+     * @param uri Uri to handle
+     * @return A bitmap from the requested uri
+     * @throws IOException
+     *
+     * @Credit: StackOverflow
+     *             http://stackoverflow.com/questions/35909008/pick-image
+     *             -from-gallery-or-google-photos-failing
+     */
+    public static Bitmap getBitmapFromUri(Context context, Uri uri) throws IOException {
+        if (context == null || uri == null) {
+            return null;
+        }
+        ParcelFileDescriptor parcelFileDescriptor =
+                context.getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
+    }
+
+    public static Uri addBitmapToStorage(Bitmap b) {
+        if (b == null) return null;
+        File imageFile = new File(mFolder.getAbsolutePath() + File.separator
+                + "slim_" + System.currentTimeMillis() + ".png");
+        try {
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            b.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+        } catch (Exception e) {
+            return null;
+        }
+        return Uri.fromFile(imageFile);
+    }
 }

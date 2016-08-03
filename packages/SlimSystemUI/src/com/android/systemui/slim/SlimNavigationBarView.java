@@ -11,6 +11,8 @@ import android.app.StatusBarManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
@@ -25,6 +27,7 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +39,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.internal.util.ArrayUtils;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.policy.DeadZone;
 
@@ -58,14 +62,9 @@ public class SlimNavigationBarView extends NavigationBarView {
     private static final boolean DEBUG = true;
     private static final String TAG = "SlimNavigationBarView";
 
-    // Definitions for navbar menu button customization
-    private final static int SHOW_RIGHT_MENU = 0;
-    private final static int SHOW_LEFT_MENU = 1;
-    private final static int SHOW_BOTH_MENU = 2;
-
-    private final static int MENU_VISIBILITY_ALWAYS = 0;
-    private final static int MENU_VISIBILITY_NEVER = 1;
-    private final static int MENU_VISIBILITY_SYSTEM = 2;
+    public final static int MENU_VISIBILITY_ALWAYS = 0;
+    public final static int MENU_VISIBILITY_NEVER = 1;
+    public final static int MENU_VISIBILITY_SYSTEM = 2;
 
     private static final int KEY_MENU_RIGHT = 0;
     private static final int KEY_MENU_LEFT = 1;
@@ -73,11 +72,12 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     private final Display mDisplay;
 
-    private int mMenuVisibility;
-    private int mMenuSetting;
+    private int mLeftMenuVisibility;
+    private int mRightMenuVisibility;
     private boolean mShowMenu = false;
     private boolean mOverrideMenuKeys;
     private boolean mIsImeButtonVisible = false;
+    private boolean mHideImeButton = false;
 
     private int mDisabledFlags = 0;
     private int mNavigationIconHints = 0;
@@ -88,6 +88,10 @@ public class SlimNavigationBarView extends NavigationBarView {
     private int mNavBarButtonColor;
     private int mNavBarButtonColorMode;
     private boolean mAppIsBinded = false;
+
+    private boolean mEditing = false;
+    private NavigationBarEditor mNavBarEditor;
+    private NavBarReceiver mNavBarReceiver;
 
     private boolean mLayoutTransitionsEnabled = true;
     private boolean mWakeAndUnlocking;
@@ -168,6 +172,10 @@ public class SlimNavigationBarView extends NavigationBarView {
         mButtonIdList = new ArrayList<Integer>();
 
         getIcons(res);
+
+        mNavBarReceiver = new NavBarReceiver();
+        getContext().registerReceiver(mNavBarReceiver,
+                new IntentFilter(NavigationBarEditor.NAVBAR_EDIT_ACTION));
     }
 
     public List<Integer> getButtonIdList() {
@@ -188,6 +196,23 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     public ViewGroup getNavButtons() {
         return (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+    }
+
+    public List<SlimKeyButtonView> getButtons() {
+        List<SlimKeyButtonView> keys = new ArrayList<>();
+        ViewGroup container = (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+        int viewCount = container.getChildCount();
+        for (int i = 0; i < viewCount; i++) {
+            View button = container.getChildAt(i);
+            if (button instanceof SlimKeyButtonView) {
+                keys.add((SlimKeyButtonView) button);
+            }
+        }
+        return keys;
+    }
+
+    public boolean isEditing() {
+        return mNavBarEditor.isEditing();
     }
 
     public void setOverrideMenuKeys(boolean b) {
@@ -249,7 +274,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         mCallback = c;
     }
 
-    private void makeBar() {
+    protected void makeBar() {
         if (mButtonsConfig.isEmpty() || mButtonsConfig == null) {
             return;
         }
@@ -291,6 +316,7 @@ public class SlimNavigationBarView extends NavigationBarView {
                         actionConfig.getLongpressAction(),
                         actionConfig.getDoubleTapAction(),
                         actionConfig.getIcon());
+                v.setConfig(actionConfig);
                 v.setTag((landscape ? "key_land_" : "key_") + j);
 
                 addButton(navButtonLayout, v, landscape);
@@ -327,7 +353,19 @@ public class SlimNavigationBarView extends NavigationBarView {
         updateSettings(false);
     }
 
-    private SlimKeyButtonView generateKey(boolean landscape, String clickAction,
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isEditing()) return true;
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (isEditing()) return false;
+        return super.onInterceptTouchEvent(event);
+    }
+
+    public SlimKeyButtonView generateKey(boolean landscape, String clickAction,
             String longpress, String doubletap, String iconUri) {
 
         SlimKeyButtonView v = new SlimKeyButtonView(mContext, null);
@@ -352,7 +390,13 @@ public class SlimNavigationBarView extends NavigationBarView {
         if (clickAction.startsWith("**")) {
             v.setScaleType(SlimKeyButtonView.ScaleType.CENTER_INSIDE);
         }
+        setButtonIcon(v, landscape, clickAction, iconUri);
+        v.setRippleColor(mRippleColor);
+        return v;
+    }
 
+    protected void setButtonIcon(SlimKeyButtonView v, boolean landscape,
+            String clickAction, String iconUri) {
         boolean colorize = true;
         if (iconUri != null && !iconUri.equals(ActionConstants.ICON_EMPTY)
                 && !iconUri.startsWith(ActionConstants.SYSTEM_ICON_IDENTIFIER)
@@ -382,8 +426,6 @@ public class SlimNavigationBarView extends NavigationBarView {
             }
             v.setImageBitmap(ImageHelper.drawableToBitmap(d));
         }
-        v.setRippleColor(mRippleColor);
-        return v;
     }
 
     private SlimKeyButtonView generateMenuKey(boolean landscape, int keyId) {
@@ -504,14 +546,15 @@ public class SlimNavigationBarView extends NavigationBarView {
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);
         if (getImeSwitchButton() != null) {
-            getImeSwitchButton().setVisibility(showImeButton ? View.VISIBLE : View.GONE);
-            mIsImeButtonVisible = showImeButton;
+            getImeSwitchButton().setVisibility(
+                    (!mHideImeButton && showImeButton) ? View.VISIBLE : View.GONE);
+            mIsImeButtonVisible = !mHideImeButton &&showImeButton;
         }
 
         // Update menu button in case the IME state has changed.
         setMenuVisibility(mShowMenu, true);
 
-        //setDisabledFlags(mDisabledFlags, true);
+        setDisabledFlags(mDisabledFlags, true);
     }
 
     private boolean inLockTask() {
@@ -593,13 +636,11 @@ public class SlimNavigationBarView extends NavigationBarView {
         // Only show Menu if IME switcher not shown.
         final boolean shouldShow =
                 ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) == 0);
-        boolean showLeftMenuButton = ((mMenuVisibility == MENU_VISIBILITY_ALWAYS || show)
-                && (mMenuSetting == SHOW_LEFT_MENU || mMenuSetting == SHOW_BOTH_MENU)
-                && (mMenuVisibility != MENU_VISIBILITY_NEVER))
+        boolean showLeftMenuButton = ((mLeftMenuVisibility == MENU_VISIBILITY_ALWAYS || show)
+                && (mLeftMenuVisibility != MENU_VISIBILITY_NEVER))
                 || mOverrideMenuKeys;
-        boolean showRightMenuButton = ((mMenuVisibility == MENU_VISIBILITY_ALWAYS || show)
-                && (mMenuSetting == SHOW_RIGHT_MENU || mMenuSetting == SHOW_BOTH_MENU)
-                && (mMenuVisibility != MENU_VISIBILITY_NEVER)
+        boolean showRightMenuButton = ((mRightMenuVisibility == MENU_VISIBILITY_ALWAYS || show)
+                && (mRightMenuVisibility != MENU_VISIBILITY_NEVER)
                 && shouldShow)
                 || mOverrideMenuKeys;
 
@@ -607,6 +648,34 @@ public class SlimNavigationBarView extends NavigationBarView {
         rightMenuKeyView.setVisibility(showRightMenuButton ? View.VISIBLE
                 : (mIsImeButtonVisible ? View.GONE : View.INVISIBLE));
         mShowMenu = show;
+    }
+
+    public void addButton(View view) {
+        addButton(view, -1);
+    }
+
+    public void addButton(View view, int index) {
+        ViewGroup vg = getNavButtons();
+        if (index == -1) {
+            View lastView = null;
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                View v = vg.getChildAt(i);
+                if (ArrayUtils.contains(NavigationBarEditor.SMALL_BUTTON_IDS, v.getId())) {
+                    continue;
+                }
+                lastView = v;
+            }
+            if (lastView != null) {
+                index = vg.indexOfChild(lastView) + 1;
+            }
+        }
+        if (index != -1) {
+            vg.addView(view, index);
+        }
+    }
+
+    public void removeButton(View view) {
+        getNavButtons().removeView(view);
     }
 
     @Override
@@ -628,6 +697,8 @@ public class SlimNavigationBarView extends NavigationBarView {
         }
 
         updateRTLOrder();
+
+        mNavBarEditor = new NavigationBarEditor(this);
     }
 
     @Override
@@ -774,13 +845,14 @@ public class SlimNavigationBarView extends NavigationBarView {
 
         mButtonsConfig = ActionHelper.getNavBarConfig(mContext);
 
-        mMenuSetting = SlimSettings.System.getIntForUser(resolver,
-                SlimSettings.System.MENU_LOCATION, SHOW_RIGHT_MENU,
+        mRightMenuVisibility = SlimSettings.System.getIntForUser(resolver,
+                SlimSettings.System.MENU_VISIBILITY_RIGHT, MENU_VISIBILITY_SYSTEM,
                 UserHandle.USER_CURRENT);
-
-        mMenuVisibility = SlimSettings.System.getIntForUser(resolver,
-                SlimSettings.System.MENU_VISIBILITY, MENU_VISIBILITY_SYSTEM,
+        mLeftMenuVisibility = SlimSettings.System.getIntForUser(resolver,
+                SlimSettings.System.MENU_VISIBILITY_LEFT, MENU_VISIBILITY_NEVER,
                 UserHandle.USER_CURRENT);
+        mHideImeButton = SlimSettings.System.getIntForUser(resolver,
+                SlimSettings.System.IME_BUTTON_VISIBILITY, 0, UserHandle.USER_CURRENT) == 1;
 
         getIcons(getContext().getResources());
 
@@ -792,5 +864,25 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void dump(FileDescriptor fd, PrintWriter pw, String[] args) {
+    }
+
+    public class NavBarReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            boolean edit = intent.getBooleanExtra("edit", false);
+            boolean save = intent.getBooleanExtra("save", false);
+            if (edit != mEditing) {
+                mEditing = edit;
+                if (edit) {
+                    mNavBarEditor.setEditing(true);
+                } else {
+                    if (save) {
+                        //mNavBarEditor.saveKeys();
+                    }
+                    mNavBarEditor.setEditing(false);
+                    updateSettings(true);
+                }
+            }
+        }
     }
 }

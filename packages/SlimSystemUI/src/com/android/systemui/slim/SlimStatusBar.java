@@ -107,11 +107,14 @@ public class SlimStatusBar extends PhoneStatusBar implements
                     SlimSettings.System.NAVIGATION_BAR_CAN_MOVE),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_LOCATION),
+                    SlimSettings.System.MENU_VISIBILITY_LEFT),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_VISIBILITY),
+                    SlimSettings.System.MENU_VISIBILITY_RIGHT),
                     false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.IME_BUTTON_VISIBILITY), false, this,
+                    UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.USE_SLIM_RECENTS), false, this,
                     UserHandle.USER_ALL);
@@ -134,13 +137,9 @@ public class SlimStatusBar extends PhoneStatusBar implements
                 || uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_CONFIG))
                 || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_LOCATION))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_VISIBILITY))) {
+                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT))) {
                 if (mSlimNavigationBarView != null) {
-                    mSlimNavigationBarView.recreateNavigationBar();
+                    mSlimNavigationBarView.updateNavigationBarSettings();
                     prepareNavigationBarView();
                 }
             } else if (uri.equals(SlimSettings.System.getUriFor(
@@ -410,6 +409,12 @@ public class SlimStatusBar extends PhoneStatusBar implements
             Log.d(TAG, "Unable to reach activity manager", e);
             return false;
         }
+    }
+
+    @Override
+    public boolean shouldDisableNavbarGestures() {
+        return super.shouldDisableNavbarGestures()
+                || (mSlimNavigationBarView != null && mSlimNavigationBarView.isEditing());
     }
 
     private static void sendCloseSystemWindows(Context context, String reason) {
