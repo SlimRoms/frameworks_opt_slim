@@ -1,5 +1,7 @@
 package com.android.systemui.statusbar.slim;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
 import android.animation.LayoutTransition.TransitionListener;
 import android.animation.ObjectAnimator;
@@ -14,16 +16,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.VectorDrawable;
+import android.os.Handler;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.animation.Animation;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -42,6 +47,8 @@ import android.widget.LinearLayout;
 import com.android.internal.util.ArrayUtils;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.policy.DeadZone;
+import com.android.systemui.pulse.PulseController;
+import com.android.systemui.pulse.PulseController.PulseObserver;
 
 import com.android.systemui.R;
 
@@ -57,10 +64,15 @@ import org.slim.provider.SlimSettings;
 import org.slim.utils.ImageHelper;
 import org.slim.utils.DeviceUtils;
 
-public class SlimNavigationBarView extends NavigationBarView {
+public class SlimNavigationBarView extends NavigationBarView implements PulseObserver {
 
     private static final boolean DEBUG = true;
     private static final String TAG = "SlimNavigationBarView";
+
+    final static float PULSE_ALPHA_FADE = 0.3f; // take bar alpha low so keys are vaguely visible
+                                                // but not intrusive during Pulse
+    final static int PULSE_FADE_OUT_DURATION = 250;
+    final static int PULSE_FADE_IN_DURATION = 200;
 
     public final static int MENU_VISIBILITY_ALWAYS = 0;
     public final static int MENU_VISIBILITY_NEVER = 1;
@@ -71,6 +83,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     private static final int KEY_IME_SWITCHER = 2;
 
     private final Display mDisplay;
+    private Handler mHandler = new Handler();
 
     private int mLeftMenuVisibility;
     private int mRightMenuVisibility;
@@ -91,6 +104,7 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     private boolean mEditing = false;
     private NavigationBarEditor mNavBarEditor;
+    private PulseController mPulse;
     private NavBarReceiver mNavBarReceiver;
 
     private boolean mLayoutTransitionsEnabled = true;
@@ -168,6 +182,9 @@ public class SlimNavigationBarView extends NavigationBarView {
 
         Resources res = context.getResources();
 
+        mPulse = new PulseController(context, mHandler);
+        mPulse.setPulseObserver(this);
+
         mButtonsConfig = ActionHelper.getNavBarConfig(mContext);
         mButtonIdList = new ArrayList<Integer>();
 
@@ -222,7 +239,26 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     @Override
     public void notifyScreenOn(boolean screenOn) {
+        if (mPulse != null) {
+            mPulse.notifyScreenOn(screenOn);
+        }
         setDisabledFlags(mDisabledFlags, true);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        if (mPulse != null) {
+            mPulse.onSizeChanged(w, h, oldw, oldh);
+        }
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
+
+    @Override
+    public void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        if (mPulse != null) {
+            mPulse.onDraw(canvas);
+        }
     }
 
     private void getIcons(Resources res) {
@@ -860,6 +896,45 @@ public class SlimNavigationBarView extends NavigationBarView {
         if (recreate) {
             makeBar();
         }
+    }
+
+    @Override
+    public boolean onStartPulse(Animation animatePulseIn) {
+        if (mEditing) {
+            //mEditor.changeEditMode(BaseEditor.MODE_OFF);
+        }
+        final View currentNavButtons = getNavButtons();
+        //final View hiddenNavButtons = getNavButtons();
+
+        // no need to animate the GONE view, but keep alpha inline since onStartPulse
+        // is a oneshot call
+        //hiddenNavButtons.setAlpha(PULSE_ALPHA_FADE);
+        currentNavButtons.animate()
+                .alpha(PULSE_ALPHA_FADE)
+                .setDuration(PULSE_FADE_OUT_DURATION)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator _a) {
+                        // shouldn't be null, mPulse just called into us
+                        if (mPulse != null) {
+                            mPulse.turnOnPulse();
+                        }
+                    }
+                })
+                .start();
+        return true;
+    }
+
+    @Override
+    public void onStopPulse(Animation animatePulseOut) {
+        final View currentNavButtons = getNavButtons();
+        //final View hiddenNavButtons = getHiddenView().findViewWithTag(Res.Common.NAV_BUTTONS);
+
+        //hiddenNavButtons.setAlpha(1.0f);
+        currentNavButtons.animate()
+                .alpha(1.0f)
+                .setDuration(PULSE_FADE_IN_DURATION)
+                .start();
     }
 
     @Override

@@ -588,6 +588,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
         updateButton(v);
 
         mNavBar.addButton(v, mNavBar.getNavButtons().indexOfChild(mAddButton));
+        mButtons.add(v);
     }
 
     private Resources getSettingsResources() {
