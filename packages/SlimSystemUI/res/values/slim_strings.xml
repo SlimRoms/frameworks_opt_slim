@@ -19,4 +19,17 @@
     <!-- Screenshot -->
     <string name="shortcut_screenshot">Screenshot</string>
 
+    <!-- NavBar -->
+    <string name="default_button">None</string>
+    <string name="navbar_dialog_title">Choose action to assign</string>
+    <string name="remove_button">Remove Button</string>
+    <string name="single_click_action">Single click</string>
+    <string name="longpress_action">Longpress</string>
+    <string name="double_tap_action">Double tap</string>
+
+    <!-- Icon Pack  -->
+    <string name="dialog_pick_iconpack_title">Pick icon pack</string>
+    <string name="no_iconpacks_summary">No icon packs installed</string>
+    <string name="invalid_icon_from_uri">Unable to load image from content provider</string>
+
 </resources>
