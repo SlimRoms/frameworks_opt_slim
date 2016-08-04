@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -50,6 +51,7 @@ import com.slim.settings.R;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
 import org.slim.action.ActionConstants;
+import org.slim.hardware.CmHardwareManager;
 import org.slim.provider.SlimSettings;
 import org.slim.utils.AppHelper;
 import org.slim.utils.DeviceUtils;
@@ -66,6 +68,8 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         ShortcutPickerHelper.OnPickListener {
 
     private static final String TAG = "HardwareKeys";
+
+    private static final String KEY_ENABLE_HW_KEYS = "enable_hw_keys";
 
     private static final String CATEGORY_KEYS = "button_keys";
     private static final String CATEGORY_BACK = "button_keys_back";
@@ -111,6 +115,8 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final int KEY_MASK_ASSIST     = 0x08;
     private static final int KEY_MASK_APP_SWITCH = 0x10;
     private static final int KEY_MASK_CAMERA     = 0x20;
+
+    private SwitchPreference mEnableHwKeys;
 
     private SwitchPreference mEnableCustomBindings;
     private Preference mBackPressAction;
@@ -174,6 +180,9 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         int deviceKeys = getResources().getInteger(
                 org.slim.framework.internal.R.integer.config_deviceHardwareKeys);
+
+        mEnableHwKeys = (SwitchPreference) findPreference(KEY_ENABLE_HW_KEYS);
+        mEnableHwKeys.setOnPrefeenceClickListener(this);
 
         boolean hasBackKey = (deviceKeys & KEY_MASK_BACK) != 0;
         boolean hasHomeKey = (deviceKeys & KEY_MASK_HOME) != 0;
@@ -516,6 +525,36 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    private static void writeDisableHwKeys(Context context, boolean enabled) {
+        SlimSettings.System.putInt(context.getContentResolver(),
+                SlimSettings.System.DISABLE_HW_KEYS, enabled ? 0 : 1);
+
+        CmHardwareManager cmHardwareManager =
+                (CmHardwareManager) context.getSystemService(Context.CMHW_SERVICE);
+        cmHardwareManager.set(CmHardwareManager.FEATURE_KEY_DISABLE, enabled);
+
+        if (enabled) {
+            SlimSettings.Secure.putInt(context.getContentResolver(),
+                    SlimSettings.Secure.BUTTON_BRIGHTNESS, 0);
+        } else {
+            int oldBright = prefs.getInt(ButtonBacklightBrightness.KEY_BUTTON_BACKLIGHT,
+                    defaultBrightness);
+            SlimSettings.Secure.putInt(context.getContentResolver(),
+                    SlimSettings.Secure.BUTTON_BRIGHTNESS, oldBright);
+        }
+    }
+
+    public static void restore(Context context) {
+        CmHardwareManager cmHardwareManager =
+                (CmHardwareManager) context.getSystemService(Context.CMHW_SERVICE);
+        if (cmHardwareManager.isSupported(CmHardwareManager.FEATURE_KEY_DISABLE)) {
+
+            boolean enabled = SlimSettings.System.getInt(context.getContentResolver(),
+                    SlimSettings.System.DISABLE_HW_KEYS, 1) == 1;
+            cmHardwareManager.set(CmHardwareManager.FEATURE_KEY_DISABLE, enabled);
+        }
     }
 
     @Override
