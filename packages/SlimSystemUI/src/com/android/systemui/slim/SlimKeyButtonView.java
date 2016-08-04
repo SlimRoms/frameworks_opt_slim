@@ -257,8 +257,15 @@ public class SlimKeyButtonView extends KeyButtonView {
                 if (mCode != 0) {
                     sendEvent(KeyEvent.ACTION_DOWN, 0, mDownTime);
                 }
-                removeCallbacks(mCheckLongPress);
-                postDelayed(mCheckLongPress, ViewConfiguration.getLongPressTimeout());
+                if (mDoubleTapPending) {
+                    mDoubleTapPending = false;
+                    removeCallbacks(mDoubleTapTimeout);
+                    doubleTap();
+                    mDoubleTapConsumed = true;
+                } else {
+                    removeCallbacks(mCheckLongPress);
+                    postDelayed(mCheckLongPress, ViewConfiguration.getLongPressTimeout());
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 x = (int)ev.getX();
