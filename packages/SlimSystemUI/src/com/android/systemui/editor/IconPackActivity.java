@@ -46,7 +46,7 @@ public class IconPackActivity extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK && requestCode == 69) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IconPackHelper.REQUEST_PICK_ICON) {
             Bitmap b = (Bitmap) data.getParcelableExtra(IconPickerActivity.SELECTED_BITMAP_EXTRA);
             if (b != null) {
                 Uri newUri = ImageHelper.addBitmapToStorage(b);

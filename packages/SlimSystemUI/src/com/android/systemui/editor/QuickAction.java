@@ -155,6 +155,7 @@ public class QuickAction extends PopupWindows implements OnDismissListener {
 
         container.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
+                Log.d("TEST", "onClick = " + actionId);
                 if (mItemClickListener != null) {
                     mItemClickListener.onItemClick(QuickAction.this, pos, actionId);
                 }

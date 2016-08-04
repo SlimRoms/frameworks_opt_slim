@@ -221,4 +221,7 @@
     <java-symbol type="bool" name="config_defaultAutoOutdoorMode" />
     <java-symbol type="bool" name="config_defaultColorEnhancement" />
     <java-symbol type="bool" name="config_defaultCABC" />
+
+    <!-- Slim Navigation Bar -->
+    <java-symbol type="integer" name="config_maxNavigationBarButtons" />
 </resources>

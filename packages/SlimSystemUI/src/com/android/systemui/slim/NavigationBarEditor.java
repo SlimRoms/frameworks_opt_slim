@@ -82,6 +82,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
 
     private FilteredDeviceFeaturesArray mActionsArray;
     private ArrayList<SlimKeyButtonView> mButtons = new ArrayList<>();
+    private int mMaxButtons;
 
     private SlimKeyButtonView mAddButton;
     private SlimKeyButtonView mDeleteButton;
@@ -98,11 +99,8 @@ public class NavigationBarEditor implements View.OnTouchListener {
 
     private QuickAction.OnActionItemClickListener mQuickClickListener =
             new QuickAction.OnActionItemClickListener() {
-        SlimKeyButtonView mButton;
         @Override
         public void onItemClick(QuickAction action, int pos, int actionId) {
-            if (mButton == mButtonToEdit) return;
-            mButton = mButtonToEdit;
             switch (actionId) {
                 case MENU_SINGLE_TAP:
                     editSingleTap(mButtonToEdit);
@@ -137,6 +135,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
                 int result = intent.getIntExtra("result", Activity.RESULT_CANCELED);
                 if (result == Activity.RESULT_OK) {
                     String uri = intent.getStringExtra("uri");
+                    Log.d("NavbarEditor", "receiving icon : " + uri);
                     imagePicked(uri);
                 }
             }
@@ -191,6 +190,9 @@ public class NavigationBarEditor implements View.OnTouchListener {
         createDeleteButton();
         initActionsArray();
 
+        mMaxButtons = mContext.getResources().getInteger(
+                org.slim.framework.internal.R.integer.config_maxNavigationBarButtons);
+
         IntentFilter filter = new IntentFilter(ImageHelper.ACTION_IMAGE_PICKED);
         mContext.registerReceiver(mReceiver, filter);
     }
@@ -231,10 +233,15 @@ public class NavigationBarEditor implements View.OnTouchListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         clickListener.onClick(which);
-                        dialog.cancel();
+                        closeDialog();
                     }
                 })
-                .setNegativeButton(android.R.string.cancel, null);
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        closeDialog();
+                    }
+                });
         mDialog = builder.create();
         mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         mDialog.setCanceledOnTouchOutside(false);
@@ -284,6 +291,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
     }
 
     private void selectIcon() {
+        Log.d("TEST", "selectIcon");
         String[] items = { "Default", "Gallery", "Icon Pack" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
@@ -301,10 +309,15 @@ public class NavigationBarEditor implements View.OnTouchListener {
                             selectIconFromIconPack();
                             break;
                     }
-                    dialog.cancel();
+                    closeDialog();
                 }
             })
-            .setNegativeButton(android.R.string.cancel, null);
+            .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        closeDialog();
+                    }
+                });
         mDialog = builder.create();
         mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         mDialog.setCanceledOnTouchOutside(false);
@@ -338,6 +351,11 @@ public class NavigationBarEditor implements View.OnTouchListener {
         config.setIcon(uri);
         updateKey(mButtonToEdit, config);
         mButtonToEdit = null;
+    }
+
+    private void closeDialog() {
+        mDialog.dismiss();
+        mDialog = null;
     }
 
     private void updateKey(SlimKeyButtonView button, ActionConfig config) {
@@ -415,6 +433,9 @@ public class NavigationBarEditor implements View.OnTouchListener {
         }
         for (SlimKeyButtonView key : mButtons) {
             updateButton(key);
+        }
+        if (!editing && mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
         }
     }
 
