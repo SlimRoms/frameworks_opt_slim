@@ -137,6 +137,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
                 int result = intent.getIntExtra("result", Activity.RESULT_CANCELED);
                 if (result == Activity.RESULT_OK) {
                     String uri = intent.getStringExtra("uri");
+                    Log.d("NavbarEditor", "receiving icon : " + uri);
                     imagePicked(uri);
                 }
             }

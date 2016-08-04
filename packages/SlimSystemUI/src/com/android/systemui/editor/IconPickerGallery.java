@@ -80,7 +80,8 @@ public class IconPickerGallery extends Activity {
                 Uri image = ImageHelper.saveImageFile(mImageTmp);
                 Intent resultIntent = new Intent(ImageHelper.ACTION_IMAGE_PICKED);
                 resultIntent.putExtra("result", Activity.RESULT_OK);
-                resultIntent.putExtra("uri", image);
+                resultIntent.putExtra("uri", image.toString());
+                android.util.Log.d("IconPickerGallery", "sending icon : " + image.toString());
                 sendBroadcastAsUser(resultIntent, UserHandle.CURRENT);
                 setResult(RESULT_OK, resultIntent);
                 finish();
