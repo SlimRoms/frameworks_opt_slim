@@ -52,7 +52,23 @@
 
         </activity>
 
-        <activity android:name=".SubSettings"
+        <activity
+            android:name="com.android.settings.slim.HardwareKeysSettings"
+            android:label="@string/button_keys_title"
+            android:theme="@android:style/Theme.Material.Settings" />
+
+        <!-- Screen color Settings Controls -->
+        <activity android:name=".ScreenColorSettings" android:label="@string/screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+
+        <activity android:name=".CustomScreenColor" android:label="@string/custom_screencolor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="nosensor">
+        </activity>
+
+       <activity android:name=".SubSettings"
                 android:theme="@android:style/Theme.Material.Settings"
                 android:taskAffinity="com.slim.settings">
         </activity>
