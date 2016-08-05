@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2016, The SlimRoms Project
+ * Copyright (c) 2016 The SlimRoms Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-package org.slim.constants;
+package org.slim.hardware.keys;
 
-public final class SlimServiceConstants {
+import android.view.KeyEvent;
 
-    // Slim Services
-    public static final String SLIM_STATUS_BAR_SERVICE = "slimstatusbar";
-    public static final String SLIM_HARDWARE_KEYS_SERVICE = "slimhardwarekeys";
+import org.slim.hardware.keys.ISlimHardwareKeysListener;
 
-    // CM Services
-    public static final String CM_HARDWARE_SERVICE = "cmhardware";
-    public static final String CM_LIVEDISPLAY_SERVICE = "cmlivedisplay";
+interface ISlimHardwareKeysService {
+
+    void registerListener(ISlimHardwareKeysListener listener);
+    void unregisterListener(ISlimHardwareKeysListener listener);
+
+    boolean sendKeyEventToListener(in KeyEvent event);
 }

@@ -35,6 +35,7 @@
 
     <string-array name="config_externalSlimServices">
         <item>org.slim.service.SlimStatusBarService</item>
+        <item>org.slim.service.SlimHardwareKeysService</item>
         <item>org.slim.service.CMHardwareService</item>
         <item>org.slim.service.display.LiveDisplayService</item>
     </string-array>

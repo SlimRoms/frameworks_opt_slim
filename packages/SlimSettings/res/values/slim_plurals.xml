@@ -23,8 +23,4 @@
         <item quantity="one">1 tile configured</item>
         <item quantity="other">%d tiles configured</item>
     </plurals>
-    <plurals name="backlight_timeout_time">
-        <item quantity="one"><xliff:g id="seconds">%d</xliff:g> second</item>
-        <item quantity="other"><xliff:g id="seconds">%d</xliff:g> seconds</item>
-    </plurals>
 </resources>

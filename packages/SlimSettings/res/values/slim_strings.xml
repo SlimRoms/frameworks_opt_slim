@@ -314,6 +314,8 @@
     <string name="keys_action_long">Long press</string>
     <string name="keys_action_double">Double tap</string>
     <string name="no_home_key">You have no button assigned any more to the \"Home\" action!\n\nThis can make your device unusable!</string>
+    <string name="edit_title">Tap here to edit hardware keys.</string>
+    <string name="edit_summary">"To edit hardware keys tap the key you want and make changes. \n\n Currently supported keys are: Home, Menu, Back, AppSwitch, Search, and Camera."</string>
 
     <!-- Slim Shortcuts -->
     <string name="slim_shortcut_picker">Slim Actions</string>

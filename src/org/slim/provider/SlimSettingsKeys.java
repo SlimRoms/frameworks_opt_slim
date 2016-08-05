@@ -570,6 +570,11 @@ public final class SlimSettingsKeys {
          */
         public static final String STATUSBAR_CLOCK_DATE_POSITION = "statusbar_clock_date_position";
 
+        /**
+         * Whether to disable hw keys
+         * @hide
+         */
+        public static final String DISABLE_HW_KEYS = "disable_hw_keys";
     }
 
     public interface Secure {

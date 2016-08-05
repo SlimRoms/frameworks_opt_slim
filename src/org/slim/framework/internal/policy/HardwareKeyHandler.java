@@ -23,6 +23,8 @@ import com.android.internal.statusbar.IStatusBarService;
 
 import org.slim.action.Action;
 import org.slim.action.ActionConstants;
+import org.slim.hardware.keys.ISlimHardwareKeysService;
+import org.slim.hardware.keys.SlimHardwareKeysManager;
 import org.slim.provider.SlimSettings;
 import org.slim.utils.HwKeyHelper;
 
@@ -45,6 +47,8 @@ public class HardwareKeyHandler {
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .setUsage(AudioAttributes.USAGE_ASSISTANCE_SONIFICATION)
             .build();
+
+    private ISlimHardwareKeysService mKeysService;
 
     boolean mHomePressed;
     boolean mHomeConsumed;
@@ -341,8 +345,27 @@ public class HardwareKeyHandler {
                         mContext, noCamera || keyRebindingDisabled);
     }
 
-    public boolean handleKeyEvent(int keyCode, int repeatCount, boolean down,
-            boolean canceled, boolean longpress, boolean keyguardOn) {
+    public boolean handleKeyEvent(KeyEvent event, boolean keyguardOn) {
+        final int keyCode = event.getKeyCode();
+        final int repeatCount = event.getRepeatCount();
+        final int flags = event.getFlags();
+        final boolean down = event.getAction() == KeyEvent.ACTION_DOWN;
+        final boolean canceled = event.isCanceled();
+        final boolean longpress = (flags & KeyEvent.FLAG_LONG_PRESS) != 0;
+
+        if (mKeysService == null) {
+            Log.d("TEST", "mKeysService == null");
+            mKeysService = SlimHardwareKeysManager.getService();
+        }
+
+        try {
+            Log.d("TEST", "isSericeNull() == " + (mKeysService == null));
+            if (mKeysService != null && mKeysService.sendKeyEventToListener(event)) {
+                return true;
+            }
+        } catch (RemoteException e) {
+        }
+
         if (keyCode == KeyEvent.KEYCODE_HOME) {
             if (!down && mHomePressed) {
                 mHomePressed = false;

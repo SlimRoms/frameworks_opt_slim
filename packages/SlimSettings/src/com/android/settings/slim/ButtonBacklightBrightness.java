@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.DialogPreference;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.AttributeSet;
 import android.view.View;
@@ -37,11 +38,13 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.android.settings.R;
+import com.slim.settings.R;
 
 public class ButtonBacklightBrightness extends DialogPreference implements
         SeekBar.OnSeekBarChangeListener {
     private static final int DEFAULT_BUTTON_TIMEOUT = 5;
+
+    public static final String KEY_BUTTON_BACKLIGHT = "hwkey_button_backlight";
 
     private Window mWindow;
 
@@ -141,6 +144,8 @@ public class ButtonBacklightBrightness extends DialogPreference implements
 
         applyTimeout(mTimeoutBar.getProgress());
         if (mButtonBrightness != null) {
+            PreferenceManager.getDefaultSharedPreferences(getContext()).edit()
+                    .putInt(KEY_BUTTON_BACKLIGHT, mButtonBrightness.getBrightness(false)).apply();
             mButtonBrightness.applyBrightness();
         }
 
@@ -184,7 +189,7 @@ public class ButtonBacklightBrightness extends DialogPreference implements
     public boolean isButtonSupported() {
         final Resources res = getContext().getResources();
         boolean hasAnyKey = res.getInteger(
-                com.android.internal.R.integer.config_deviceHardwareKeys) != 0;
+                org.slim.framework.internal.R.integer.config_deviceHardwareKeys) != 0;
         boolean hasBacklight = res.getInteger(
                 com.android.internal.R.integer.config_buttonBrightnessSettingDefault) > 0;
 
