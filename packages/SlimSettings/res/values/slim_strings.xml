@@ -20,6 +20,8 @@
     <string name="disabled">Disabled</string>
     <string name="menu_save">Save</string>
     <string name="menu_cancel">Discard</string>
+    <string name="advanced">Advanced</string>
+    <string name="reset">Reset</string>
 
     <!-- Slim settings screens -->
     <string name="navigation_settings_title">Navigation</string>
@@ -285,6 +287,8 @@
 
     <!-- Hardware keys -->
     <string name="button_keys_title">Hardware Buttons</string>
+    <string name="enable_navkeys_title">Enables hardware buttons</string>
+    <string name="enable_navkeys_summary"> </string>
     <string name="keys_bindings_title">Key actions</string>
     <string name="keys_enable_custom_title">Enable custom actions</string>
     <string name="keys_enable_custom_summary">Enable custom hardware key actions</string>
@@ -310,6 +314,8 @@
     <string name="keys_action_long">Long press</string>
     <string name="keys_action_double">Double tap</string>
     <string name="no_home_key">You have no button assigned any more to the \"Home\" action!\n\nThis can make your device unusable!</string>
+    <string name="edit_title">Tap here to edit hardware keys.</string>
+    <string name="edit_summary">"To edit hardware keys tap the key you want and make changes. \n\n Currently supported keys are: Home, Menu, Back, AppSwitch, Search, and Camera."</string>
 
     <!-- Slim Shortcuts -->
     <string name="slim_shortcut_picker">Slim Actions</string>
@@ -461,4 +467,76 @@
     <string name="clock_date_format_custom">Custom java format</string>
     <string name="status_bar_clock_style_reset_message">Reset clock color?</string>
 
+    <!-- LiveDisplay -->
+    <string name="live_display_title" translatable="false">LiveDisplay</string>
+    <string name="live_display_summary">Optimize your screen based on time of day and ambient conditions to improve readability and reduce eyestrain</string>
+    <string name="live_display_mode">Display mode</string>
+    <string name="live_display_color_temperature_title">Color temperature</string>
+    <string name="live_display_color_temperature_summary">Day: <xliff:g id="day_temperature">%1$d</xliff:g>K  Night: <xliff:g id="night_temperature">%2$d</xliff:g>K</string>
+    <string name="live_display_color_temperature_label"><xliff:g id="degrees">%1$d</xliff:g>K</string>
+    <string name="live_display_day">Day</string>
+    <string name="live_display_night">Night</string>
+    <string name="live_display_outdoor_mode_title">Automatic outdoor mode</string>
+    <string name="live_display_outdoor_mode_summary">Increase brightness and saturation automatically under bright sunlight</string>
+    <string name="live_display_low_power_title">Reduce power consumption</string>
+    <string name="live_display_low_power_summary">Adjust display for lowest power consumption without degradation</string>
+    <string name="live_display_enhance_color_title">Enhance colors</string>
+    <string name="live_display_enhance_color_summary">Improve color vibrance of flesh tones, scenery, and other images</string>
+    <string name="live_display_color_profile_title">Color profile</string>
+    <string name="live_display_color_profile_standard_title">Standard</string>
+    <string name="live_display_color_profile_standard_summary">Accurate colors and bright whites</string>
+    <string name="live_display_color_profile_natural_title">Natural</string>
+    <string name="live_display_color_profile_natural_summary">Realistic colors and flesh tones</string>
+    <string name="live_display_color_profile_dynamic_title">Dynamic</string>
+    <string name="live_display_color_profile_dynamic_summary">Enhanced colors and bright whites</string>
+    <string name="live_display_color_profile_cinema_title">Cinema</string>
+    <string name="live_display_color_profile_cinema_summary">Perfect color reproduction for video</string>
+    <string name="live_display_color_profile_astronomy_title">Astronomy</string>
+    <string name="live_display_color_profile_astronomy_summary">Deep red for preserving night vision</string>
+    <string name="live_display_color_profile_photography_title">Photography</string>
+    <string name="live_display_color_profile_photography_summary">Perfect color reproduction for photos</string>
+    <string name="live_display_color_profile_basic_title">Basic</string>
+    <string name="live_display_color_profile_basic_summary">Use the display uncalibrated</string>
+    <string name="live_display_color_profile_adaptive_title">Adaptive</string>
+    <string name="live_display_color_profile_adaptive_summary">Colors adapt to ambient conditions</string>
+
+    <!-- Hardware tunables - Color calibration -->
+    <string name="color_calibration_title">Color calibration</string>
+    <string name="color_calibration_summary">Calibrate on-screen colors</string>
+    <string name="color_red_title">Red</string>
+    <string name="color_green_title">Green</string>
+    <string name="color_blue_title">Blue</string>
+
+    <!-- Display settings.  Screen color. -->
+    <string name="screencolor">Screen color</string>
+    <string name="screencolor_summary">Tune screen hue, saturation, contrast or intensity</string>
+    <string name="custom_screencolor">Custom screen color</string>
+    <string name="screencolor_save">Save</string>
+    <string name="screencolor_cancel">Cancel</string>
+    <string name="previous_str">Previous</string>
+    <string name="new_str">New</string>
+    <string name="restore_preview">View default picture</string>
+    <string name="selectnewfile_menu">View new picture from Gallery</string>
+    <string name="selectfile_menu">View picture from Gallery</string>
+    <string name="restore_default_str">Reset</string>
+    <string name="hue_str">Hue: <xliff:g id="hue_value">%1$s</xliff:g></string>
+    <string name="saturation_str">Saturation: <xliff:g id="saturation_value">%1$s</xliff:g></string>
+    <string name="contrast_str">Contrast: <xliff:g id="contrast_value">%1$s</xliff:g></string>
+    <string name="intensity_str">Intensity: <xliff:g id="intensity_str_value">%1$s</xliff:g></string>
+
+    <string name="screen_color_standard">Standard</string>
+    <string name="screen_color_vivid">Vivid</string>
+    <string name="screen_color_custom">Custom</string>
+
+    <!-- Key backlight -->
+    <string name="button_backlight_title">Backlight</string>
+    <string name="button_backlight_enabled">Illuminate buttons</string>
+    <string name="keyboard_backlight_enabled">Illuminate keyboard</string>
+    <string name="button_backlight_seekbar_title">Button brightness</string>
+    <string name="keyboard_backlight_seekbar_title">Keyboard brightness</string>
+    <string name="backlight_timeout_title">Illumination timeout</string>
+    <string name="backlight_timeout_unlimited">Don\'t turn off</string>
+    <string name="backlight_summary_disabled">Disabled</string>
+    <string name="backlight_summary_enabled_with_timeout">Enabled for <xliff:g id="timeout">%s</xliff:g></string>
+    <string name="backlight_summary_enabled">Enabled</string>
 </resources>
