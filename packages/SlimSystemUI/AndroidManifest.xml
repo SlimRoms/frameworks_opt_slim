@@ -28,18 +28,23 @@
 
         <!-- Icon picker proxy for icon packs -->
         <activity android:name="com.android.systemui.editor.IconPickerActivity"
-            android:theme="@android:style/Theme.Material.Settings"
+            android:theme="@android:style/Theme.Material.DayNight"
             android:label="@string/dialog_pick_iconpack_title"
             android:excludeFromRecents="true" />
 
         <activity android:name="com.android.systemui.editor.IconPickerGallery"
-            android:theme="@android:style/Theme.Material.Settings"
+            android:theme="@android:style/Theme.Material.DayNight"
             android:label="@string/dialog_pick_iconpack_title"
             android:excludeFromRecents="true" />
 
         <activity android:name="com.android.systemui.editor.IconPackActivity"
-            android:theme="@android:style/Theme.Material.Settings"
+            android:theme="@android:style/Theme.Material.DayNight.Dialog.NoActionBar"
             android:label="@string/dialog_pick_iconpack_title"
+            android:excludeFromRecents="true" />
+
+        <activity android:name="com.android.systemui.editor.ShortcutPickerActivity"
+            android:theme="@android:style/Theme.Material.DayNight.Dialog.NoActionBar"
+            android:label="@*org.slim.framework:string/shortcuts_select_custom_app_title"
             android:excludeFromRecents="true" />
 
     </application>

@@ -376,7 +376,7 @@ public class CMHardwareService extends SlimSystemService implements ThermalUpdat
     @Override
     public void onBootPhase(int phase) {
         if (phase == PHASE_BOOT_COMPLETED) {
-            Intent intent = new Intent(org.slim.content.Intent.ACTION_INITIALIZE_CM_HARDWARE);
+            Intent intent = new Intent(org.slim.content.SlimIntent.ACTION_INITIALIZE_CM_HARDWARE);
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             mContext.sendBroadcast(intent,
                     org.slim.framework.Manifest.permission.HARDWARE_ABSTRACTION_ACCESS);

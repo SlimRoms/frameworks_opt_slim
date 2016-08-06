@@ -23,7 +23,7 @@ import android.Manifest;
 /**
  * SlimRoms specific intent definition class.
  */
-public class Intent {
+public class SlimIntent {
 
     /**
      * Broadcast action: perform any initialization required for CMHW services.
@@ -35,4 +35,7 @@ public class Intent {
      */
     public static final String ACTION_INITIALIZE_CM_HARDWARE =
             "cyanogenmod.intent.action.INITIALIZE_CM_HARDWARE";
+
+    // Slim intents
+    public static final String ACTION_SHORTCUT_PICKED = "slim.intent.action.SHORTCUT_PICKED";
 }

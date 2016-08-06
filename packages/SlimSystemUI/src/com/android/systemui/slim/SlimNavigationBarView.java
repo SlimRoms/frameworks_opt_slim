@@ -223,6 +223,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     @Override
     public void notifyScreenOn(boolean screenOn) {
         setDisabledFlags(mDisabledFlags, true);
+        if (!screenOn) mNavBarEditor.setEditing(false);
     }
 
     private void getIcons(Resources res) {
@@ -527,6 +528,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     @Override
     public void setNavigationIconHints(int hints, boolean force) {
         if (!force && hints == mNavigationIconHints) return;
+        mNavBarEditor.setEditing(false);
         final boolean backAlt = (hints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0;
         if ((mNavigationIconHints & StatusBarManager.NAVIGATION_HINT_BACK_ALT) != 0 && !backAlt) {
             mTransitionListener.onBackAltCleared();
@@ -568,6 +570,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     @Override
     public void setDisabledFlags(int disabledFlags, boolean force) {
         if (!force && mDisabledFlags == disabledFlags) return;
+        mNavBarEditor.setEditing(false);
 
         mDisabledFlags = disabledFlags;
 
@@ -629,6 +632,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         if (!force && mShowMenu == show) {
             return;
         }
+        if (mNavBarEditor != null) mNavBarEditor.setEditing(false);
 
         View leftMenuKeyView = getLeftMenuButton();
         View rightMenuKeyView = getRightMenuButton();
@@ -869,16 +873,12 @@ public class SlimNavigationBarView extends NavigationBarView {
     public class NavBarReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            boolean edit = intent.getBooleanExtra("edit", false);
-            boolean save = intent.getBooleanExtra("save", false);
+            boolean edit = intent.getBooleanExtra("edit", !mEditing);
             if (edit != mEditing) {
                 mEditing = edit;
                 if (edit) {
                     mNavBarEditor.setEditing(true);
                 } else {
-                    if (save) {
-                        //mNavBarEditor.saveKeys();
-                    }
                     mNavBarEditor.setEditing(false);
                     updateSettings(true);
                 }

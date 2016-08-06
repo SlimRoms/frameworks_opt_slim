@@ -41,9 +41,12 @@ import com.android.systemui.editor.ActionItem;
 import com.android.systemui.editor.IconPackActivity;
 import com.android.systemui.editor.IconPickerGallery;
 import com.android.systemui.editor.QuickAction;
+import com.android.systemui.editor.ShortcutPickerActivity;
+
 import org.slim.action.ActionConfig;
 import org.slim.action.ActionConstants;
 import org.slim.action.ActionHelper;
+import org.slim.content.SlimIntent;
 import org.slim.provider.SlimSettings;
 import org.slim.utils.DeviceUtils;
 import org.slim.utils.DeviceUtils.FilteredDeviceFeaturesArray;
@@ -73,6 +76,11 @@ public class NavigationBarEditor implements View.OnTouchListener {
     private static final int IME_VISIBILITY_NEVER = 8;
     private static final int IME_VISIBILITY_REQUEST = 9;
 
+    private static final int SINGLE_TAP_ACTION = 0;
+    private static final int DOUBLE_TAP_ACTION = 1;
+    private static final int LONG_PRESS_ACTION = 2;
+    private static final int ADD_ACTION        = 3;
+
     private static final int ADD_BUTTON_ID = View.generateViewId();
     private static final int DELETE_BUTTON_ID = View.generateViewId();
 
@@ -87,6 +95,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
     private SlimKeyButtonView mAddButton;
     private SlimKeyButtonView mDeleteButton;
     private SlimKeyButtonView mButtonToEdit;
+    private int mPendingActionType;
 
     private boolean mEditing;
     private boolean mDeleting = false;
@@ -137,6 +146,12 @@ public class NavigationBarEditor implements View.OnTouchListener {
                     String uri = intent.getStringExtra("uri");
                     Log.d("NavbarEditor", "receiving icon : " + uri);
                     imagePicked(uri);
+                }
+            } else if (SlimIntent.ACTION_SHORTCUT_PICKED.equals(action)) {
+                int result = intent.getIntExtra("result", Activity.RESULT_CANCELED);
+                if (result == Activity.RESULT_OK) {
+                    String shortcut = intent.getStringExtra("shortcut");
+                    shortcutPicked(shortcut);
                 }
             }
         }
@@ -194,6 +209,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
                 org.slim.framework.internal.R.integer.config_maxNavigationBarButtons);
 
         IntentFilter filter = new IntentFilter(ImageHelper.ACTION_IMAGE_PICKED);
+        filter.addAction(SlimIntent.ACTION_SHORTCUT_PICKED);
         mContext.registerReceiver(mReceiver, filter);
     }
 
@@ -226,7 +242,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
         void onClick(int which);
     }
 
-    private void showActionDialog(final DialogClickListener clickListener) {
+    private void showActionDialog(final DialogClickListener clickListener, boolean showReset) {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
                 .setTitle(mContext.getString(R.string.navbar_dialog_title))
                 .setItems(mActionsArray.entries, new DialogInterface.OnClickListener() {
@@ -242,10 +258,25 @@ public class NavigationBarEditor implements View.OnTouchListener {
                         closeDialog();
                     }
                 });
+        if (showReset) {
+            builder.setNeutralButton("Rest Navigation Bar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    resetNavBar();
+                    closeDialog();
+                }
+            });
+        }
         mDialog = builder.create();
         mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_DIALOG);
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
+    }
+
+    private void resetNavBar() {
+        ActionHelper.setNavBarConfig(mContext, null, true);
+        mButtons.clear();
+        setEditing(false);
     }
 
     private void editSingleTap(final SlimKeyButtonView v) {
@@ -254,12 +285,18 @@ public class NavigationBarEditor implements View.OnTouchListener {
             public void onClick(int which) {
                 String action = mActionsArray.values[which];
                 String description = mActionsArray.entries[which];
-                ActionConfig config = v.getConfig();
-                config.setClickAction(action);
-                config.setClickActionDescription(description);
-                updateKey(v, config);
+                if (action.equals(ActionConstants.ACTION_APP)) {
+                    mButtonToEdit = v;
+                    mPendingActionType = SINGLE_TAP_ACTION;
+                    pickShortcut();
+                } else {
+                    ActionConfig config = v.getConfig();
+                    config.setClickAction(action);
+                    config.setClickActionDescription(description);
+                    updateKey(v, config);
+                }
             }
-        });
+        }, false);
     }
 
     private void editDoubleTap(final SlimKeyButtonView v) {
@@ -268,12 +305,18 @@ public class NavigationBarEditor implements View.OnTouchListener {
             public void onClick(int which) {
                 String action = mActionsArray.values[which];
                 String description = mActionsArray.entries[which];
-                ActionConfig config = v.getConfig();
-                config.setDoubleTapAction(action);
-                config.setDoubleTapActionDescription(description);
-                v.setConfig(config);
+                if (action.equals(ActionConstants.ACTION_APP)) {
+                    mButtonToEdit = v;
+                    mPendingActionType = DOUBLE_TAP_ACTION;
+                    pickShortcut();
+                } else {
+                    ActionConfig config = v.getConfig();
+                    config.setDoubleTapAction(action);
+                    config.setDoubleTapActionDescription(description);
+                    v.setConfig(config);
+                }
             }
-        });
+        }, false);
     }
 
     private void editLongpress(final SlimKeyButtonView v) {
@@ -282,12 +325,18 @@ public class NavigationBarEditor implements View.OnTouchListener {
             public void onClick(int which) {
                 String action = mActionsArray.values[which];
                 String description = mActionsArray.entries[which];
-                ActionConfig config = v.getConfig();
-                config.setLongpressAction(action);
-                config.setLongpressActionDescription(description);
-                v.setConfig(config);
+                if (action.equals(ActionConstants.ACTION_APP)) {
+                    mButtonToEdit = v;
+                    mPendingActionType = LONG_PRESS_ACTION;
+                    pickShortcut();
+                } else {
+                    ActionConfig config = v.getConfig();
+                    config.setLongpressAction(action);
+                    config.setLongpressActionDescription(description);
+                    v.setConfig(config);
+                }
             }
-        });
+        }, false);
     }
 
     private void selectIcon() {
@@ -351,6 +400,32 @@ public class NavigationBarEditor implements View.OnTouchListener {
         config.setIcon(uri);
         updateKey(mButtonToEdit, config);
         mButtonToEdit = null;
+    }
+
+    private void shortcutPicked(String action) {
+        ActionConfig config = mButtonToEdit.getConfig();
+        String description = ActionHelper.getActionDescription(mContext, action);
+        switch (mPendingActionType) {
+            case SINGLE_TAP_ACTION:
+                config.setClickAction(action);
+                config.setClickActionDescription(description);
+                break;
+            case DOUBLE_TAP_ACTION:
+                config.setDoubleTapAction(action);
+                config.setDoubleTapActionDescription(description);
+                break;
+            case LONG_PRESS_ACTION:
+                config.setLongpressAction(action);
+                config.setLongpressActionDescription(description);
+                break;
+            case ADD_ACTION:
+                addButton(action, description);
+                return;
+        }
+
+        updateKey(mButtonToEdit, config);
+        mButtonToEdit = null;
+        mPendingActionType = -1;
     }
 
     private void closeDialog() {
@@ -420,22 +495,38 @@ public class NavigationBarEditor implements View.OnTouchListener {
     }
 
     public void setEditing(boolean editing) {
+        if (mEditing == editing) return;
         mEditing = editing;
         if (mEditing) {
-            mButtons.addAll(mNavBar.getButtons());
+            mButtons.addAll(getMainNavButtons());
             createPopupContainer();
-            mNavBar.addButton(mAddButton);
+            updateAddButton();
         } else {
             removePopupContainer();
-            mNavBar.removeButton(mAddButton);
+            updateAddButton();
             save();
             mButtons.clear();
+            mNavBar.updateNavigationBarSettings();
         }
-        for (SlimKeyButtonView key : mButtons) {
+        for (SlimKeyButtonView key : mNavBar.getButtons()) {
             updateButton(key);
         }
         if (!editing && mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
+        }
+    }
+
+    private void updateAddButton() {
+        if (mButtons.size() >= mMaxButtons) {
+            if (mAddButton.getParent() != null) {
+                mNavBar.removeButton(mAddButton);
+            }
+        } else {
+            if (!mEditing && mAddButton.isAttachedToWindow()) {
+                mNavBar.removeButton(mAddButton);
+            } else if (mAddButton.getParent() == null) {
+                mNavBar.addButton(mAddButton);
+            }
         }
     }
 
@@ -508,9 +599,15 @@ public class NavigationBarEditor implements View.OnTouchListener {
                         public void onClick(int which) {
                             String action = mActionsArray.values[which];
                             String description = mActionsArray.entries[which];
-                            addButton(action, description);
+                            if (action.equals(ActionConstants.ACTION_APP)) {
+                                mButtonToEdit = (SlimKeyButtonView) view;
+                                mPendingActionType = ADD_ACTION;
+                                pickShortcut();
+                            } else {
+                                addButton(action, description);
+                            }
                         }
-                    });
+                    }, true);
                 } else {
                     editAction((SlimKeyButtonView) view);
                 }
@@ -536,6 +633,11 @@ public class NavigationBarEditor implements View.OnTouchListener {
         return true;
     }
 
+    private void pickShortcut() {
+        Intent intent = new Intent(mContext, ShortcutPickerActivity.class);
+        mContext.startActivityAsUser(intent, UserHandle.CURRENT);
+    }
+
     private void moveButton(View targetView, View view) {
         ViewGroup parent = (ViewGroup) view.getParent();
 
@@ -553,6 +655,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
     private void deleteButton(View view) {
        mNavBar.removeButton(view);
        mButtons.remove(view);
+       updateAddButton();
     }
 
     public boolean isEditing() {
@@ -613,6 +716,7 @@ public class NavigationBarEditor implements View.OnTouchListener {
 
         mButtons.add(v);
         mNavBar.addButton(v, mNavBar.getNavButtons().indexOfChild(mAddButton));
+        updateAddButton();
     }
 
     private Resources getSettingsResources() {
@@ -624,7 +728,6 @@ public class NavigationBarEditor implements View.OnTouchListener {
     }
 
     public void save() {
-
        ArrayList<ActionConfig> buttons = new ArrayList<>();
 
         for (View v : mButtons) {
@@ -644,6 +747,20 @@ public class NavigationBarEditor implements View.OnTouchListener {
         }
 
         ActionHelper.setNavBarConfig(mContext, buttons, false);
+    }
+
+    private ArrayList<SlimKeyButtonView> getMainNavButtons() {
+        ArrayList<SlimKeyButtonView> buttons = new ArrayList<>();
+        for (View v : mNavBar.getButtons()) {
+            if (v instanceof SlimKeyButtonView) {
+                if (ArrayUtils.contains(SMALL_BUTTON_IDS, v.getId()) || mAddButton == v
+                        || mDeleteButton == v) {
+                    continue;
+                }
+                buttons.add((SlimKeyButtonView) v);
+            }
+        }
+        return buttons;
     }
 
     private void prepareToShowPopup(View editView) {
@@ -737,7 +854,8 @@ public class NavigationBarEditor implements View.OnTouchListener {
         }
     };
 
-    private PopupWindow.OnDismissListener mPopupDismissListener = new PopupWindow.OnDismissListener() {
+    private PopupWindow.OnDismissListener mPopupDismissListener =
+            new PopupWindow.OnDismissListener() {
         @Override
         public void onDismiss() {
             mHidePopupContainer.run();

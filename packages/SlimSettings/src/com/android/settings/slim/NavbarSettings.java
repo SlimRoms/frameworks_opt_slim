@@ -49,11 +49,9 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
 
     SwitchPreference mEnableNavigationBar;
     SwitchPreference mNavigationBarCanMove;
-    PreferenceScreen mButtonPreference;
     PreferenceScreen mButtonStylePreference;
     PreferenceScreen mStyleDimenPreference;
 
-    private boolean mEdit = false;
     private final static Intent mIntent = new Intent("android.intent.action.NAVBAR_EDIT");
 
     @Override
@@ -70,7 +68,6 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
 
         PreferenceScreen prefs = getPreferenceScreen();
 
-        mButtonPreference = (PreferenceScreen) findPreference(PREF_BUTTON);
         mButtonStylePreference = (PreferenceScreen) findPreference(PREF_BUTTON_STYLE);
         mStyleDimenPreference = (PreferenceScreen) findPreference(PREF_STYLE_DIMEN);
 
@@ -95,9 +92,7 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
         findPreference("navbar_editor").setOnPreferenceClickListener(new OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                mEdit = !mEdit;
-                mIntent.putExtra("edit", mEdit);
-                mIntent.putExtra("save", mEdit);
+                mIntent.removeExtra("edit");
                 getActivity().sendBroadcast(mIntent);
                 return true;
            }
@@ -106,8 +101,14 @@ public class NavbarSettings extends SettingsPreferenceFragment implements
         updateNavbarPreferences(enableNavigationBar);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        mIntent.putExtra("edit", false);
+        getActivity().sendBroadcast(mIntent);
+    }
+
     private void updateNavbarPreferences(boolean show) {
-        mButtonPreference.setEnabled(show);
         mButtonStylePreference.setEnabled(show);
         mStyleDimenPreference.setEnabled(show);
         mNavigationBarCanMove.setEnabled(show);
