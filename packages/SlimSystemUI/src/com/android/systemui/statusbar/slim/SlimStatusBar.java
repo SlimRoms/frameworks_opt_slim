@@ -27,8 +27,10 @@ import android.os.UserHandle;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.android.systemui.R;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
+import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 
 import org.slim.provider.SlimSettings;
 
@@ -82,6 +84,18 @@ public class SlimStatusBar extends PhoneStatusBar {
 
         SettingsObserver observer = new SettingsObserver(mHandler);
         observer.observe();
+    }
+
+    @Override
+    protected PhoneStatusBarView makeStatusBarView() {
+        PhoneStatusBarView statusBarView = super.makeStatusBarView();
+
+        SlimBatteryContainer container = (SlimBatteryContainer) statusBarView.findViewById(R.id.slim_battery_container);
+        if (mBatteryController != null) {
+            container.setBatteryController(mBatteryController);
+        }
+
+        return statusBarView;
     }
 
     @Override
