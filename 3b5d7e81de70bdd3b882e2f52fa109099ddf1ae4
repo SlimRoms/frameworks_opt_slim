@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_1474f5cd",
+        "filename": "packages/SlimSettings/res/xml/slim_advanced_settings.xml",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-08T20:26:00Z",
+      "side": 1,
+      "message": "SlimRoms Project",
+      "range": {
+        "startLine": 2,
+        "startChar": 29,
+        "endLine": 2,
+        "endChar": 37
+      },
+      "revId": "3b5d7e81de70bdd3b882e2f52fa109099ddf1ae4",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_b480818c",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/AdvancedSettings.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-08T20:26:00Z",
+      "side": 1,
+      "message": "2013-2016 SlimRoms Project",
+      "range": {
+        "startLine": 2,
+        "startChar": 17,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "3b5d7e81de70bdd3b882e2f52fa109099ddf1ae4",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
