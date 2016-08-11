@@ -238,7 +238,7 @@ public class SlimKeyButtonView extends KeyButtonView {
                 mDownTime = SystemClock.uptimeMillis();
                 mIsLongpressed = false;
                 setPressed(true);
-                performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                //performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 if (mClickAction.equals(ActionConstants.ACTION_RECENTS)) {
                     try {
                         mStatusBar.preloadRecentApps();

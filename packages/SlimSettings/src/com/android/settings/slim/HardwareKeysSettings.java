@@ -176,9 +176,9 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         sFinalActionDialogArray = new FilteredDeviceFeaturesArray();
         sFinalActionDialogArray = DeviceUtils.filterUnsupportedDeviceFeatures(getActivity(),
             res.getStringArray(res.getIdentifier(
-                    "shortcut_action_hwkey_values", "array", "org.slim.framework")),
+                    "shortcut_action_values", "array", "org.slim.framework")),
             res.getStringArray(res.getIdentifier(
-                    "shortcut_action_hwkey_entries", "array", "org.slim.framework")));
+                    "shortcut_action_entries", "array", "org.slim.framework")));
 
         // Attach final settings screen.
         reloadSettings();

@@ -163,7 +163,6 @@ public class ActionHelper {
     private static int getActionSystemIcon(Resources resources, String clickAction) {
         int resId = -1;
 
-        // ToDo: Add the resources to SystemUI.
         if (clickAction.equals(ActionConstants.ACTION_HOME)) {
             resId = resources.getIdentifier(
                         SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_home", null, null);
@@ -181,9 +180,6 @@ public class ActionHelper {
             resId = resources.getIdentifier(
                         SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_search", null, null);
         } else if (clickAction.equals(ActionConstants.ACTION_MENU)) {
-            resId = resources.getIdentifier(
-                        SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_menu", null, null);
-        } else if (clickAction.equals(ActionConstants.ACTION_MENU_BIG)) {
             resId = resources.getIdentifier(
                         SLIM_FRAMEWORK_METADATA_NAME + ":drawable/ic_sysbar_menu_big", null, null);
         } else if (clickAction.equals(ActionConstants.ACTION_IME)) {

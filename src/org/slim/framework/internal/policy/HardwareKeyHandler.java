@@ -372,6 +372,9 @@ public class HardwareKeyHandler {
                 if (!mPressOnHomeBehavior.equals(ActionConstants.ACTION_RECENTS)) {
                     cancelPreloadRecentApps();
                 }
+                if (mPressOnHomeBehavior.equals(ActionConstants.ACTION_HOME)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnHomeBehavior, false);
                 return true;
             }
@@ -438,6 +441,9 @@ public class HardwareKeyHandler {
                     cancelPreloadRecentApps();
                 }
                 //mDisableVibration = maybeDisableVibration(mPressOnMenuBehavior);
+                if (mPressOnMenuBehavior.equals(ActionConstants.ACTION_MENU)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnMenuBehavior, false);
                 return true;
             }
@@ -506,6 +512,9 @@ public class HardwareKeyHandler {
                     cancelPreloadRecentApps();
                 }
                 //mDisableVibration = maybeDisableVibration(mPressOnBackBehavior);
+                if (mPressOnBackBehavior.equals(ActionConstants.ACTION_BACK)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnBackBehavior, false);
                 return true;
             }
@@ -823,10 +832,10 @@ public class HardwareKeyHandler {
         }
         if (pattern.length == 1) {
             // One-shot vibration
-            mVibrator.vibrate(owningUid, owningPackage, pattern[0], VIBRATION_ATTRIBUTES);
+            //mVibrator.vibrate(owningUid, owningPackage, pattern[0], VIBRATION_ATTRIBUTES);
         } else {
             // Pattern vibration
-            mVibrator.vibrate(owningUid, owningPackage, pattern, -1, VIBRATION_ATTRIBUTES);
+            //mVibrator.vibrate(owningUid, owningPackage, pattern, -1, VIBRATION_ATTRIBUTES);
         }
         return true;
     }
