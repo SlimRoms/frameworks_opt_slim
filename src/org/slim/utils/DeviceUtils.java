@@ -102,6 +102,11 @@ public class DeviceUtils {
 
     public static FilteredDeviceFeaturesArray filterUnsupportedDeviceFeatures(Context context,
             String[] valuesArray, String[] entriesArray) {
+        return filterUnsupportedDeviceFeatures(context, valuesArray, entriesArray, true);
+    }
+
+    public static FilteredDeviceFeaturesArray filterUnsupportedDeviceFeatures(Context context,
+            String[] valuesArray, String[] entriesArray, boolean supportsNone) {
         if (valuesArray == null || entriesArray == null || context == null) {
             return null;
         }
@@ -111,7 +116,9 @@ public class DeviceUtils {
             new FilteredDeviceFeaturesArray();
 
         for (int i = 0; i < valuesArray.length; i++) {
-            if (isSupportedFeature(context, valuesArray[i])) {
+            if (!supportsNone && ActionConstants.ACTION_NULL.equals(valuesArray[i])) {
+                continue;
+            } else if (isSupportedFeature(context, valuesArray[i])) {
                 finalEntries.add(entriesArray[i]);
                 finalValues.add(valuesArray[i]);
             }
