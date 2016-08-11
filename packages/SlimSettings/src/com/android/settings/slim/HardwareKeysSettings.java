@@ -42,11 +42,11 @@ import com.android.settings.SettingsPreferenceFragment;
 import com.slim.settings.R;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
+import org.slim.action.ActionsArray;
 import org.slim.action.ActionConstants;
 import org.slim.provider.SlimSettings;
 import org.slim.utils.AppHelper;
 import org.slim.utils.DeviceUtils;
-import org.slim.utils.DeviceUtils.FilteredDeviceFeaturesArray;
 import org.slim.utils.HwKeyHelper;
 import org.slim.utils.ShortcutPickerHelper;
 
@@ -129,7 +129,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
     private ShortcutPickerHelper mPicker;
     private String mPendingSettingsKey;
-    private static FilteredDeviceFeaturesArray sFinalActionDialogArray;
+    private ActionsArray mActionsArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -139,13 +139,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         // Before we start filter out unsupported options on the
         // ListPreference values and entries
-        Resources res = getResources();
-        sFinalActionDialogArray = new FilteredDeviceFeaturesArray();
-        sFinalActionDialogArray = DeviceUtils.filterUnsupportedDeviceFeatures(getActivity(),
-            res.getStringArray(res.getIdentifier(
-                    "shortcut_action_hwkey_values", "array", "org.slim.framework")),
-            res.getStringArray(res.getIdentifier(
-                    "shortcut_action_hwkey_entries", "array", "org.slim.framework")));
+        mActionsArray = new ActionsArray(getActivity());
 
         // Attach final settings screen.
         reloadSettings();
@@ -382,13 +376,13 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     }
 
     private String getDescription(String action) {
-        if (sFinalActionDialogArray == null || action == null) {
+        if (mActionsArray == null || action == null) {
             return null;
         }
         int i = 0;
-        for (String actionValue : sFinalActionDialogArray.values) {
+        for (String actionValue : mActionsArray.getValues()) {
             if (action.equals(actionValue)) {
-                return sFinalActionDialogArray.entries[i];
+                return mActionsArray.getEntries()[i];
             }
             i++;
         }
@@ -584,16 +578,16 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                     .setPositiveButton(android.R.string.ok, null)
                     .create();
                 case DLG_SHOW_ACTION_DIALOG:
-                    if (sFinalActionDialogArray == null) {
+                    if (getOwner().mActionsArray == null) {
                         return null;
                     }
                     return new AlertDialog.Builder(getActivity())
                     .setTitle(dialogTitle)
                     .setNegativeButton(android.R.string.cancel, null)
-                    .setItems(getOwner().sFinalActionDialogArray.entries,
+                    .setItems(getOwner().mActionsArray.getEntries(),
                         new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int item) {
-                            if (getOwner().sFinalActionDialogArray.values[item]
+                            if (getOwner().mActionsArray.getValues()[item]
                                     .equals(ActionConstants.ACTION_APP)) {
                                 if (getOwner().mPicker != null) {
                                     getOwner().mPendingSettingsKey = settingsKey;
@@ -602,7 +596,7 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                             } else {
                                 SlimSettings.System.putString(getActivity().getContentResolver(),
                                         settingsKey,
-                                        getOwner().sFinalActionDialogArray.values[item]);
+                                        getOwner().mActionsArray.getValues()[item]);
                                 getOwner().reloadSettings();
                             }
                         }
