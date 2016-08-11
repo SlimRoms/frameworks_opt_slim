@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_4aedf68a",
+        "filename": "packages/SlimSystemUI/res/layout/slim_navigation_bar.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-11T21:39:36Z",
+      "side": 1,
+      "message": "Slim licencing",
+      "range": {
+        "startLine": 5,
+        "startChar": 3,
+        "endLine": 5,
+        "endChar": 50
+      },
+      "revId": "042f6c319fa76edd21679affec4e550995f8489c",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_ea01423a",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-11T21:39:36Z",
+      "side": 1,
+      "message": "aosp and slim licencing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 45
+      },
+      "revId": "042f6c319fa76edd21679affec4e550995f8489c",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_0affee35",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/slim/SlimKeyButtonRipple.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-11T21:39:36Z",
+      "side": 1,
+      "message": "also slim",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 53
+      },
+      "revId": "042f6c319fa76edd21679affec4e550995f8489c",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_aafb3a46",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/slim/SlimKeyButtonView.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-11T21:39:36Z",
+      "side": 1,
+      "message": "also slim",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 53
+      },
+      "revId": "042f6c319fa76edd21679affec4e550995f8489c",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
