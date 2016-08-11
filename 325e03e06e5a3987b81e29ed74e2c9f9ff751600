@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_6a8f9224",
+        "filename": "packages/SlimSettings/AndroidManifest.xml",
+        "patchSetId": 10
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-08-11T04:44:46Z",
+      "side": 1,
+      "message": "change name to \"com.android.settings.slim.BootReceiver\"",
+      "revId": "325e03e06e5a3987b81e29ed74e2c9f9ff751600",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
