@@ -46,9 +46,9 @@ public class CreateSlimShortcut extends Activity {
         finalActionDialogArray =
             DeviceUtils.filterUnsupportedDeviceFeatures(this,
             getResources().getStringArray(getResources().getIdentifier(
-            "shortcut_action_launcher_values", "array", "org.slim.framework")),
+            "shortcut_action_values", "array", "org.slim.framework")),
             getResources().getStringArray(getResources().getIdentifier(
-            "shortcut_action_launcher_entries", "array", "org.slim.framework")));
+            "shortcut_action_entries", "array", "org.slim.framework")), false);
         final String[] dialogValues = finalActionDialogArray.values;
         final String[] dialogEntries = finalActionDialogArray.entries;
         AlertDialog.Builder action = new AlertDialog.Builder(this);

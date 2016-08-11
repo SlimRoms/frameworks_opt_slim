@@ -387,6 +387,9 @@ public class HardwareKeyHandler {
                 if (!mPressOnHomeBehavior.equals(ActionConstants.ACTION_RECENTS)) {
                     cancelPreloadRecentApps();
                 }
+                if (mPressOnHomeBehavior.equals(ActionConstants.ACTION_HOME)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnHomeBehavior, false);
                 return true;
             }
@@ -453,6 +456,9 @@ public class HardwareKeyHandler {
                     cancelPreloadRecentApps();
                 }
                 //mDisableVibration = maybeDisableVibration(mPressOnMenuBehavior);
+                if (mPressOnMenuBehavior.equals(ActionConstants.ACTION_MENU)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnMenuBehavior, false);
                 return true;
             }
@@ -521,6 +527,9 @@ public class HardwareKeyHandler {
                     cancelPreloadRecentApps();
                 }
                 //mDisableVibration = maybeDisableVibration(mPressOnBackBehavior);
+                if (mPressOnBackBehavior.equals(ActionConstants.ACTION_BACK)) {
+                    return false;
+                }
                 Action.processAction(mContext, mPressOnBackBehavior, false);
                 return true;
             }
