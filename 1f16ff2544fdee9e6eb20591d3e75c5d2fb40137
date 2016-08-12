@@ -22,6 +22,30 @@
       "revId": "1f16ff2544fdee9e6eb20591d3e75c5d2fb40137",
       "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_6da1eca8",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/HardwareKeysSettings.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2016-08-12T04:52:22Z",
+      "side": 1,
+      "message": "OK... but we don\u0027t map long-press for music track skip?\nDoesn\u0027t hurt to be there, but I don\u0027t like trash either...",
+      "parentUuid": "1acb0d3e_8a9afe12",
+      "range": {
+        "startLine": 89,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 71
+      },
+      "revId": "1f16ff2544fdee9e6eb20591d3e75c5d2fb40137",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
     }
   ]
 }
