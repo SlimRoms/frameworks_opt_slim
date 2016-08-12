@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_8a9afe12",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/HardwareKeysSettings.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-12T00:22:33Z",
+      "side": 1,
+      "message": "We don\u0027t support this....",
+      "range": {
+        "startLine": 89,
+        "startChar": 4,
+        "endLine": 89,
+        "endChar": 71
+      },
+      "revId": "1f16ff2544fdee9e6eb20591d3e75c5d2fb40137",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
