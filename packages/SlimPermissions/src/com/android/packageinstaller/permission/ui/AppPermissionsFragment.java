@@ -48,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.slim.permissionhandler.R;
+import com.slim.appops.AppOpsDetails;
 import com.android.packageinstaller.permission.model.AppPermissionGroup;
 import com.android.packageinstaller.permission.model.AppPermissions;
 import com.android.packageinstaller.permission.utils.LocationUtils;
@@ -193,7 +194,7 @@ public final class AppPermissionsFragment extends SettingsWithHeader
             return;
         }
 
-        PreferenceScreen screen = getPreferenceScreen();
+        final PreferenceScreen screen = getPreferenceScreen();
         screen.removeAll();
 
         if (mExtraScreen != null) {
@@ -255,6 +256,34 @@ public final class AppPermissionsFragment extends SettingsWithHeader
                     R.plurals.additional_permissions_more, count, count));
             screen.addPreference(extraPerms);
         }
+
+        Preference preference = new Preference(context);
+        preference.setTitle("Advanced");
+        screen.addPreference(preference);
+
+        final Preference advancedFragmentHolder = new Preference(context);
+        advancedFragmentHolder.setLayoutResource(R.layout.test);
+        Bundle args = new Bundle();
+        args.putString(AppOpsDetails.ARG_PACKAGE_NAME,
+                getArguments().getString(Intent.EXTRA_PACKAGE_NAME));
+
+        Fragment f = new AppOpsDetails();
+        f.setArguments(args);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_holder, f)
+                .addToBackStack(null).commit();
+
+        preference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                boolean mShowing = false;
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    if (!mShowing) {
+                        screen.addPreference(advancedFragmentHolder);
+                    } else {
+                        screen.removePreference(advancedFragmentHolder);
+                    }
+                    return true;
+                }
+        });
 
         setLoading(false /* loading */, true /* animate */);
     }

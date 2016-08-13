@@ -48,4 +48,7 @@
     <style name="ActionBar" parent="@android:style/Widget.Material.ActionBar.Solid">
         <item name="android:contentInsetStart">72dp</item>
     </style>
+
+    <!-- Scrollbar style OUTSIDE_OVERLAY -->
+    <integer name="preference_scrollbar_style">33554432</integer>
 </resources>
