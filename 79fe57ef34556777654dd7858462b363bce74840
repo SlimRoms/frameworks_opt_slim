@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_632b3d31",
+        "filename": "packages/SlimSettings/res/xml/hardwarekeys_settings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T22:24:18Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be\n\u003corg.slim.preference.SlimSystemSettingSwitchPreference\u003e ?",
+      "range": {
+        "startLine": 35,
+        "startChar": 12,
+        "endLine": 35,
+        "endChar": 59
+      },
+      "revId": "79fe57ef34556777654dd7858462b363bce74840",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
