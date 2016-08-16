@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_c36b1184",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/NavbarSettings.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T20:23:44Z",
+      "side": 1,
+      "message": "length",
+      "range": {
+        "startLine": 121,
+        "startChar": 8,
+        "endLine": 121,
+        "endChar": 104
+      },
+      "revId": "8754c2d3e696c534974984e241762012c191facc",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_e3688d89",
+        "filename": "packages/SlimSettings/src/com/android/settings/slim/NavbarSettings.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T20:23:44Z",
+      "side": 1,
+      "message": "length",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 113
+      },
+      "revId": "8754c2d3e696c534974984e241762012c191facc",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
