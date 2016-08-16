@@ -90,6 +90,7 @@ public class HardwareKeyHandler {
     private int mDeviceHardwareKeys;
     private boolean mKeysDisabled;
     private boolean mDisableVibration;
+    private boolean mHapticFeedbackDisabled;
     private boolean mPreloadedRecentApps;
 
     private Context mContext;
@@ -190,6 +191,9 @@ public class HardwareKeyHandler {
                     SlimSettings.System.DISABLE_HW_KEYS), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
+                    SlimSettings.System.DISABLE_HW_KEY_HAPTIC_FEEDBACK), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.KEY_HOME_ACTION), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
@@ -233,9 +237,6 @@ public class HardwareKeyHandler {
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.KEY_BACK_DOUBLE_TAP_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.HARDWARE_KEY_REBINDING), false, this,
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.KEY_CAMERA_ACTION), false, this,
@@ -298,77 +299,48 @@ public class HardwareKeyHandler {
                 SlimSettings.System.DISABLE_HW_KEYS, 0,
                 UserHandle.USER_CURRENT) == 1;
 
-        // Setup hardware keys
-        boolean keyRebindingDisabled = SlimSettings.System.getIntForUser(
+        mHapticFeedbackDisabled = SlimSettings.System.getIntForUser(
                 mContext.getContentResolver(),
-                SlimSettings.System.HARDWARE_KEY_REBINDING, 0,
-                UserHandle.USER_CURRENT) == 0;
+                SlimSettings.System.DISABLE_HW_KEY_HAPTIC_FEEDBACK, 0,
+                UserHandle.USER_CURRENT) == 1;
 
         // Home button
-        mPressOnHomeBehavior =
-                HwKeyHelper.getPressOnHomeBehavior(
-                        mContext, noHome || keyRebindingDisabled);
-        mLongPressOnHomeBehavior =
-                HwKeyHelper.getLongPressOnHomeBehavior(
-                        mContext, noHome || keyRebindingDisabled);
-        mDoubleTapOnHomeBehavior =
-                HwKeyHelper.getDoubleTapOnHomeBehavior(
-                        mContext, noHome || keyRebindingDisabled);
+        mPressOnHomeBehavior = HwKeyHelper.getPressOnHomeBehavior(mContext, noHome);
+        mLongPressOnHomeBehavior = HwKeyHelper.getLongPressOnHomeBehavior(mContext, noHome);
+        mDoubleTapOnHomeBehavior = HwKeyHelper.getDoubleTapOnHomeBehavior(mContext, noHome);
 
         // Menu button
-        mPressOnMenuBehavior =
-                HwKeyHelper.getPressOnMenuBehavior(
-                        mContext, noMenu || keyRebindingDisabled);
-        mLongPressOnMenuBehavior =
-                HwKeyHelper.getLongPressOnMenuBehavior(mContext,
-                        noMenu || keyRebindingDisabled, noMenu || !noAssist);
-        mDoubleTapOnMenuBehavior =
-                HwKeyHelper.getDoubleTapOnMenuBehavior(
-                        mContext, noMenu || keyRebindingDisabled);
+        mPressOnMenuBehavior = HwKeyHelper.getPressOnMenuBehavior(mContext, noMenu);
+        mLongPressOnMenuBehavior = HwKeyHelper.getLongPressOnMenuBehavior(mContext,
+                        noMenu, noMenu || !noAssist);
+        mDoubleTapOnMenuBehavior = HwKeyHelper.getDoubleTapOnMenuBehavior(mContext, noMenu);
 
         // Back button
-        mPressOnBackBehavior =
-                HwKeyHelper.getPressOnBackBehavior(
-                        mContext, noBack || keyRebindingDisabled);
-        mLongPressOnBackBehavior =
-                HwKeyHelper.getLongPressOnBackBehavior(
-                        mContext, noBack || keyRebindingDisabled);
-        mDoubleTapOnBackBehavior =
-                HwKeyHelper.getDoubleTapOnBackBehavior(
-                        mContext, noBack || keyRebindingDisabled);
+        mPressOnBackBehavior = HwKeyHelper.getPressOnBackBehavior(mContext, noBack);
+        mLongPressOnBackBehavior = HwKeyHelper.getLongPressOnBackBehavior(mContext, noBack);
+        mDoubleTapOnBackBehavior = HwKeyHelper.getDoubleTapOnBackBehavior(mContext, noBack);
 
         // Assist button
-        mPressOnAssistBehavior =
-                HwKeyHelper.getPressOnAssistBehavior(
-                        mContext, noAssist || keyRebindingDisabled);
-        mLongPressOnAssistBehavior =
-                HwKeyHelper.getLongPressOnAssistBehavior(
-                        mContext, noAssist || keyRebindingDisabled);
-        mDoubleTapOnAssistBehavior =
-                HwKeyHelper.getDoubleTapOnAssistBehavior(
-                        mContext, noAssist || keyRebindingDisabled);
+        mPressOnAssistBehavior = HwKeyHelper.getPressOnAssistBehavior(mContext, noAssist);
+        mLongPressOnAssistBehavior = HwKeyHelper.getLongPressOnAssistBehavior(mContext, noAssist);
+        mDoubleTapOnAssistBehavior = HwKeyHelper.getDoubleTapOnAssistBehavior(mContext, noAssist);
 
         // App switcher button
-        mPressOnAppSwitchBehavior =
-                HwKeyHelper.getPressOnAppSwitchBehavior(
-                        mContext, noAppSwitch || keyRebindingDisabled);
+        mPressOnAppSwitchBehavior = HwKeyHelper.getPressOnAppSwitchBehavior(mContext, noAppSwitch);
         mLongPressOnAppSwitchBehavior =
-                HwKeyHelper.getLongPressOnAppSwitchBehavior(
-                        mContext, noAppSwitch || keyRebindingDisabled);
+                HwKeyHelper.getLongPressOnAppSwitchBehavior(mContext, noAppSwitch);
         mDoubleTapOnAppSwitchBehavior =
-                HwKeyHelper.getDoubleTapOnAppSwitchBehavior(
-                        mContext, noAppSwitch || keyRebindingDisabled);
+                HwKeyHelper.getDoubleTapOnAppSwitchBehavior(mContext, noAppSwitch);
 
         // Camera button
-        mPressOnCameraBehavior =
-                HwKeyHelper.getPressOnCameraBehavior(
-                        mContext, noCamera || keyRebindingDisabled);
-        mLongPressOnCameraBehavior =
-                HwKeyHelper.getLongPressOnCameraBehavior(
-                        mContext, noCamera || keyRebindingDisabled);
-        mDoubleTapOnCameraBehavior =
-                HwKeyHelper.getDoubleTapOnCameraBehavior(
-                        mContext, noCamera || keyRebindingDisabled);
+        mPressOnCameraBehavior = HwKeyHelper.getPressOnCameraBehavior(mContext, noCamera);
+        mLongPressOnCameraBehavior = HwKeyHelper.getLongPressOnCameraBehavior(mContext, noCamera);
+        mDoubleTapOnCameraBehavior = HwKeyHelper.getDoubleTapOnCameraBehavior(mContext, noCamera);
+    }
+
+    public boolean shouldDisableHapticFeedback(int keyCode) {
+        return (mKeysDisabled && isKeyDisabled(keyCode))
+                || mHapticFeedbackDisabled;
     }
 
     public boolean isHwKeysDisabled() {
