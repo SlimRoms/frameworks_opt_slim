@@ -108,10 +108,10 @@ public final class SlimSettingsKeys {
         public static final String DISABLE_HW_KEYS = "disable_hw_keys";
 
         /**
-         * Whether custom hardware key rebinding is enabled
+         * Disables haptic feedback on hardware keys
          * @hide
          */
-        public static final String HARDWARE_KEY_REBINDING = "hardware_key_rebinding";
+        public static final String DISABLE_HW_KEY_HAPTIC_FEEDBACK = "disable_hw_key_haptic";
 
         /**
          * Action to perform when the back key is pressed (default: ACTION_BACK)
