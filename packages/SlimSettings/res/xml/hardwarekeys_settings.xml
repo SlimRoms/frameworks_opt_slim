@@ -32,11 +32,10 @@
                 android:title="@string/hardware_keys_lights_enable_title"
                 android:persistent="false" />
 
-            <SwitchPreference
+            <org.slim.preference.SlimSystemSwitchPreference
                 android:dependency="enable_hw_keys"
-                android:key="enable_hardware_rebind"
-                android:title="@string/keys_enable_custom_title"
-                android:summary="@string/keys_enable_custom_summary" />
+                android:key="disable_hw_key_haptic"
+                android:title="@string/disable_hw_key_haptic_title" />
 
         </PreferenceCategory>
 
