@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1acb0d3e_a36365b0",
+        "filename": "res/res/values/action_arrays.xml",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T20:20:34Z",
+      "side": 1,
+      "message": "Should say Slim Actions options no? Since everything uses this now?",
+      "range": {
+        "startLine": 135,
+        "startChar": 4,
+        "endLine": 135,
+        "endChar": 44
+      },
+      "revId": "8b092d970554eb9ecfa4a7e01a98e1e35bb428c3",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_435881fa",
+        "filename": "src/org/slim/action/ActionHelper.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T20:20:34Z",
+      "side": 1,
+      "message": "Since cleanup might as well",
+      "range": {
+        "startLine": 246,
+        "startChar": 49,
+        "endLine": 246,
+        "endChar": 50
+      },
+      "revId": "8b092d970554eb9ecfa4a7e01a98e1e35bb428c3",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1acb0d3e_635d7de9",
+        "filename": "src/org/slim/action/ActionsArray.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-08-16T20:20:34Z",
+      "side": 1,
+      "message": "licensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 24
+      },
+      "revId": "8b092d970554eb9ecfa4a7e01a98e1e35bb428c3",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
