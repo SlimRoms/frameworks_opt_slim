@@ -22,6 +22,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under,src)
 
 LOCAL_SRC_FILES += $(call all-Iaidl-files-under,src)
 
+LOCAL_SHARED_ANDROID_LIBRARIES += android-support-v7-preference
+
 slim_platform_res := APPS/org.slim.framework-res_intermediates/src
 
 LOCAL_INTERMEDIATE_SOURCES := \
