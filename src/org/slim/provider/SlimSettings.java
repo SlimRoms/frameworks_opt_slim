@@ -799,6 +799,10 @@ public final class SlimSettings {
         /** @hide */
         public static final Validator DOZE_TRIGGER_SIGMOTION_VALIDATOR = sBooleanValidator;
         /** @hide */
+        public static final Validator DOZE_TRIGGER_HAND_WAVE_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_POCKET_VALIDATOR = sBooleanValidator;
+        /** @hide */
         public static final Validator DOZE_TRIGGER_NOTIFICATION_VALIDATOR = sBooleanValidator;
         /** @hide */
         public static final Validator DOZE_SCHEDULE_VALIDATOR = sBooleanValidator;
@@ -867,6 +871,8 @@ public final class SlimSettings {
             VALIDATORS.put(DOZE_TIMEOUT, DOZE_TIMEOUT_VALIDATOR);
             VALIDATORS.put(DOZE_TRIGGER_PICKUP, DOZE_TRIGGER_PICKUP_VALIDATOR);
             VALIDATORS.put(DOZE_TRIGGER_SIGMOTION, DOZE_TRIGGER_SIGMOTION_VALIDATOR);
+            VALIDATORS.put(DOZE_TRIGGER_HAND_WAVE, DOZE_TRIGGER_HAND_WAVE_VALIDATOR);
+            VALIDATORS.put(DOZE_TRIGGER_POCKET, DOZE_TRIGGER_POCKET_VALIDATOR);
             VALIDATORS.put(DOZE_TRIGGER_NOTIFICATION, DOZE_TRIGGER_NOTIFICATION_VALIDATOR);
             VALIDATORS.put(DOZE_SCHEDULE, DOZE_SCHEDULE_VALIDATOR);
             VALIDATORS.put(DOZE_BRIGHTNESS, DOZE_BRIGHTNESS_VALIDATOR);

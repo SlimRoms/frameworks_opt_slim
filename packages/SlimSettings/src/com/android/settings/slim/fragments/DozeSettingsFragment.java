@@ -50,6 +50,8 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
     private static final String KEY_DOZE_TIMEOUT = "doze_timeout";
     private static final String KEY_DOZE_TRIGGER_PICKUP = "doze_trigger_pickup";
     private static final String KEY_DOZE_TRIGGER_SIGMOTION = "doze_trigger_sigmotion";
+    private static final String KEY_DOZE_TRIGGER_HAND_WAVE = "doze_trigger_hand_wave";
+    private static final String KEY_DOZE_TRIGGER_POCKET = "doze_trigger_pocket";    
     private static final String KEY_DOZE_TRIGGER_NOTIFICATION = "doze_trigger_notification";
     private static final String KEY_DOZE_SCHEDULE = "doze_schedule";
     private static final String KEY_DOZE_BRIGHTNESS = "doze_brightness";
@@ -60,6 +62,8 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
     private SlimSeekBarPreference mDozeTimeout;
     private SwitchPreference mDozeTriggerPickup;
     private SwitchPreference mDozeTriggerSigmotion;
+    private SwitchPreference mDozeTriggerHandWave;
+    private SwitchPreference mDozeTriggerPocket;
     private SwitchPreference mDozeTriggerNotification;
     private SwitchPreference mDozeSchedule;
     private SlimSeekBarPreference mDozeBrightness;
@@ -105,6 +109,18 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
         } else {
             removePreference(KEY_DOZE_TRIGGER_SIGMOTION);
         }
+        if (isHandWaveSensorUsedByDefault(activity)) {
+            mDozeTriggerHandWave = (SwitchPreference) findPreference(KEY_DOZE_TRIGGER_HAND_WAVE);
+            mDozeTriggerHandWave.setOnPreferenceChangeListener(this);
+        } else {
+            removePreference(KEY_DOZE_TRIGGER_HAND_WAVE);
+        }
+        if (isPocketSensorUsedByDefault(activity)) {
+            mDozeTriggerPocket = (SwitchPreference) findPreference(KEY_DOZE_TRIGGER_SIGMOTION);
+            mDozeTriggerPocket.setOnPreferenceChangeListener(this);
+        } else {
+            removePreference(KEY_DOZE_TRIGGER_POCKET);
+        }
         mDozeTriggerNotification = (SwitchPreference) findPreference(KEY_DOZE_TRIGGER_NOTIFICATION);
         mDozeTriggerNotification.setOnPreferenceChangeListener(this);
 
@@ -146,6 +162,16 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
             boolean value = (Boolean) newValue;
             SlimSettings.System.putInt(getContentResolver(),
                     SlimSettings.System.DOZE_TRIGGER_SIGMOTION, value ? 1 : 0);
+        }
+        if (preference == mDozeTriggerHandWave) {
+            boolean value = (Boolean) newValue;
+            SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.DOZE_TRIGGER_HAND_WAVE, value ? 1 : 0);
+        }
+        if (preference == mDozeTriggerPocket) {
+            boolean value = (Boolean) newValue;
+            SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.DOZE_TRIGGER_POCKET, value ? 1 : 0);
         }
         if (preference == mDozeTriggerNotification) {
             boolean value = (Boolean) newValue;
@@ -196,6 +222,16 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
                     SlimSettings.System.DOZE_TRIGGER_SIGMOTION, 1);
             mDozeTriggerSigmotion.setChecked(value != 0);
         }
+        if (mDozeTriggerHandWave != null) {
+            int value = SlimSettings.System.getInt(getContentResolver(),
+                    SlimSettings.System.DOZE_TRIGGER_HAND_WAVE, 1);
+            mDozeTriggerHandWave.setChecked(value != 0);
+        }
+        if (mDozeTriggerPocket != null) {
+            int value = SlimSettings.System.getInt(getContentResolver(),
+                    SlimSettings.System.DOZE_TRIGGER_POCKET, 1);
+            mDozeTriggerPocket.setChecked(value != 0);
+        }
         if (mDozeTriggerNotification != null) {
             int value = SlimSettings.System.getInt(getContentResolver(),
                     SlimSettings.System.DOZE_TRIGGER_NOTIFICATION, 1);
@@ -224,6 +260,14 @@ public class DozeSettingsFragment extends SettingsPreferenceFragment implements
 
     private static boolean isSigmotionSensorUsedByDefault(Context context) {
         return getConfigBoolean(context, "doze_pulse_on_significant_motion");
+    }
+    
+    private static boolean isHandWaveSensorUsedByDefault(Context context) {
+        return getConfigBoolean(context, "doze_pulse_on_hand_wave");
+    }
+
+    private static boolean isPocketSensorUsedByDefault(Context context) {
+        return getConfigBoolean(context, "doze_pulse_on_pocket");
     }
 
     private static int dozeTimeoutDefault(Context context) {
