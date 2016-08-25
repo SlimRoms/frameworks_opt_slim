@@ -45,6 +45,18 @@ public final class SlimSettingsKeys {
         public static final String DOZE_TRIGGER_SIGMOTION = "doze_trigger_sigmotion";
 
         /**
+         * Use significant motion sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_HAND_WAVE = "doze_trigger_hand_wave";
+
+        /**
+         * Use significant motion sensor as doze pulse trigger
+         * @hide
+         */
+        public static final String DOZE_TRIGGER_POCKET = "doze_trigger_pocket";
+
+        /**
          * Use notifications as doze pulse triggers
          * @hide
          */
