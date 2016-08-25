@@ -264,6 +264,10 @@
     <string name="doze_trigger_sigmotion_title">Significant motion trigger</string>
     <string name="doze_trigger_sigmotion_summary_on">Doze pulse will be triggered by significant motion sensor events</string>
     <string name="doze_trigger_sigmotion_summary_off">Significant motion sensor will not be utilized as a triggering mechanism</string>
+    <string name="doze_trigger_hand_wave_gesture_title">Hand wave</string>
+    <string name="doze_trigger_hand_wave_gesture_summary">Pulse notifications on hand wave</string>
+    <string name="doze_trigger_pocket_gesture_title">Pocket</string>
+    <string name="doze_trigger_pocket_gesture_summary">Pulse notifications on removal from pocket</string>
     <string name="doze_trigger_notification_title">Notification trigger</string>
     <string name="doze_trigger_notification_summary_on">Doze pulse will be triggered by notifications</string>
     <string name="doze_trigger_notification_summary_off">Notifications will not be utilized as a trigger</string>
