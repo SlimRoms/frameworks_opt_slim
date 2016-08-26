@@ -884,6 +884,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         }
     }
 
+    @Override
     private void adjustExtraKeyGravity(View navBar, boolean isLayoutRtl) {
         View menu = navBar.findViewById(R.id.menu);
         View imeSwitcher = navBar.findViewById(R.id.ime_switcher);
