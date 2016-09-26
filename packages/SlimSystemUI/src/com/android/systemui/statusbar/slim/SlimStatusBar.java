@@ -476,4 +476,61 @@ public class SlimStatusBar extends PhoneStatusBar {
             }
         }
     }
+
+    @Override
+    protected SwipeHelper.LongPressListener getNotificationLongClicker() {
+        return new SwipeHelper.LongPressListener() {
+            @Override
+            public boolean onLongPress(View v, int x, int y) {
+                dismissPopups();
+
+                if (!(v instanceof ExpandableNotificationRow)) {
+                    return false;
+                }
+                if (v.getWindowToken() == null) {
+                    Log.e(TAG, "Trying to show notification guts, but not attached to window");
+                    return false;
+                }
+
+                ExpandableNotificationRow row = (ExpandableNotificationRow) v;
+                if (row.isUserExpanded()) {
+                    // if user expanded notification, collapse it.  if user wants to see notification
+                    // guts, they can longpress again.
+                    row.resetUserExpansion();
+                    mStackScroller.onGroupExpansionChanged(row, false /* expand */);
+                    return false;
+                }
+
+                bindGuts(row);
+
+                // Assume we are a status_bar_notification_row
+                final NotificationGuts guts = row.getGuts();
+                if (guts == null) {
+                    // This view has no guts. Examples are the more card or the dismiss all view
+                    return false;
+                }
+
+                // Already showing?
+                if (guts.getVisibility() == View.VISIBLE) {
+                    Log.e(TAG, "Trying to show notification guts, but already visible");
+                    return false;
+                }
+
+                MetricsLogger.action(mContext, MetricsLogger.ACTION_NOTE_CONTROLS);
+                guts.setVisibility(View.VISIBLE);
+                final double horz = Math.max(guts.getWidth() - x, x);
+                final double vert = Math.max(guts.getActualHeight() - y, y);
+                final float r = (float) Math.hypot(horz, vert);
+                final Animator a
+                        = ViewAnimationUtils.createCircularReveal(guts, x, y, 0, r);
+                a.setDuration(400);
+                a.setInterpolator(mLinearOutSlowIn);
+                a.start();
+
+                mNotificationGutsExposed = guts;
+
+                return true;
+            }
+        };
+    }
 }
