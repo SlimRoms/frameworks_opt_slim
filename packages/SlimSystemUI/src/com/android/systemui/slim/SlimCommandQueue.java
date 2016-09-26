@@ -60,8 +60,8 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
     public void showCustomIntentAfterKeyguard(Intent intent) {
         synchronized (mLock) {
             mHandler.removeMessages(MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD);
-            Message m = mHandler.obtainMessage(MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD, 0, 0, intent);
-            m.sendToTarget();
+            mHandler.obtainMessage(MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD, 0, 0, intent)
+                    .sendToTarget();
         }
     }
 
@@ -83,7 +83,7 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
 
     @Override
     public void toggleScreenshot() {
-        synchronized (mHandler) {
+        synchronized (mLock) {
             mHandler.removeMessages(MSG_TOGGLE_SCREENSHOT);
             mHandler.obtainMessage(MSG_TOGGLE_SCREENSHOT, 0, 0, null).sendToTarget();
         }

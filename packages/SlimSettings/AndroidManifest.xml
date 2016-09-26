@@ -9,6 +9,14 @@
         android:icon="@android:drawable/sym_def_app_icon"
         android:label="SlimSettings" >
 
+        <activity android:name=".Settings$PersonalizationSettings"
+            android:label="@string/header_category_wireless_networks">
+            <intent-filter android:priority="4">
+                <action android:name="com.android.settings.category.personalization" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name="com.slim.settings.activities.InterfaceSettingsActivity"
             android:label="@string/interface_settings_title"
