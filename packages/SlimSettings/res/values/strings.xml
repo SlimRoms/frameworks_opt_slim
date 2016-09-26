@@ -22,6 +22,7 @@
     <string name="menu_cancel">Discard</string>
 
     <!-- Slim settings screens -->
+    <string name="header_category_wireless_networks">Personalization</string>
     <string name="navigation_settings_title">Navigation</string>
     <string name="interface_settings_title">Interface</string>
     <string name="advanced_settings">Advanced</string>
