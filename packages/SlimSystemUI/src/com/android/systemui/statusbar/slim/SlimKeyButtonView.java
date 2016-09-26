@@ -194,9 +194,9 @@ public class SlimKeyButtonView extends KeyButtonView {
                 setPressed(true);
                 //performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
                 if (mClickAction.equals(ActionConstants.ACTION_RECENTS)) {
-                    try {
+                    /*try {
                         mStatusBar.preloadRecentApps();
-                    } catch (RemoteException e) {}
+                    } catch (RemoteException e) {}*/
                 }
                 if (mDoubleTapPending) {
                     mDoubleTapPending = false;
@@ -219,9 +219,9 @@ public class SlimKeyButtonView extends KeyButtonView {
             case MotionEvent.ACTION_CANCEL:
                 setPressed(false);
                 if (mClickAction.equals(ActionConstants.ACTION_RECENTS)) {
-                    try {
+                    /*try {
                         mStatusBar.cancelPreloadRecentApps();
-                    } catch (RemoteException e) {}
+                    } catch (RemoteException e) {}*/
                 }
                 // hack to fix ripple getting stuck. exitHardware() starts an animation,
                 // but sometimes does not finish it.
@@ -232,9 +232,9 @@ public class SlimKeyButtonView extends KeyButtonView {
                 final boolean doIt = isPressed();
                 setPressed(false);
                 if (!doIt && mClickAction.equals(ActionConstants.ACTION_RECENTS)) {
-                    try {
+                    /*try {
                         mStatusBar.cancelPreloadRecentApps();
-                    } catch (RemoteException e) {}
+                    } catch (RemoteException e) {}*/
                 }
                 if (!mIsLongpressed) {
                     if (hasDoubleTapAction()) {
