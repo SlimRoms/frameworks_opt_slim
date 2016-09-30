@@ -618,9 +618,11 @@ public class SlimNavigationBarView extends NavigationBarView {
 
         mNavigationIconHints = hints;
 
-        if (getBackButton() != null ) {
-            ((ImageView) getBackButton().getCurrentView()).setImageDrawable(null);
-            ((ImageView) getBackButton().getCurrentView()).setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+        ImageView backButton = (ImageView) getCurrentView().findViewById(R.id.back);
+
+        if (backButton != null) {
+            backButton.setImageDrawable(null);
+            backButton.setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
         }
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);

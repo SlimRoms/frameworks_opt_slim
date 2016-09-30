@@ -18,6 +18,7 @@ package org.slim.service;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Slog;
@@ -78,6 +79,42 @@ public class SlimStatusBarService extends SlimSystemService {
             if (mBar != null) {
                 try {
                     mBar.toggleKillApp();
+                } catch (RemoteException ex) {}
+            }
+        }
+
+        @Override
+        public void toggleRecentApps() {
+            if (mBar != null) {
+                try {
+                    mBar.toggleRecentApps();
+                } catch (RemoteException ex) {}
+            }
+        }
+
+        @Override
+        public void preloadRecentApps() {
+            if (mBar != null) {
+                try {
+                    mBar.preloadRecentApps();
+                } catch (RemoteException ex) {}
+            }
+        }
+
+        @Override
+        public void cancelPreloadRecentApps() {
+            if (mBar != null) {
+                try {
+                    mBar.cancelPreloadRecentApps();
+                } catch (RemoteException ex) {}
+            }
+        }
+
+        @Override
+        public void startAssist(Bundle args) {
+            if (mBar != null) {
+                try {
+                    mBar.startAssist(args);
                 } catch (RemoteException ex) {}
             }
         }

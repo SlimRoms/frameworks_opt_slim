@@ -17,6 +17,7 @@
 package org.slim.framework.internal.statusbar;
 
 import android.content.Intent;
+import android.os.Bundle;
 
 /** @hide */
 oneway interface ISlimStatusBar {
@@ -25,4 +26,9 @@ oneway interface ISlimStatusBar {
     void toggleScreenshot();
     void toggleLastApp();
     void toggleKillApp();
+
+    void startAssist(in Bundle bundle);
+    void toggleRecentApps();
+    void preloadRecentApps();
+    void cancelPreloadRecentApps();
 }

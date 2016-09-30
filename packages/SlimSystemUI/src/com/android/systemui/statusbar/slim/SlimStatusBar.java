@@ -235,11 +235,13 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
         SlimBatteryContainer container =(SlimBatteryContainer) mStatusBarView.findViewById(
                 R.id.slim_battery_container);
-        if (mBatteryController != null) {
+        if (mBatteryController != null && container != null) {
             container.setBatteryController(mBatteryController);
         }
 
         mSlimIconController = new SlimStatusBarIconController(mContext, mStatusBarView, this);
+
+        mStatusBarView.findViewById(R.id.battery).setVisibility(View.GONE);
 
         return mStatusBarView;
     }
@@ -315,7 +317,9 @@ public class SlimStatusBar extends PhoneStatusBar implements
     @Override
     protected void addNavigationBar() {
         if (DEBUG) Log.v(TAG, "addNavigationBar: about to add " + mSlimNavigationBarView);
-        if (mSlimNavigationBarView == null) return;
+        if (mSlimNavigationBarView == null) {
+            createNavigationBarView(mContext);
+        }
 
         prepareNavigationBarView();
 

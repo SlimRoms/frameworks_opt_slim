@@ -135,9 +135,9 @@ public class Action {
                     barService.expandSettingsPanel(null);
                 } catch (RemoteException e) {}
             } else if (action.equals(ActionConstants.ACTION_NOWONTAP)) {
-                /*try {
-                    barService.startAssist(new Bundle());
-                } catch (RemoteException e) {}*/
+                try {
+                    slimBarService.startAssist(new Bundle());
+                } catch (RemoteException e) {}
             } else if (action.equals(ActionConstants.ACTION_TORCH)) {
                 try {
                     CameraManager cameraManager = (CameraManager)
@@ -215,10 +215,10 @@ public class Action {
                 if (isKeyguardShowing) {
                     return;
                 }
-                /*try {
-                    barServiceInternal.toggleRecentApps();
+                try {
+                    slimBarService.toggleRecentApps();
                 } catch (RemoteException e) {
-                }*/
+                }
                 return;
             } else if (action.equals(ActionConstants.ACTION_VOICE_SEARCH)) {
                 // launch the search activity
