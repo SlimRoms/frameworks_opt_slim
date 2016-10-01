@@ -28,6 +28,8 @@ import com.android.internal.logging.MetricsLogger;
 import com.slim.settings.R;
 import com.android.settings.SettingsPreferenceFragment;
 
+import org.slim.framework.internal.logging.SlimMetricsLogger;
+
 public class NavbarButtonFragment extends SettingsPreferenceFragment implements
         OnPreferenceChangeListener {
 
@@ -57,7 +59,7 @@ public class NavbarButtonFragment extends SettingsPreferenceFragment implements
 
     @Override
     protected int getMetricsCategory() {
-        return MetricsLogger.INPUTMETHOD_LANGUAGE;
+        return SlimMetricsLogger.NAV_BAR_SETTINGS;
     }
 
 }
