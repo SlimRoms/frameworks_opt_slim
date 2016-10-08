@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_a1636219",
+        "filename": "src/org/slim/preference/SlimListPreference.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2016-10-08T13:23:46Z",
+      "side": 1,
+      "message": "ERROR: /home/nospamdan/slim7/frameworks/opt/slim/src/org/slim/preference/SlimListPreference.java:93: The method isPersisted() of type SlimListPreference must override or implement a supertype method",
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_e1a95a25",
+        "filename": "src/org/slim/preference/SlimSwitchPreference.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2016-10-08T13:23:46Z",
+      "side": 1,
+      "message": "ERROR: /home/nospamdan/slim7/frameworks/opt/slim/src/org/slim/preference/SlimSwitchPreference.java:85: The method isPersisted() of type SlimSwitchPreference must override or implement a supertype method",
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
