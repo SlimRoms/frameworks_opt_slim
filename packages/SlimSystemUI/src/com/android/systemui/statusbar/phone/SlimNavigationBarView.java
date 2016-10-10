@@ -99,8 +99,6 @@ public class SlimNavigationBarView extends NavigationBarView {
 
     private DeadZone mDeadZone;
 
-    private Drawable mBackIcon, mBackLandIcon;
-
     private int mRippleColor;
 
     private int mNavBarButtonColor;
@@ -268,7 +266,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         mButtonsConfig = ActionHelper.getNavBarConfig(mContext);
         mButtonIdList = new ArrayList<Integer>();
 
-        getIcons(context.getResources());
+        //getIcons(context.getResources());
 
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mIsPowerSaveMode = mPowerManager.isPowerSaveMode();
@@ -315,47 +313,9 @@ public class SlimNavigationBarView extends NavigationBarView {
         setMenuVisibility(mShowMenu, true /* force */);
     }
 
-    private void getIcons(Resources res) {
-        Drawable backIcon, backIconLand;
-        ActionConfig actionConfig;
-        String backIconUri = ActionConstants.ICON_EMPTY;
-        for (int j = 0; j < mButtonsConfig.size(); j++) {
-            actionConfig = mButtonsConfig.get(j);
-            final String action = actionConfig.getClickAction();
-            if (action.equals(ActionConstants.ACTION_BACK)) {
-                backIconUri = actionConfig.getIcon();
-            }
-        }
-
-        backIcon = ActionHelper.getActionIconImage(mContext,
-                ActionConstants.ACTION_BACK, backIconUri);
-        backIconLand = backIcon;
-
-        boolean shouldColor = true;
-        if (backIconUri != null && !backIconUri.equals(ActionConstants.ICON_EMPTY)
-                && !backIconUri.startsWith(ActionConstants.SYSTEM_ICON_IDENTIFIER)
-                && mNavBarButtonColorMode == 1) {
-            shouldColor = false;
-        }
-
-        // update back buttons color
-        if (shouldColor && mNavBarButtonColorMode != 3) {
-            backIcon.mutate();
-            backIcon.setTintMode(PorterDuff.Mode.MULTIPLY);
-            backIcon.setTint(mNavBarButtonColor);
-
-            backIconLand.mutate();
-            backIconLand.setTintMode(PorterDuff.Mode.MULTIPLY);
-            backIconLand.setTint(mNavBarButtonColor);
-        }
-
-        mBackIcon     = backIcon;
-        mBackLandIcon = backIconLand;
-    }
-
     //@Override
     public void updateResources() {
-        getIcons(getContext().getResources());
+        //getIcons(getContext().getResources());
     }
 
     @Override
@@ -456,6 +416,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         v.setDoubleTapAction(doubletap);
         int i = mContext.getResources().getDimensionPixelSize(R.dimen.navigation_key_width);
         v.setLayoutParams(getLayoutParams(landscape, i));
+        Drawable d = null;
 
         if (clickAction.equals(ActionConstants.ACTION_BACK)) {
             v.setId(R.id.back);
@@ -493,7 +454,9 @@ public class SlimNavigationBarView extends NavigationBarView {
             mAppIsBinded = true;
         }
 
-        Drawable d = ActionHelper.getActionIconImage(mContext, clickAction, iconUri);
+        if (d == null) {
+            d = ActionHelper.getActionIconImage(mContext, clickAction, iconUri);
+        }
 
         if (d != null) {
             d.mutate();
@@ -621,8 +584,7 @@ public class SlimNavigationBarView extends NavigationBarView {
         ImageView backButton = (ImageView) getCurrentView().findViewById(R.id.back);
 
         if (backButton != null) {
-            backButton.setImageDrawable(null);
-            backButton.setImageDrawable(mVertical ? mBackLandIcon : mBackIcon);
+            updateBackButton(backButton, backAlt);
         }
 
         final boolean showImeButton = ((hints & StatusBarManager.NAVIGATION_HINT_IME_SHOWN) != 0);
@@ -635,6 +597,14 @@ public class SlimNavigationBarView extends NavigationBarView {
         setMenuVisibility(mShowMenu, true);
 
         setDisabledFlags(mDisabledFlags, true);
+    }
+
+    private void updateBackButton(View button, boolean backAlt) {
+        if (backAlt) {
+            button.animate().rotation(-90).start();
+        } else {
+            button.animate().rotation(0).start();
+        }
     }
 
     @Override
@@ -949,7 +919,7 @@ public class SlimNavigationBarView extends NavigationBarView {
                 SlimSettings.System.MENU_VISIBILITY, MENU_VISIBILITY_SYSTEM,
                 UserHandle.USER_CURRENT);
 
-        getIcons(getContext().getResources());
+        //getIcons(getContext().getResources());
 
         mDimNavButtons = (SlimSettings.System.getIntForUser(resolver,
                 SlimSettings.System.DIM_NAV_BUTTONS, 0,
