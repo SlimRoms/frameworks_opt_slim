@@ -2,6 +2,98 @@
   "comments": [
     {
       "key": {
+        "uuid": "fab9d9a7_67ec9ac8",
+        "filename": "Android.mk",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:24:42Z",
+      "side": 1,
+      "message": "use proper flag",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 63
+      },
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_07d11efb",
+        "filename": "res/res/values/arrays.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:24:42Z",
+      "side": 1,
+      "message": "these do not belong here",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 28,
+        "endChar": 19
+      },
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_27cea25b",
+        "filename": "res/res/values/strings.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:24:42Z",
+      "side": 1,
+      "message": "does not belong",
+      "range": {
+        "startLine": 174,
+        "startChar": 3,
+        "endLine": 179,
+        "endChar": 67
+      },
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_c7da2617",
+        "filename": "src/org/slim/framework/internal/policy/HardwareKeyHandler.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:24:42Z",
+      "side": 1,
+      "message": "move all this to proper commit",
+      "range": {
+        "startLine": 798,
+        "startChar": 4,
+        "endLine": 814,
+        "endChar": 5
+      },
+      "revId": "4973194fe5042deb1fb7090c9095fa99fa0bb14b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fab9d9a7_a1636219",
         "filename": "src/org/slim/preference/SlimListPreference.java",
         "patchSetId": 2
