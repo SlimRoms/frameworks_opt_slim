@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_e7a96a7c",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slim/SlimCommandQueue.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:20:16Z",
+      "side": 1,
+      "message": "shorten",
+      "range": {
+        "startLine": 63,
+        "startChar": 12,
+        "endLine": 64,
+        "endChar": 29
+      },
+      "revId": "e1e473ba904abd18480b02a157640680cc4d0e13",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_47b076dd",
+        "filename": "src/org/slim/framework/internal/policy/HardwareKeyHandler.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:20:16Z",
+      "side": 1,
+      "message": "Update these",
+      "range": {
+        "startLine": 813,
+        "startChar": 6,
+        "endLine": 837,
+        "endChar": 15
+      },
+      "revId": "e1e473ba904abd18480b02a157640680cc4d0e13",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
