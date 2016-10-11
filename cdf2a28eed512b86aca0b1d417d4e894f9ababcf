@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_a7305257",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:29:41Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 269,
+        "startChar": 8,
+        "endLine": 269,
+        "endChar": 43
+      },
+      "revId": "cdf2a28eed512b86aca0b1d417d4e894f9ababcf",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_4735d644",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:29:41Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 316,
+        "startChar": 4,
+        "endLine": 319,
+        "endChar": 5
+      },
+      "revId": "cdf2a28eed512b86aca0b1d417d4e894f9ababcf",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_673a5a38",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:29:41Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 419,
+        "startChar": 7,
+        "endLine": 419,
+        "endChar": 26
+      },
+      "revId": "cdf2a28eed512b86aca0b1d417d4e894f9ababcf",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_073fde26",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-11T03:29:41Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 922,
+        "startChar": 7,
+        "endLine": 922,
+        "endChar": 48
+      },
+      "revId": "cdf2a28eed512b86aca0b1d417d4e894f9ababcf",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
