@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "fab9d9a7_5f227eba",
+        "filename": "packages/SlimSettings/src/com/slim/settings/preference/ButtonBacklightBrightness.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-12T23:00:18Z",
+      "side": 1,
+      "message": "System",
+      "range": {
+        "startLine": 411,
+        "startChar": 28,
+        "endLine": 411,
+        "endChar": 34
+      },
+      "revId": "52c70afca75f1f6ca3baba74c1e6bb87c3c64570",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_ff2ed2a4",
+        "filename": "packages/SlimSettings/src/com/slim/settings/preference/ButtonBacklightBrightness.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 415,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-12T23:00:18Z",
+      "side": 1,
+      "message": "System",
+      "range": {
+        "startLine": 415,
+        "startChar": 21,
+        "endLine": 415,
+        "endChar": 27
+      },
+      "revId": "52c70afca75f1f6ca3baba74c1e6bb87c3c64570",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fab9d9a7_1f1de6bd",
         "filename": "packages/SlimSettings/src/com/slim/settings/preference/CustomDialogPreference.java",
         "patchSetId": 6
@@ -16,6 +62,29 @@
       "range": {
         "startLine": 2,
         "startChar": 3,
+        "endLine": 2,
+        "endChar": 53
+      },
+      "revId": "52c70afca75f1f6ca3baba74c1e6bb87c3c64570",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fab9d9a7_3f254ac2",
+        "filename": "packages/SlimSettings/src/com/slim/settings/preference/CustomDialogPreference.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-12T23:00:18Z",
+      "side": 1,
+      "message": "Does it really need it if its a straight copy from cm?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
         "endLine": 2,
         "endChar": 53
       },
