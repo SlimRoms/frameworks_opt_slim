@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fab9d9a7_1f1de6bd",
+        "filename": "packages/SlimSettings/src/com/slim/settings/preference/CustomDialogPreference.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-10-12T21:55:10Z",
+      "side": 1,
+      "message": "Add Slim",
+      "range": {
+        "startLine": 2,
+        "startChar": 3,
+        "endLine": 2,
+        "endChar": 53
+      },
+      "revId": "52c70afca75f1f6ca3baba74c1e6bb87c3c64570",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
