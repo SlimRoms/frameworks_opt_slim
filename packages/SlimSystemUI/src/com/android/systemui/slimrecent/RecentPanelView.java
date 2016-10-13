@@ -36,6 +36,9 @@ import android.os.Bundle;
 import android.os.Process;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.ContextThemeWrapper;
@@ -46,12 +49,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.android.cards.recyclerview.internal.BaseRecyclerViewAdapter.CardViewHolder;
+import com.android.cards.recyclerview.internal.CardArrayRecyclerViewAdapter;
+import com.android.cards.recyclerview.view.CardRecyclerView;
 import com.android.cards.internal.Card;
-import com.android.cards.internal.CardArrayAdapter;
-import com.android.cards.view.CardListView;
 import com.android.systemui.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slim.provider.SlimSettings;
@@ -93,17 +98,15 @@ public class RecentPanelView {
     private static final String AMAZON_APP_URI_QUERY    = "amzn://apps/android?p=";
 
     private final Context mContext;
-    private final CardListView mListView;
     private final ImageView mEmptyRecentView;
+
+    private final CardRecyclerView mCardRecyclerView;
+    private CardArrayRecyclerViewAdapter mCardAdapter;
 
     private final RecentController mController;
 
-    // Our array adapter holding all cards
-    private CardArrayAdapter mCardArrayAdapter;
     // Array list of all current cards
     private ArrayList<Card> mCards;
-    // Array list of all current tasks
-    private final ArrayList<TaskDescription> mTasks = new ArrayList<TaskDescription>();
     // Our first task which is not displayed but needed for internal references.
     private TaskDescription mFirstTask;
     // Array list of all expanded states of apps accessed during the session
@@ -113,7 +116,6 @@ public class RecentPanelView {
     private boolean mCancelledByUser;
     private boolean mTasksLoaded;
     private boolean mIsLoading;
-    private int mTasksSize;
 
     private int mMainGravity;
     private float mScaleFactor;
@@ -142,24 +144,55 @@ public class RecentPanelView {
     }
 
     public RecentPanelView(Context context, RecentController controller,
-            CardListView listView, ImageView emptyRecentView) {
+            CardRecyclerView recyclerView, ImageView emptyRecentView) {
         mContext = context;
-        mListView = listView;
+        mCardRecyclerView = recyclerView;
         mEmptyRecentView = emptyRecentView;
         mController = controller;
 
         buildCardListAndAdapter();
+
+        setupItemTouchHelper();
     }
 
     /**
      * Build card list and arrayadapter we need to fill with tasks
      */
     protected void buildCardListAndAdapter() {
-        mCards = new ArrayList<Card>();
-        mCardArrayAdapter = new CardArrayAdapter(mContext, mCards);
-        if (mListView != null) {
-            mListView.setAdapter(mCardArrayAdapter);
+        mCards = new ArrayList<>();
+        mCardAdapter = new CardArrayRecyclerViewAdapter(mContext, mCards);
+        if (mCardRecyclerView != null) {
+            mCardRecyclerView.setAdapter(mCardAdapter);
         }
+    }
+
+    private void setupItemTouchHelper() {
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, 
+                    ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+                RecentCard card = (RecentCard) mCards.get(pos);
+                mCards.remove(pos);
+                removeApplication(card.getTaskDescription());
+                mCardAdapter.notifyItemRemoved(pos);
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView,
+                    RecyclerView.ViewHolder viewHolder) {
+                // Set movement flags based on the layout manager
+                final int dragFlags = 0;
+                final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        });
+        touchHelper.attachToRecyclerView(mCardRecyclerView);
     }
 
     /**
@@ -168,14 +201,6 @@ public class RecentPanelView {
     private RecentCard assignListeners(final RecentCard card, final TaskDescription td) {
         if (DEBUG) Log.v(TAG, "add listeners to task card");
 
-        // Listen for swipe to close and remove the app.
-        card.setSwipeable(true);
-        card.setOnSwipeListener(new Card.OnSwipeListener() {
-            @Override
-            public void onSwipe(Card card) {
-                removeApplication(td);
-            }
-        });
         // Listen for onClick to start the app with custom animation
         card.setOnClickListener(new Card.OnCardClickListener() {
             @Override
@@ -388,20 +413,18 @@ public class RecentPanelView {
             am.removeTask(td.persistentTaskId);
 
             // Accessibility feedback
-            mListView.setContentDescription(
+            mCardRecyclerView.setContentDescription(
                     mContext.getString(R.string.accessibility_recents_item_dismissed,
                             td.getLabel()));
-            mListView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
-            mListView.setContentDescription(null);
+            mCardRecyclerView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
+            mCardRecyclerView.setContentDescription(null);
 
             // Remove app from task, cache and expanded state list.
             removeApplicationBitmapCacheAndExpandedState(td);
-            mTasks.remove(td);
-            mTasksSize--;
         }
 
         // All apps were removed? Close recents panel.
-        if (mTasksSize == 0) {
+        if (mCards.size() == 0) {
             setVisibility();
             exit();
         }
@@ -414,9 +437,9 @@ public class RecentPanelView {
         final ActivityManager am = (ActivityManager)
                 mContext.getSystemService(Context.ACTIVITY_SERVICE);
         boolean hasFavorite = false;
-        final int oldTaskSize = mTasks.size() - 1;
-        for (int i = oldTaskSize; i >= 0; i--) {
-            TaskDescription td = mTasks.get(i);
+        for (Card c : mCards) {
+            RecentCard card = (RecentCard) c;
+            TaskDescription td = card.getTaskDescription();
             // User favorites are not removed.
             if (td.getIsFavorite()) {
                 hasFavorite = true;
@@ -426,28 +449,18 @@ public class RecentPanelView {
             if (am != null) {
                 am.removeTask(td.persistentTaskId);
             }
-            // Remove from task list.
-            mTasks.remove(td);
             // Remove the card.
-            removeRecentCard(td);
-            // Notify ArrayAdapter about the change.
-            mCardArrayAdapter.notifyDataSetChanged();
+            removeRecentCard(card);
             // Remove bitmap and expanded state.
             removeApplicationBitmapCacheAndExpandedState(td);
-            // Correct global task size.
-            mTasksSize--;
         }
         return !hasFavorite;
     }
 
-    private void removeRecentCard(TaskDescription td) {
-        for (int i = 0; i < mCards.size(); i++) {
-            RecentCard card = (RecentCard) mCards.get(i);
-            if (card != null && card.getPersistentTaskId() == td.persistentTaskId) {
-                mCards.remove(i);
-                return;
-            }
-        }
+    private void removeRecentCard(RecentCard card) {
+        int pos = mCards.indexOf(card);
+        mCards.remove(pos);
+        mCardAdapter.notifyItemRemoved(pos);
     }
 
     /**
@@ -542,7 +555,8 @@ public class RecentPanelView {
         if (mFirstTask != null && uriReference.equals(mFirstTask.packageName)) {
             return true;
         }
-        for (TaskDescription task : mTasks) {
+        for (Card c : mCards) {
+            TaskDescription task = ((RecentCard) c).getTaskDescription();
             if (uriReference.equals(task.packageName)) {
                 return true;
             }
@@ -608,7 +622,6 @@ public class RecentPanelView {
         if (DEBUG) Log.v(TAG, "loading tasks");
         mIsLoading = true;
         updateExpandedTaskStates();
-        mTasks.clear();
 
         // Check and get user favorites.
         final String favorites = SlimSettings.System.getStringForUser(
@@ -645,6 +658,8 @@ public class RecentPanelView {
         int firstItems = 0;
         final int firstExpandedItems =
                 mContext.getResources().getInteger(R.integer.expanded_items_default);
+
+        ArrayList<TaskDescription> tasks = new ArrayList<>();
         // Get current task list. We do not need to do it in background. We only load MAX_TASKS.
         for (int i = 0, index = 0; i < numTasks && (index < numTasks); ++i) {
             if (mCancelledByUser) {
@@ -699,7 +714,7 @@ public class RecentPanelView {
                             oldState |= EXPANDED_STATE_TOPTASK;
                         }
                         item.setExpandedState(oldState);
-                        mTasks.add(item);
+                        tasks.add(item);
                         mFirstTask = null;
                     } else {
                         // Skip the first task for our list but save it for later use.
@@ -725,7 +740,7 @@ public class RecentPanelView {
                         }
                         item.setExpandedState(oldState);
                         // The first tasks are always added to the task list.
-                        mTasks.add(item);
+                        tasks.add(item);
                     } else {
                         if (mExpandedMode == EXPANDED_MODE_ALWAYS) {
                             oldState |= EXPANDED_STATE_BY_SYSTEM;
@@ -734,7 +749,7 @@ public class RecentPanelView {
                         // Favorite tasks are added next. Non favorite
                         // we hold for a short time in an extra list.
                         if (item.getIsFavorite()) {
-                            mTasks.add(item);
+                            tasks.add(item);
                         } else {
                             nonFavoriteTasks.add(item);
                         }
@@ -746,14 +761,12 @@ public class RecentPanelView {
 
         // Add now the non favorite tasks to the final task list.
         for (TaskDescription item : nonFavoriteTasks) {
-            mTasks.add(item);
+            tasks.add(item);
         }
-
-        mTasksSize = mTasks.size();
 
         // We have all needed tasks now.
         // Let us load the cards for it in background.
-        final CardLoader cardLoader = new CardLoader();
+        final CardLoader cardLoader = new CardLoader(tasks);
         cardLoader.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
     }
 
@@ -770,8 +783,8 @@ public class RecentPanelView {
      * Set correct visibility states for the listview and the empty recent icon.
      */
     private void setVisibility() {
-        mEmptyRecentView.setVisibility(mTasksSize == 0 ? View.VISIBLE : View.GONE);
-        mListView.setVisibility(mTasksSize == 0 ? View.GONE : View.VISIBLE);
+        mEmptyRecentView.setVisibility(mCards.size() == 0 ? View.VISIBLE : View.GONE);
+        mCardRecyclerView.setVisibility(mCards.size() == 0 ? View.GONE : View.VISIBLE);
     }
 
     /**
@@ -779,7 +792,8 @@ public class RecentPanelView {
      * Update the List for actual apps.
      */
     private void updateExpandedTaskStates() {
-        for (TaskDescription item : mTasks) {
+        for (Card card : mCards) {
+            TaskDescription item = ((RecentCard) card).getTaskDescription();
             boolean updated = false;
             for (TaskExpandedStates expandedState : mExpandedTaskStates) {
                 if (item.identifier.equals(expandedState.getIdentifier())) {
@@ -830,10 +844,10 @@ public class RecentPanelView {
         if (forceupdate || !mController.isShowing()) {
             // We want to have the list scrolled down before it is visible for the user.
             // Whoever calls notifyDataSetChanged() first (not visible) do it now.
-            if (mListView != null) {
-                mListView.setSelection(mCards.size() - 1);
+            if (mCardRecyclerView != null) {
+               // mCardRecyclerView.setSelection(mCards.size() - 1);
             }
-            mCardArrayAdapter.notifyDataSetChanged();
+            mCardAdapter.notifyDataSetChanged();
         }
     }
 
@@ -884,7 +898,8 @@ public class RecentPanelView {
     }
 
     protected boolean hasFavorite() {
-        for (TaskDescription td : mTasks) {
+        for (Card card : mCards) {
+            TaskDescription td = ((RecentCard) card).getTaskDescription();
             if (td.getIsFavorite()) {
                 return true;
             }
@@ -893,7 +908,8 @@ public class RecentPanelView {
     }
 
     protected boolean hasClearableTasks() {
-        for (TaskDescription td : mTasks) {
+        for (Card card : mCards) {
+            TaskDescription td = ((RecentCard) card).getTaskDescription();
             if (!td.getIsFavorite()) {
                 return true;
             }
@@ -948,12 +964,15 @@ public class RecentPanelView {
         private int mOrigPri;
         private int mCounter;
 
-        public CardLoader() {
-            // Empty constructor.
+        private ArrayList<TaskDescription> mTasks;
+
+        public CardLoader(ArrayList<TaskDescription> tasks) {
+            mTasks = tasks;
         }
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            if (mTasks == null) return false;
             // Save current thread priority and set it during the loading
             // to background priority.
             mOrigPri = Process.getThreadPriority(Process.myTid());
@@ -1014,7 +1033,6 @@ public class RecentPanelView {
             // removing alive. This should never happen. Just in case.
             if (!loaded) {
                 Log.v(TAG, "card constructing was cancelled by system or user");
-                mTasksSize = mCounter;
             }
 
             // Restore original thread priority.
