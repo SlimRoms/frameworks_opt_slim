@@ -35,7 +35,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.cards.internal.CardExpand;
+import com.android.systemui.SystemUIApplication;
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -72,6 +74,8 @@ public class RecentExpandedCard extends CardExpand {
     final static BitmapFactory.Options sBitmapOptions;
 
     private TaskDescription mTaskDescription;
+
+    private boolean mTopMost;
 
     static {
         sBitmapOptions = new BitmapFactory.Options();
@@ -119,6 +123,10 @@ public class RecentExpandedCard extends CardExpand {
         }
     }
 
+    public void topMostTask(boolean b) {
+        mTopMost = b;
+    }
+
     /** Returns the activity's primary color. */
     public int getDefaultCardColorBg() {
         if (mTaskDescription != null && mTaskDescription.cardColor != 0) {
@@ -159,6 +167,7 @@ public class RecentExpandedCard extends CardExpand {
         if (holder == null) {
             holder = new ViewHolder();
             holder.thumbnailView = (RecentImageView) view.findViewById(R.id.thumbnail);
+            holder.pin = view.findViewById(R.id.lock_to_app_fab);
             // Take scale factor into account if it is different then default or it has changed.
             if (mScaleFactor != RecentController.DEFAULT_SCALE_FACTOR || mScaleFactorChanged) {
                 mScaleFactorChanged = false;
@@ -210,10 +219,34 @@ public class RecentExpandedCard extends CardExpand {
         } else {
             parent.setBackgroundColor(getDefaultCardColorBg());
         }
+
+        if (mTopMost) {
+            holder.pin.setAlpha(1f);
+            holder.pin.setVisibility(View.VISIBLE);
+            holder.pin.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context appContext = mContext.getApplicationContext();
+                    if (appContext == null) appContext = mContext;
+                    if (appContext instanceof SystemUIApplication) {
+                        SystemUIApplication app = (SystemUIApplication) appContext;
+                        PhoneStatusBar statusBar = app.getComponent(PhoneStatusBar.class);
+                        if (statusBar != null) {
+                            statusBar.showScreenPinningRequest(-1, false);
+                        }
+                    }
+                }
+            });
+        } else {
+            holder.pin.setAlpha(0f);
+            holder.pin.setVisibility(View.GONE);
+            holder.pin.setOnClickListener(null);
+        }
     }
 
     static class ViewHolder {
         RecentImageView thumbnailView;
+        View pin;
     }
 
     // Loads the actual task bitmap.

@@ -38,7 +38,11 @@ public class RecentCard extends Card {
     private RecentAppIcon mRecentIcon;
     private RecentExpandedCard mExpandedCard;
 
+    private boolean mTopMost;
+
     private int mPersistentTaskId;
+
+    private TaskDescription mTaskDescription;
 
     private int defaultCardBg = mContext.getResources().getColor(
                 R.color.recents_task_bar_default_background_color);
@@ -56,9 +60,16 @@ public class RecentCard extends Card {
         constructBaseCard(context, td, scaleFactor);
     }
 
+    public void setTopMost(boolean top) {
+        mTopMost = top;
+        mExpandedCard.topMostTask(top);
+    }
+
     // Construct our card.
     private void constructBaseCard(Context context,
             final TaskDescription td, float scaleFactor) {
+
+        mTaskDescription = td;
 
         // Construct card header view.
         mHeader = new RecentHeader(mContext, td, scaleFactor);
@@ -151,6 +162,10 @@ public class RecentCard extends Card {
     public void setupInnerViewElements(ViewGroup parent, View view) {
         // Nothing to do here.
         return;
+    }
+
+    public TaskDescription getTaskDescription() {
+        return mTaskDescription;
     }
 
     public int getPersistentTaskId() {
