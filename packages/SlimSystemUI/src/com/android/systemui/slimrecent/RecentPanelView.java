@@ -36,6 +36,9 @@ import android.os.Bundle;
 import android.os.Process;
 import android.os.UserHandle;
 import android.provider.Settings;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.ContextThemeWrapper;
@@ -46,12 +49,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.android.cards.recyclerview.internal.BaseRecyclerViewAdapter.CardViewHolder;
+import com.android.cards.recyclerview.internal.CardArrayRecyclerViewAdapter;
+import com.android.cards.recyclerview.view.CardRecyclerView;
 import com.android.cards.internal.Card;
-import com.android.cards.internal.CardArrayAdapter;
-import com.android.cards.view.CardListView;
 import com.android.systemui.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slim.provider.SlimSettings;
@@ -93,13 +98,13 @@ public class RecentPanelView {
     private static final String AMAZON_APP_URI_QUERY    = "amzn://apps/android?p=";
 
     private final Context mContext;
-    private final CardListView mListView;
     private final ImageView mEmptyRecentView;
+
+    private final CardRecyclerView mCardRecyclerView;
+    private CardArrayRecyclerViewAdapter mCardAdapter;
 
     private final RecentController mController;
 
-    // Our array adapter holding all cards
-    private CardArrayAdapter mCardArrayAdapter;
     // Array list of all current cards
     private ArrayList<Card> mCards;
     // Array list of all current tasks
@@ -142,13 +147,15 @@ public class RecentPanelView {
     }
 
     public RecentPanelView(Context context, RecentController controller,
-            CardListView listView, ImageView emptyRecentView) {
+            CardRecyclerView recyclerView, ImageView emptyRecentView) {
         mContext = context;
-        mListView = listView;
+        mCardRecyclerView = recyclerView;
         mEmptyRecentView = emptyRecentView;
         mController = controller;
 
         buildCardListAndAdapter();
+
+        setupItemTouchHelper();
     }
 
     /**
@@ -156,10 +163,45 @@ public class RecentPanelView {
      */
     protected void buildCardListAndAdapter() {
         mCards = new ArrayList<Card>();
-        mCardArrayAdapter = new CardArrayAdapter(mContext, mCards);
-        if (mListView != null) {
-            mListView.setAdapter(mCardArrayAdapter);
+        mCardAdapter = new CardArrayRecyclerViewAdapter(mContext, mCards);
+        if (mCardRecyclerView != null) {
+            mCardRecyclerView.setAdapter(mCardAdapter);
         }
+    }
+
+    private void setupItemTouchHelper() {
+        ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, 
+                    ViewHolder target) {
+                return true;
+            }
+
+            @Override
+            public void onSwiped(ViewHolder viewHolder, int direction) {
+                int pos = viewHolder.getAdapterPosition();
+                if (viewHolder instanceof CardViewHolder) {
+                    CardViewHolder holder = (CardViewHolder) viewHolder;
+                    Card card = holder.mCardView.getCard();
+                    if (card instanceof RecentCard) {
+                        TaskDescription td = ((RecentCard) card).getTaskDescription();
+                        removeApplication(td);
+                    }
+                }
+                mCards.remove(pos);
+                mCardAdapter.notifyItemRemoved(pos);
+            }
+
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView,
+                    RecyclerView.ViewHolder viewHolder) {
+                // Set movement flags based on the layout manager
+                final int dragFlags = 0;
+                final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags, swipeFlags);
+            }
+        });
+        touchHelper.attachToRecyclerView(mCardRecyclerView);
     }
 
     /**
@@ -388,11 +430,11 @@ public class RecentPanelView {
             am.removeTask(td.persistentTaskId);
 
             // Accessibility feedback
-            mListView.setContentDescription(
+            mCardRecyclerView.setContentDescription(
                     mContext.getString(R.string.accessibility_recents_item_dismissed,
                             td.getLabel()));
-            mListView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
-            mListView.setContentDescription(null);
+            mCardRecyclerView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
+            mCardRecyclerView.setContentDescription(null);
 
             // Remove app from task, cache and expanded state list.
             removeApplicationBitmapCacheAndExpandedState(td);
@@ -431,7 +473,7 @@ public class RecentPanelView {
             // Remove the card.
             removeRecentCard(td);
             // Notify ArrayAdapter about the change.
-            mCardArrayAdapter.notifyDataSetChanged();
+            mCardAdapter.notifyDataSetChanged();
             // Remove bitmap and expanded state.
             removeApplicationBitmapCacheAndExpandedState(td);
             // Correct global task size.
@@ -771,7 +813,7 @@ public class RecentPanelView {
      */
     private void setVisibility() {
         mEmptyRecentView.setVisibility(mTasksSize == 0 ? View.VISIBLE : View.GONE);
-        mListView.setVisibility(mTasksSize == 0 ? View.GONE : View.VISIBLE);
+        mCardRecyclerView.setVisibility(mTasksSize == 0 ? View.GONE : View.VISIBLE);
     }
 
     /**
@@ -830,10 +872,10 @@ public class RecentPanelView {
         if (forceupdate || !mController.isShowing()) {
             // We want to have the list scrolled down before it is visible for the user.
             // Whoever calls notifyDataSetChanged() first (not visible) do it now.
-            if (mListView != null) {
-                mListView.setSelection(mCards.size() - 1);
+            if (mCardRecyclerView != null) {
+               // mCardRecyclerView.setSelection(mCards.size() - 1);
             }
-            mCardArrayAdapter.notifyDataSetChanged();
+            mCardAdapter.notifyDataSetChanged();
         }
     }
 

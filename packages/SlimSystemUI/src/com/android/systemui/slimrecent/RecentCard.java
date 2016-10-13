@@ -40,6 +40,8 @@ public class RecentCard extends Card {
 
     private int mPersistentTaskId;
 
+    private TaskDescription mTaskDescription;
+
     private int defaultCardBg = mContext.getResources().getColor(
                 R.color.recents_task_bar_default_background_color);
     private int cardColor = SlimSettings.System.getIntForUser(
@@ -59,6 +61,8 @@ public class RecentCard extends Card {
     // Construct our card.
     private void constructBaseCard(Context context,
             final TaskDescription td, float scaleFactor) {
+
+        mTaskDescription = td;
 
         // Construct card header view.
         mHeader = new RecentHeader(mContext, td, scaleFactor);
@@ -151,6 +155,10 @@ public class RecentCard extends Card {
     public void setupInnerViewElements(ViewGroup parent, View view) {
         // Nothing to do here.
         return;
+    }
+
+    public TaskDescription getTaskDescription() {
+        return mTaskDescription;
     }
 
     public int getPersistentTaskId() {
