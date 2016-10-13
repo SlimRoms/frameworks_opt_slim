@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">Ukryj na zabezpieczonej blokadzie ekranu</string>
   <string name="advanced_reboot_show_always">Zawsze pokazuj</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">Włącz klawisze sprzętowe</string>
+  <string name="hardware_keys_enable_summary">Włącz/Wyłącz klawisze sprzętowe</string>
+  <string name="hardware_keys_lights_enable_title">Ustawienia podświetlenia klawiszy sprzętowych</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">Reset</string>
+  <string name="button_backlight_enabled">Podświetl przyciski</string>
+  <string name="keyboard_backlight_enabled">Podświetl klawiaturę</string>
+  <string name="button_backlight_seekbar_title">Jasność przycisków</string>
+  <string name="keyboard_backlight_seekbar_title">Jasność klawiatury</string>
+  <string name="backlight_timeout_title">Czas podświetlenia</string>
+  <string name="backlight_timeout_unlimited">Nie wyłączaj</string>
+  <string name="backlight_summary_disabled">Nieaktywne</string>
+  <string name="backlight_summary_enabled_with_timeout">Włączone na <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">Włączone</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">Włącza klawisze sprzętowe</string>
   <string name="button_keys_title">Przyciski sprzętowe</string>
   <string name="keys_bindings_title">Akcje klawiszy</string>
   <string name="keys_enable_custom_title">Włącz własne akcje</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">Czy zresetować wszystkie wymiary do domyślnych?</string>
   <string name="navbar_button_style_reset_message">Zresetować wszystkie ustawienia styli do domyślnych?</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">Przyciemnianie przycisków gdy nie są używane</string>
+  <string name="dim_nav_buttons_summary">Przyciemnianie przycisków nawigacyjnych gdy nie używa się paska nawigacji przez jakiś czas</string>
+  <string name="dim_nav_buttons_timeout_title">Czas przed przyciemnieniem</string>
+  <string name="dim_nav_buttons_timeout_summary">Czas (w milisekundach) jaki ma upłynąć zanim przyciski zostaną przyciemnione</string>
+  <string name="dim_nav_buttons_alpha_title">Stopień przyciemnienia</string>
+  <string name="dim_nav_buttons_alpha_summary">Stopień (w procentach) do jakiego mają być przyciemnione przyciski</string>
+  <string name="dim_nav_buttons_animate_title">Animacja przyciemnienia</string>
+  <string name="dim_nav_buttons_animate_summary">Animacja stopniowego przyciemnienia</string>
+  <string name="dim_nav_buttons_animate_duration_title">Czas trwania animacji</string>
+  <string name="dim_nav_buttons_animate_duration_summary">Czas trwania (w milisekundach) animacji stopniowego przyciemnienia</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">Reaguj na dotyk na całym ekranie</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">Dotknięcie gdziekolwiek spowoduje rozjaśnienie przycisków</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">Tylko dotknięcie paska nawigacji spowoduje rozjaśnienie przycisków</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">Styl przycisków</string>
   <string name="nav_bar_button_style_summary">Zmień styl przycisku paska nawigacji</string>

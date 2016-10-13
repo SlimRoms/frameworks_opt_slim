@@ -20,7 +20,7 @@
   <string name="permlab_writeSettings">Slim-Systemeinstellungen ändern</string>
   <string name="permdesc_writeSettings">Erlaubt einer App, Slim-Systemeinstellungen zu ändern.</string>
   <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
-  <string name="permlab_writeSecureSettings">Ändere Slim-Sicherheitssystemeinstellungen</string>
+  <string name="permlab_writeSecureSettings">Slim-Sicherheitssystemeinstellungen ändern</string>
   <string name="permdesc_writeSecureSettings">Erlaubt einer App, Slim-Systemsicherheitseinstellungen zu ändern. Nicht für normale Apps.</string>
   <!-- General Strings -->
   <string name="reset">Zurücksetzen</string>
@@ -47,7 +47,7 @@
   <string name="shortcut_action_notifications">Benachrichtigungen</string>
   <string name="shortcut_action_qs">Schnelleinstellungen</string>
   <string name="shortcut_action_longpress">Lange drücken:</string>
-  <string name="shortcut_action_doubletap">Doppeldruck:</string>
+  <string name="shortcut_action_doubletap">Doppeltes Tippen:</string>
   <string name="shortcut_action_select_action_longpress">Aktion bei langem Drücken:</string>
   <string name="shortcut_action_select_action_doubletap">Wählen der Doppeltipp-Aktion:</string>
   <string name="shortcut_action_select_action">Aktion auswählen:</string>
@@ -70,8 +70,8 @@
   <string name="shortcut_action_help_delete_last_entry">Löschen aller %1$s deaktiviert die Funktion.</string>
   <string name="shortcut_action_help_pie_second_layer_delete_last_entry">Löschen aller %1$s aus der Liste deaktiviert die zweite PIE-Reihe vollständig.</string>
   <string name="shortcuts_applications">Anwendungen</string>
-  <string name="shortcuts_select_custom_app_title">Applikation auswählen</string>
-  <string name="shortcuts_icon_picker_type">Symbol auswählen:</string>
+  <string name="shortcuts_select_custom_app_title">Individuelle App auswählen</string>
+  <string name="shortcuts_icon_picker_type">Symbol Art auswählen:</string>
   <string name="shortcuts_icon_default">Standard</string>
   <string name="shortcuts_icon_presets">System-Symbole</string>
   <string name="shortcuts_icon_custom">Galerie</string>

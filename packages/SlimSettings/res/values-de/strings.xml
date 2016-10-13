@@ -25,7 +25,7 @@
   <string name="interface_settings_title">Benutzeroberfläche</string>
   <string name="advanced_settings">Weitere Einstellungen</string>
   <string name="quick_settings">Schnelleinstellungen</string>
-  <string name="status_bar_icons">Statusbar-Symbole</string>
+  <string name="status_bar_icons">Statusleisten-Symbole</string>
   <!-- Navigation settings -->
   <string name="navigation_settings_options_title">Navigation-Einstellungen</string>
   <!-- Names of categories of app ops tabs - extension of AOSP -->
@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">Auf Sperrbildschirm verbergen</string>
   <string name="advanced_reboot_show_always">Immer anzeigen</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">Hardware-Tasten aktivieren</string>
+  <string name="hardware_keys_enable_summary">Aktiviert/deaktiviere die Hardware-Tasten</string>
+  <string name="hardware_keys_lights_enable_title">Hardware-Tasten Beleuchtung</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">Zurücksetzen</string>
+  <string name="button_backlight_enabled">Tasten beleuchten</string>
+  <string name="keyboard_backlight_enabled">Tastatur beleuchten</string>
+  <string name="button_backlight_seekbar_title">Tastenhelligkeit</string>
+  <string name="keyboard_backlight_seekbar_title">Tastaturhelligkeit</string>
+  <string name="backlight_timeout_title">Beleuchtungs-Timeout</string>
+  <string name="backlight_timeout_unlimited">Nicht ausschalten</string>
+  <string name="backlight_summary_disabled">Deaktiviert</string>
+  <string name="backlight_summary_enabled_with_timeout">Aktiviert für <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">Aktiviert</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">Aktiviert Hardware-Tasten</string>
   <string name="button_keys_title">Hardware-Tasten</string>
   <string name="keys_bindings_title">Tastenbelegung</string>
   <string name="keys_enable_custom_title">Benutzerdefinierte Aktionen aktivieren</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">Alle Abmessungen auf Standardwerte zurücksetzen?</string>
   <string name="navbar_button_style_reset_message">Alle Eingaben zum Aussehen auf Standardwerte zurücksetzen?</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">Tasten bei Inaktivität dimmen</string>
+  <string name="dim_nav_buttons_summary">Navigationsleisten-Tasten dimmen, nachdem sie eine bestimmte Zeit nicht verwendet wurden</string>
+  <string name="dim_nav_buttons_timeout_title">Tastenbeleuchtung dimmen nach</string>
+  <string name="dim_nav_buttons_timeout_summary">Zeitdauer (in Millisekunden), nach der die Tasten gedimmt werden</string>
+  <string name="dim_nav_buttons_alpha_title">Alpha-Wert</string>
+  <string name="dim_nav_buttons_alpha_summary">Alpha-Wert, um den die Tasten gedimmt werden</string>
+  <string name="dim_nav_buttons_animate_title">Dimmeranimation</string>
+  <string name="dim_nav_buttons_animate_summary">Das Abblenden animieren</string>
+  <string name="dim_nav_buttons_animate_duration_title">Dauer der Animation</string>
+  <string name="dim_nav_buttons_animate_duration_summary">Dauer der Dimmeranimation (in Millisekunden)</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">Alle Bildschirmberührungen registrieren</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">Jede Bildschirmberührung macht das Dimmen der Tasten rückgängig</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">Nur Berührungen der Navigationsleiste machen das Dimmen der Tasten rückgängig</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">Tastenlayout</string>
   <string name="nav_bar_button_style_summary">Navigationsleisten-Tasten-Design ändern</string>

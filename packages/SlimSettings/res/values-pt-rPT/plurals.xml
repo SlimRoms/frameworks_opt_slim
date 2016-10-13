@@ -16,14 +16,8 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!-- Labels for the WRITE_SETTINGS permission -->
-  <string name="permlab_writeSettings">modificar as definições do sistema Slim</string>
-  <string name="permdesc_writeSettings">Permite que uma aplicação modifique as definições do sistema Slim.</string>
-  <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
-  <!-- General Strings -->
-  <!-- Shortcut actions -->
-  <!-- Button shorcut actions -->
-  <!-- Icon color options -->
-  <!-- Slimseekbar -->
-  <!-- Color Picker -->
+  <plurals name="backlight_timeout_time">
+    <item quantity="one"><xliff:g id="seconds">%d</xliff:g> segundo</item>
+    <item quantity="other"><xliff:g id="segundos">%d</xliff:g> segundos</item>
+  </plurals>
 </resources>

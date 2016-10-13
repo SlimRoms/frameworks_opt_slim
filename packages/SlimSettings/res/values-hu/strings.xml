@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">Rejtve a zárképernyőn</string>
   <string name="advanced_reboot_show_always">Mindig mutassa</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">Hardveres gombok engedélyezése</string>
+  <string name="hardware_keys_enable_summary">Hardveres gombok engedélyezése/tiltása</string>
+  <string name="hardware_keys_lights_enable_title">Hardver gomb fénybeállítások</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">Visszaállitás</string>
+  <string name="button_backlight_enabled">Gombok háttérvilágítása</string>
+  <string name="keyboard_backlight_enabled">Billentyűzet háttérvilágítása</string>
+  <string name="button_backlight_seekbar_title">Gombok fényereje</string>
+  <string name="keyboard_backlight_seekbar_title">Billentyűzet fényereje</string>
+  <string name="backlight_timeout_title">Megvilágítás időkorlát</string>
+  <string name="backlight_timeout_unlimited">Ne kapcsoljon ki</string>
+  <string name="backlight_summary_disabled">Letiltva</string>
+  <string name="backlight_summary_enabled_with_timeout">Engedélyezve: <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">Engedélyezve</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">Hardveres gombok engedélyezése</string>
   <string name="button_keys_title">Hardver gombok</string>
   <string name="keys_bindings_title">Gomb műveletek</string>
   <string name="keys_enable_custom_title">Egyéni műveletek engedélyezése</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">Visszaállítja az összes méretet alapértelmezettre?</string>
   <string name="navbar_button_style_reset_message">Visszaállítja az összes stílus beállítást alapértelmezettre?</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">Gombok halványítása inaktivitás után</string>
+  <string name="dim_nav_buttons_summary">Navigációs gombok halványítása miután egy megadott ideig nem lépett interakcióba vele</string>
+  <string name="dim_nav_buttons_timeout_title">Halványítás előtti időkorlát</string>
+  <string name="dim_nav_buttons_timeout_summary">Idő (ezredmásodpercben), amíg várjon, mielőtt halványítaná a gombokat</string>
+  <string name="dim_nav_buttons_alpha_title">Halványítás alfa</string>
+  <string name="dim_nav_buttons_alpha_summary">Gombok halványításának alfa értéke</string>
+  <string name="dim_nav_buttons_animate_title">Halványítási animáció</string>
+  <string name="dim_nav_buttons_animate_summary">Alfa halványítás animálása</string>
+  <string name="dim_nav_buttons_animate_duration_title">Animáció hossza</string>
+  <string name="dim_nav_buttons_animate_duration_summary">Alfa animáció időtartama (ezredmásodpercben)</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">Érintések figyelése az egész képernyőn</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">Bárhol megérintve a képernyőt megszünteti a gombok halványítását</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">Csak a navigációs sáv megérintése szünteti meg a gombok halványítását</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">Gombok stílusa</string>
   <string name="nav_bar_button_style_summary">Navigációs sáv gombok stílusának módosítása</string>
