@@ -17,7 +17,7 @@
 */
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,4 +30,23 @@
         android:layout_marginBottom="@dimen/recent_thumbnail_bottom_padding"
         />
 
-</LinearLayout>
+    <com.android.systemui.statusbar.AlphaOptimizedFrameLayout
+        android:id="@+id/lock_to_app_fab"
+        android:layout_width="@dimen/recents_lock_to_app_size"
+        android:layout_height="@dimen/recents_lock_to_app_size"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="15dp"
+        android:layout_marginBottom="15dp"
+        android:translationZ="4dp"
+        android:contentDescription="@string/recents_lock_to_app_button_label"
+        android:background="@drawable/recents_lock_to_task_button_bg"
+        android:visibility="invisible"
+        android:alpha="0">
+        <ImageView
+            android:layout_width="@dimen/recents_lock_to_app_icon_size"
+            android:layout_height="@dimen/recents_lock_to_app_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/recents_lock_to_app_pin" />
+    </com.android.systemui.statusbar.AlphaOptimizedFrameLayout>
+
+</FrameLayout>
