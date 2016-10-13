@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">Nascondi nella schermata di blocco</string>
   <string name="advanced_reboot_show_always">Mostra sempre</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">Abilita pulsanti hardware</string>
+  <string name="hardware_keys_enable_summary">Abilita/disabilita tasti hardware</string>
+  <string name="hardware_keys_lights_enable_title">Impostazioni luci tasti hardware</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">Reimposta</string>
+  <string name="button_backlight_enabled">Illumina i pulsanti</string>
+  <string name="keyboard_backlight_enabled">Illumina la tastiera</string>
+  <string name="button_backlight_seekbar_title">Luminosità dei pulsanti</string>
+  <string name="keyboard_backlight_seekbar_title">Luminosità della tastiera</string>
+  <string name="backlight_timeout_title">Tempo di illuminazione</string>
+  <string name="backlight_timeout_unlimited">Non spegnere</string>
+  <string name="backlight_summary_disabled">Disattivata</string>
+  <string name="backlight_summary_enabled_with_timeout">Attivata per <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">Attivata</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">Abilita i pulsanti hardware</string>
   <string name="button_keys_title">Pulsanti hardware</string>
   <string name="keys_bindings_title">Azioni dei tasti</string>
   <string name="keys_enable_custom_title">Abilita azioni personalizzate</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">Ripristinare tutti i valori delle dimensioni a quelli predefiniti?</string>
   <string name="navbar_button_style_reset_message">Ripristina tutte le voci predefinite?</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">Diminuisci la luminosità dei pulsanti per inattività</string>
+  <string name="dim_nav_buttons_summary">Diminuisce la luminosità dei pulsanti di navigazione dopo un periodo di inattività</string>
+  <string name="dim_nav_buttons_timeout_title">Tempo di inattività prima di oscurare i pulsanti</string>
+  <string name="dim_nav_buttons_timeout_summary">Tempo di attesa (in millisecondi) prima di oscurare i pulsanti di navigazione</string>
+  <string name="dim_nav_buttons_alpha_title">Luminosità dei pulsanti</string>
+  <string name="dim_nav_buttons_alpha_summary">Valore alfa di oscuramento per i pulsanti</string>
+  <string name="dim_nav_buttons_animate_title">Animazione oscuramento</string>
+  <string name="dim_nav_buttons_animate_summary">Anima la dissolvenza alfa</string>
+  <string name="dim_nav_buttons_animate_duration_title">Durata dell\'animazione</string>
+  <string name="dim_nav_buttons_animate_duration_summary">Durata (in millisecondi) dell\'animazione alfa</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">Consenti il tocco su tutto lo schermo</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">Ripristina lo stato della luminosità toccando in qualsiasi punto dello schermo</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">Ripristina lo stato della luminosità solo quando si utilizzano i pulsanti di navigazione</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">Stile dei pulsanti</string>
   <string name="nav_bar_button_style_summary">Cambia lo stile dei pulsanti della barra di navigazione</string>

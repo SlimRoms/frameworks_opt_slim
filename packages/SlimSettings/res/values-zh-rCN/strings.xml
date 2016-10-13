@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">在锁屏界面隐藏</string>
   <string name="advanced_reboot_show_always">始终显示</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">启用实体按键</string>
+  <string name="hardware_keys_enable_summary">启用/禁用实体按键</string>
+  <string name="hardware_keys_lights_enable_title">硬件按钮灯光设置</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">重置​​​</string>
+  <string name="button_backlight_enabled">点亮按钮</string>
+  <string name="keyboard_backlight_enabled">点亮键盘</string>
+  <string name="button_backlight_seekbar_title">按钮亮度</string>
+  <string name="keyboard_backlight_seekbar_title">键盘亮度</string>
+  <string name="backlight_timeout_title">背光超时</string>
+  <string name="backlight_timeout_unlimited">从不关闭</string>
+  <string name="backlight_summary_disabled">已禁用</string>
+  <string name="backlight_summary_enabled_with_timeout">启用 <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">已启用</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">启用物理按键</string>
   <string name="button_keys_title">硬件按钮</string>
   <string name="keys_bindings_title">按键行为</string>
   <string name="keys_enable_custom_title">启用自定义操作</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">重置所有尺寸设置为默认？</string>
   <string name="navbar_button_style_reset_message">重置所有的样式设定为默认值吗？</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">不再活动后降低按钮亮度</string>
+  <string name="dim_nav_buttons_summary">当导航栏按钮在指定时间后没有进行交互操作将降低其按钮亮度</string>
+  <string name="dim_nav_buttons_timeout_title">降低亮度超时</string>
+  <string name="dim_nav_buttons_timeout_summary">在变暗按钮之前要等待的时间 (以毫秒为单位)</string>
+  <string name="dim_nav_buttons_alpha_title">变暗透明度</string>
+  <string name="dim_nav_buttons_alpha_summary">按钮变暗的透明值</string>
+  <string name="dim_nav_buttons_animate_title">变暗的动画效果</string>
+  <string name="dim_nav_buttons_animate_summary">淡入淡出动画</string>
+  <string name="dim_nav_buttons_animate_duration_title">动画持续时间</string>
+  <string name="dim_nav_buttons_animate_duration_summary">动画持续时间 (以毫秒为单位)</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">监控整个屏幕上的触摸</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">触摸屏幕任意位置将使按钮亮起</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">仅触摸导航栏时按钮亮起</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">按钮样式：</string>
   <string name="nav_bar_button_style_summary">更改导航栏按钮的样式</string>

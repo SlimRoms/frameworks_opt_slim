@@ -17,11 +17,79 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Common strings -->
+  <string name="disabled">Desativado</string>
+  <string name="menu_save">Guardar</string>
+  <string name="menu_cancel">Rejeitar</string>
   <!-- Slim settings screens -->
+  <string name="navigation_settings_title">Navegação</string>
+  <string name="interface_settings_title">Interface</string>
+  <string name="advanced_settings">Avançado</string>
+  <string name="quick_settings">Definições Rápidas</string>
+  <string name="status_bar_icons">Ícones da barra de estado</string>
   <!-- Navigation settings -->
+  <string name="navigation_settings_options_title">Opções de navegação</string>
   <!-- Names of categories of app ops tabs - extension of AOSP -->
+  <string name="app_ops_categories_location">Localização</string>
+  <string name="app_ops_categories_personal">Pessoal</string>
+  <string name="app_ops_categories_messaging">Mensagens</string>
+  <string name="app_ops_categories_media">Multimédia</string>
+  <string name="app_ops_categories_device">Dispositivo</string>
+  <string name="app_ops_categories_bootup">Inicialização</string>
+  <string name="app_ops_categories_su">Superuser</string>
   <!-- User display names for app ops codes - extension of AOSP -->
+  <string name="app_ops_summaries_fine_location">localização precisa</string>
+  <string name="app_ops_summaries_gps">GPS</string>
+  <string name="app_ops_summaries_vibrate">vibrar</string>
+  <string name="app_ops_summaries_read_contacts">ler contactos</string>
+  <string name="app_ops_summaries_modify_contacts">modificar contactos</string>
+  <string name="app_ops_summaries_read_call_log">ler registo de chamadas</string>
+  <string name="app_ops_summaries_modify_call_log">modificar o registo de chamadas</string>
+  <string name="app_ops_summaries_read_calendar">ler o calendário</string>
+  <string name="app_ops_summaries_modify_calendar">modificar o calendário</string>
+  <string name="app_ops_summaries_wifi_scan">Procurar wi-fi</string>
+  <string name="app_ops_summaries_read_sms">ler SMS</string>
+  <string name="app_ops_summaries_receive_sms">receber SMS</string>
+  <string name="app_ops_summaries_receive_emergency_sms">receber SMS de emergência</string>
+  <string name="app_ops_summaries_receive_mms">receber MMS</string>
+  <string name="app_ops_summaries_modify_settings">modificar definições</string>
+  <string name="app_ops_summaries_draw_on_top">desenhar na parte superior</string>
+  <string name="app_ops_summaries_access_notifications">aceder às notificações</string>
+  <string name="app_ops_summaries_camera">câmara</string>
+  <string name="app_ops_summaries_record_audio">gravar áudio</string>
+  <string name="app_ops_summaries_play_audio">reproduzir áudio</string>
+  <string name="app_ops_summaries_media_buttons">botões multimédia</string>
+  <string name="app_ops_summaries_master_volume">volume principal</string>
   <!-- User display names for app ops codes - extension of AOSP -->
+  <string name="app_ops_labels_vibrate">Vibrar</string>
+  <string name="app_ops_labels_read_contacts">Ler contatos</string>
+  <string name="app_ops_labels_modify_contacts">Modificar contatos</string>
+  <string name="app_ops_labels_read_call_log">Ler registo de chamadas</string>
+  <string name="app_ops_labels_modify_call_log">Modificar o registo de chamadas</string>
+  <string name="app_ops_labels_read_calendar">Ler calendário</string>
+  <string name="app_ops_labels_modify_calendar">Modificar calendário</string>
+  <string name="app_ops_labels_wifi_scan">Procurar wi-fi</string>
+  <string name="app_ops_labels_read_sms">Ler SMS</string>
+  <string name="app_ops_labels_write_sms">Escrever SMS</string>
+  <string name="app_ops_labels_receive_sms">Receber SMS</string>
+  <string name="app_ops_labels_receive_emergency_sms">Receber SMS de emergência</string>
+  <string name="app_ops_labels_receive_mms">Receber MMS</string>
+  <string name="app_ops_labels_send_sms">Enviar SMS</string>
+  <string name="app_ops_labels_modify_settings">Modificar definições</string>
+  <string name="app_ops_labels_draw_on_top">Desenhar na parte superior</string>
+  <string name="app_ops_labels_access_notifications">Aceder às notificações</string>
+  <string name="app_ops_labels_camera">Câmara</string>
+  <string name="app_ops_labels_record_audio">Gravar áudio</string>
+  <string name="app_ops_labels_play_audio">Reproduzir áudio</string>
+  <string name="app_ops_labels_read_clipboard">Ler área de transferência</string>
+  <string name="app_ops_labels_modify_clipboard">Modificar área de transferência</string>
+  <string name="app_ops_labels_media_buttons">Botões multimédia</string>
+  <string name="app_ops_labels_master_volume">Volume principal</string>
+  <string name="app_ops_labels_voice_volume">Volume de voz</string>
+  <string name="app_ops_labels_ring_volume">Volume do toque</string>
+  <string name="app_ops_labels_media_volume">Volume multimédia</string>
+  <string name="app_ops_labels_alarm_volume">Volume do alarme</string>
+  <string name="app_ops_labels_notification_volume">Volume de notificações</string>
+  <string name="app_ops_labels_bluetooth_volume">Volume do Bluetooth</string>
   <!-- App ops permissions -->
   <!-- App ops detail -->
   <!-- App ops menu options -->
