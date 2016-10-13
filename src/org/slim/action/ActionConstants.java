@@ -84,6 +84,6 @@ public class ActionConstants {
         + ICON_EMPTY      + ACTION_DELIMITER
         + ACTION_RECENTS  + ACTION_DELIMITER
         + ACTION_NULL     + ACTION_DELIMITER
-        + ACTION_NULL     + ACTION_DELIMITER
+        + ACTION_LAST_APP + ACTION_DELIMITER
         + ICON_EMPTY;
 }
