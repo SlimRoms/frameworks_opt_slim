@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.ActivityStarter;
 import com.android.systemui.statusbar.phone.QuickStatusBarHeader;
 import com.android.systemui.statusbar.policy.BatteryController;
 
@@ -37,7 +38,9 @@ public class SlimQuickStatusBarHeader extends QuickStatusBarHeader {
         super.onFinishInflate();
 
         View batteryLevel = findViewById(R.id.battery_level);
-        ((ViewGroup) batteryLevel.getParent()).removeView(batteryLevel);
+        if (batteryLevel != null) {
+            ((ViewGroup) batteryLevel.getParent()).removeView(batteryLevel);
+        }
     }
 
     @Override
@@ -46,4 +49,9 @@ public class SlimQuickStatusBarHeader extends QuickStatusBarHeader {
         ((SlimBatteryContainer) findViewById(R.id.slim_battery_container))
                 .setBatteryController(controller);
     }
+
+    public ActivityStarter getActivityStarter() {
+        return mActivityStarter;
+    }
+
 }
