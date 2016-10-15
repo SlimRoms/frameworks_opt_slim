@@ -55,6 +55,7 @@ import com.android.systemui.statusbar.phone.SlimNavigationBarView;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
+import com.android.systemui.statusbar.slim.SlimQuickStatusBarHeader;
 
 import java.util.List;
 
@@ -91,6 +92,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
     private boolean mHasNavigationBar = false;
     private boolean mNavigationBarAttached = false;
     private boolean mDisableHomeLongpress = false;
+
+    private SlimQuickStatusBarHeader mSlimQuickStatusBarHeader;
 
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -279,6 +282,21 @@ public class SlimStatusBar extends PhoneStatusBar implements
         if (mNavigationBarView != mSlimNavigationBarView) {
             mNavigationBarView = mSlimNavigationBarView;
         }
+
+        mSlimQuickStatusBarHeader = (SlimQuickStatusBarHeader) mHeader;
+        mSlimQuickStatusBarHeader.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.android.settings",
+                        "com.android.settings.Settings$NotificationStationActivity");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mSlimQuickStatusBarHeader.getActivityStarter().startActivity(
+                        intent, true /* dismissShade */);
+                return true;
+            }
+        });
+
     }
 
     private void updateNavigationBarVisibility() {
