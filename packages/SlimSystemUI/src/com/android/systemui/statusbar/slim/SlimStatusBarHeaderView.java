@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.systemui.R;
+import com.android.systemui.statusbar.phone.ActivityStarter;
 import com.android.systemui.statusbar.phone.StatusBarHeaderView;
 import com.android.systemui.statusbar.policy.BatteryController;
 
@@ -46,4 +47,9 @@ public class SlimStatusBarHeaderView extends StatusBarHeaderView {
         ((SlimBatteryContainer) findViewById(R.id.slim_battery_container))
                 .setBatteryController(controller);
     }
+
+    public ActivityStarter getActivityStarter() {
+        return mActivityStarter;
+    }
+
 }

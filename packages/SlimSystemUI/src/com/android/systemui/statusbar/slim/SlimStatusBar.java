@@ -24,6 +24,7 @@ import android.app.Notification;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -56,6 +57,7 @@ import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 import com.android.systemui.statusbar.phone.SystemUIDialog;
+import com.android.systemui.statusbar.slim.SlimStatusBarHeaderView;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
 import org.slim.provider.SlimSettings;
@@ -84,6 +86,8 @@ public class SlimStatusBar extends PhoneStatusBar {
     private boolean mHasNavigationBar = false;
     private boolean mNavigationBarAttached = false;
     private boolean mDisableHomeLongpress = false;
+
+    private SlimStatusBarHeaderView mSlimStatusBarHeaderView;
 
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -261,6 +265,21 @@ public class SlimStatusBar extends PhoneStatusBar {
         }
 
         mSlimIconController = new SlimStatusBarIconController(mContext, mStatusBarView, this);
+
+        mSlimStatusBarHeaderView = (SlimStatusBarHeaderView) mHeader;
+        mSlimStatusBarHeaderView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.android.settings",
+                        "com.android.settings.Settings$NotificationStationActivity");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mSlimStatusBarHeaderView.getActivityStarter().startActivity(
+                        intent, true /* dismissShade */);
+                return true;
+            }
+        });
+
 
         return mStatusBarView;
     }
