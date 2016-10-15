@@ -37,6 +37,7 @@ import android.view.WindowManager;
 
 import com.android.systemui.R;
 import com.android.systemui.slimrecent.RecentController;
+import com.android.systemui.statusbar.phone.SettingsButton;
 import com.android.systemui.statusbar.phone.SlimNavigationBarView;
 import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
@@ -66,6 +67,8 @@ public class SlimStatusBar extends PhoneStatusBar {
     private boolean mHasNavigationBar = false;
     private boolean mNavigationBarAttached = false;
     private boolean mDisableHomeLongpress = false;
+
+    private SettingsButton mSettingsButton;
 
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -243,6 +246,21 @@ public class SlimStatusBar extends PhoneStatusBar {
         }
 
         mSlimIconController = new SlimStatusBarIconController(mContext, mStatusBarView, this);
+
+        mSettingsButton = (SettingsButton) mHeader.findViewById(R.id.settings_button);
+        mSettingsButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setClassName("com.android.settings",
+                        "com.android.settings.Settings$NotificationStationActivity");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                animateCollapsePanels();
+                mContext.startActivityAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
+                return true;
+            }
+        });
+
 
         return mStatusBarView;
     }
