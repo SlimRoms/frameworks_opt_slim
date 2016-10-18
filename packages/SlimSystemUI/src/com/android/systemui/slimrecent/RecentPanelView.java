@@ -44,6 +44,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -187,12 +188,15 @@ public class RecentPanelView {
             public int getMovementFlags(RecyclerView recyclerView,
                     RecyclerView.ViewHolder viewHolder) {
                 // Set movement flags based on the layout manager
-                final int dragFlags = 0;
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN
+                        | ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT;
                 final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
                 return makeMovementFlags(dragFlags, swipeFlags);
             }
         });
         touchHelper.attachToRecyclerView(mCardRecyclerView);
+        mCardRecyclerView.setClipToPadding(false);
+        mCardRecyclerView.setClipChildren(false);
     }
 
     /**
@@ -210,7 +214,7 @@ public class RecentPanelView {
         });
 
         // Listen for onLongClick to open popup menu
-        card.setOnLongClickListener(new Card.OnLongCardClickListener() {
+        /*card.setOnLongClickListener(new Card.OnLongCardClickListener() {
             @Override
             public boolean onLongClick(Card card, View view) {
                 constructMenu(
@@ -218,7 +222,21 @@ public class RecentPanelView {
                         td.packageName);
                 return true;
             }
-        });
+        });*/
+
+        /*card.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d("TEST", "action=" + MotionEvent.actionToString(event.getActionMasked())); 
+                //if (event.getActionMasked() != MotionEvent.ACTION_DOWN) return false;
+                if (card.isOptionsVisible()) {
+                    card.hideOptions((int) event.getRawX(), (int) event.getRawY());
+                } else {
+                    card.showOptions((int) event.getRawX(), (int) event.getRawY());
+                }
+                return true;
+            }
+        });*/
 
         // App icon has own onLongClick action. Listen for it and
         // process the favorite action for it.

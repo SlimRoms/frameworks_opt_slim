@@ -17,31 +17,54 @@
 
 package com.android.systemui.slimrecent;
 
+import android.app.ActivityManagerNative;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
+import android.os.RemoteException;
 import android.os.UserHandle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 
 import com.android.cards.internal.Card;
 import com.android.cards.internal.CardHeader;
+import com.android.cards.view.CardView;
 
 import com.android.systemui.R;
 import com.android.systemui.SystemUIApplication;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
 import org.slim.provider.SlimSettings;
+import org.slim.utils.ColorUtils;
 
 /**
  * This class handles our base card view.
  */
 public class RecentCard extends Card {
 
+    private static final boolean DEBUG = false;
+
+    private static final String PLAYSTORE_REFERENCE = "com.android.vending";
+    private static final String AMAZON_REFERENCE    = "com.amazon.venezia";
+
+    private static final String PLAYSTORE_APP_URI_QUERY = "market://details?id=";
+    private static final String AMAZON_APP_URI_QUERY    = "amzn://apps/android?p=";
+
     private RecentHeader mHeader;
     private RecentAppIcon mRecentIcon;
     private RecentExpandedCard mExpandedCard;
 
     private int mPersistentTaskId;
+
+    private int mCardColor;
 
     private TaskDescription mTaskDescription;
 
@@ -81,10 +104,11 @@ public class RecentCard extends Card {
 
         // set custom background
         if (cardColor != 0x00ffffff) {
-            this.setBackgroundResource(new ColorDrawable(cardColor));
+            mCardColor = cardColor;
         } else {
-            this.setBackgroundResource(new ColorDrawable(getDefaultCardColorBg(td)));
+            mCardColor = getDefaultCardColorBg(td);
         }
+        this.setBackgroundResource(new ColorDrawable(mCardColor));
 
         // Finally add header, icon and expanded area to our card.
         addCardHeader(mHeader);
@@ -184,4 +208,110 @@ public class RecentCard extends Card {
         return mPersistentTaskId;
     }
 
+    @Override
+    public void setupOptionsItems(final CardView cv) {
+        View options = cv.findViewById(R.id.card_options);
+        // set custom background
+        if (ColorUtils.isDarkColor(mCardColor)) {
+            options.setBackgroundColor(ColorUtils.lightenColor(mCardColor));
+        } else {
+            options.setBackgroundColor(ColorUtils.darkenColor(mCardColor));
+        }
+
+        if (!checkAppInstaller(mTaskDescription.packageName, AMAZON_REFERENCE)
+                && !checkAppInstaller(mTaskDescription.packageName, PLAYSTORE_REFERENCE)) {
+            options.findViewById(R.id.market).setVisibility(View.GONE);
+        }
+
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id = v.getId();
+                Intent intent = null;
+                if (id == R.id.app_info) {
+                    intent = getAppInfoIntent();
+                } else if (id == R.id.market) {
+                    intent = getStoreIntent();
+                }
+                if (intent != null) {
+                    sendCloseSystemWindows();
+                    intent.setComponent(intent.resolveActivity(mContext.getPackageManager()));
+                    TaskStackBuilder.create(mContext)
+                            .addNextIntentWithParentStack(intent).startActivities();
+                }
+
+                int[] location = new int[2];
+                v.getLocationOnScreen(location);
+                cv.hideOptions(location[0], location[1]);
+            }
+        };
+
+        options.findViewById(R.id.app_info).setOnClickListener(listener);
+        options.findViewById(R.id.market).setOnClickListener(listener);
+        options.findViewById(R.id.close).setOnClickListener(listener);
+        options.findViewById(R.id.multiwindow).setOnClickListener(listener);
+    }
+
+    private static void sendCloseSystemWindows() {
+        if (ActivityManagerNative.isSystemReady()) {
+            try {
+                ActivityManagerNative.getDefault()
+                        .closeSystemDialogs("close_recents");
+            } catch (RemoteException e) {
+            }
+        }
+    }
+
+    private Intent getAppInfoIntent() {
+        return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", mTaskDescription.packageName, null));
+    }
+
+    private Intent getStoreIntent() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        String reference;
+        if (checkAppInstaller(mTaskDescription.packageName, AMAZON_REFERENCE)) {
+            reference = AMAZON_REFERENCE;
+            intent.setData(Uri.parse(AMAZON_APP_URI_QUERY + mTaskDescription.packageName));
+        } else {
+            reference = PLAYSTORE_REFERENCE;
+            intent.setData(Uri.parse(PLAYSTORE_APP_URI_QUERY + mTaskDescription.packageName));
+        }
+        // Exclude from recents if the store is not in our task list.
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        return intent;
+    }
+
+    /**
+     * Check if the requested app was installed by the reference store.
+     */
+    private boolean checkAppInstaller(String packageName, String reference) {
+        if (packageName == null) {
+            return false;
+        }
+        PackageManager pm = mContext.getPackageManager();
+        if (!isReferenceInstalled(reference, pm)) {
+            return false;
+        }
+
+        String installer = pm.getInstallerPackageName(packageName);
+        if (DEBUG) Log.d(TAG, "Package was installed by: " + installer);
+        if (reference.equals(installer)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check is store reference is installed.
+     */
+    private boolean isReferenceInstalled(String packagename, PackageManager pm) {
+        try {
+            pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (NameNotFoundException e) {
+            if (DEBUG) Log.e(TAG, "Store is not installed: " + packagename, e);
+            return false;
+        }
+    }
 }

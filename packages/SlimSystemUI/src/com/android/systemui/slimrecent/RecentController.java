@@ -157,6 +157,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
         // Inflate our recents layout
         mRecentContainer =
                 (RelativeLayout) View.inflate(context, R.layout.slim_recent, null);
+        mRecentContainer.setClipChildren(false);
 
         // Get contents for rebuilding and gesture detector.
         mRecentContent =
@@ -197,6 +198,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
         // Add finally the views and listen for outside touches.
         mParentView.setFocusableInTouchMode(true);
         mParentView.addView(mRecentContainer);
+        mParentView.setClipChildren(false);
         mParentView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
