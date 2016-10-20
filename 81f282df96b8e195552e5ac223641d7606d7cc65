@@ -1,0 +1,280 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dabed58f_6f1d6573",
+        "filename": "packages/SlimSystemUI/res/layout/recent_base_card_layout.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "FrameLayout",
+      "range": {
+        "startLine": 27,
+        "startChar": 5,
+        "endLine": 27,
+        "endChar": 40
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_0f12a962",
+        "filename": "packages/SlimSystemUI/res/layout/recent_base_card_layout.xml",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "FrameLayout",
+      "range": {
+        "startLine": 102,
+        "startChar": 6,
+        "endLine": 102,
+        "endChar": 41
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_2f176d53",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentCard.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "Make public in other class and call from there",
+      "range": {
+        "startLine": 53,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 83
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_ef08752f",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentCard.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "handle animation",
+      "range": {
+        "startLine": 240,
+        "startChar": 57,
+        "endLine": 240,
+        "endChar": 58
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_cf0b312a",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentCard.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "make public in other class and make reason a var",
+      "range": {
+        "startLine": 255,
+        "startChar": 4,
+        "endLine": 263,
+        "endChar": 5
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_8f053916",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentCard.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "make public static and add context as var",
+      "range": {
+        "startLine": 285,
+        "startChar": 3,
+        "endLine": 316,
+        "endChar": 5
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_af027d09",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 48
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_52ffea01",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentController.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 201,
+        "endChar": 43
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_1209722c",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "revert",
+      "range": {
+        "startLine": 191,
+        "startChar": 38,
+        "endLine": 192,
+        "endChar": 70
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_72046e15",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 198,
+        "startChar": 8,
+        "endLine": 199,
+        "endChar": 49
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_320ef635",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "delete",
+      "range": {
+        "startLine": 216,
+        "startChar": 8,
+        "endLine": 239,
+        "endChar": 13
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dabed58f_d212fa57",
+        "filename": "src/org/slim/utils/ColorUtils.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2016-10-20T02:43:00Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 55,
+        "startChar": 1,
+        "endLine": 55,
+        "endChar": 8
+      },
+      "revId": "81f282df96b8e195552e5ac223641d7606d7cc65",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
