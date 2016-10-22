@@ -113,7 +113,7 @@ public class DeviceUtils {
                     return true;
                 }
             }
-        } catch (CameraAccessException | AssertionError e) {
+        } catch (Throwable e) {
             // Ignore
         }
         return false;
