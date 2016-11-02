@@ -616,11 +616,6 @@ public class SlimNavigationBarView extends NavigationBarView {
         final boolean keyguardProbablyEnabled =
                 (mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0;
 
-
-        if (SLIPPERY_WHEN_DISABLED) {
-            setSlippery(disableHome && disableRecent && disableBack);
-        }
-
         final ViewGroup navButtons = getNavButtons();
         if (navButtons != null) {
             LayoutTransition lt = navButtons.getLayoutTransition();
@@ -692,7 +687,6 @@ public class SlimNavigationBarView extends NavigationBarView {
         }
     }
 
-    @Override
     public void setSlippery(boolean newSlippery) {
         if (!isAttachedToWindow()) return;
         super.setSlippery(newSlippery);
