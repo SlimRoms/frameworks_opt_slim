@@ -27,6 +27,7 @@ import com.android.systemui.qs.tiles.CaffeineTile;
 import com.android.systemui.qs.tiles.ImeTile;
 import com.android.systemui.qs.tiles.ScreenshotTile;
 import com.android.systemui.qs.tiles.SyncTile;
+import com.android.systemui.qs.tiles.UsbTetherTile;
 
 public class SlimQSTileHost extends QSTileHost {
 
@@ -57,6 +58,8 @@ public class SlimQSTileHost extends QSTileHost {
                 return new ScreenshotTile(this);
             case "sync":
                 return new SyncTile(this);
+            case "usb_tether":
+                return new UsbTetherTile(this);
             default:
                 return super.createTile(tileSpec);
         }
