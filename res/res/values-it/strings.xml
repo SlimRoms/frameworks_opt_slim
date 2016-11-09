@@ -154,10 +154,7 @@
   <!-- Color Picker -->
   <string name="dialog_color_picker">Selettore del colore</string>
   <string name="press_color_to_apply">Premere sul colore sottostante per applicare</string>
-  <string name="arrow_right">→</string>
-  <string name="arrow_down">↓</string>
   <string name="hex">Esadecimale:</string>
-  <string name="hex_hint">#ff000000</string>
   <string name="set">Imposta</string>
   <string name="color_default">Predefinito</string>
 </resources>

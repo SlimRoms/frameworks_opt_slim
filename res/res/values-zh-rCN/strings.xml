@@ -154,10 +154,7 @@
   <!-- Color Picker -->
   <string name="dialog_color_picker">颜色选取器</string>
   <string name="press_color_to_apply">点击下面的颜色以应用</string>
-  <string name="arrow_right">→</string>
-  <string name="arrow_down">↓</string>
   <string name="hex">十六进制：</string>
-  <string name="hex_hint">#ff000000</string>
   <string name="set">设定</string>
   <string name="color_default">默认​​​​​</string>
 </resources>

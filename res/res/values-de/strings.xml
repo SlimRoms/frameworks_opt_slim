@@ -18,7 +18,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Labels for the WRITE_SETTINGS permission -->
   <string name="permlab_writeSettings">Slim-Systemeinstellungen ändern</string>
-  <string name="permdesc_writeSettings">Erlaubt einer App, Slim-Systemeinstellungen zu ändern.</string>
+  <string name="permdesc_writeSettings">Erlaubt einer App die Slim-Systemeinstellungen zu ändern.</string>
   <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
   <string name="permlab_writeSecureSettings">Slim-Sicherheitssystemeinstellungen ändern</string>
   <string name="permdesc_writeSecureSettings">Erlaubt einer App, Slim-Systemsicherheitseinstellungen zu ändern. Nicht für normale Apps.</string>
@@ -92,7 +92,7 @@
   <string name="shortcuts_icon_picker_email2">E-Mail Alternative</string>
   <string name="shortcuts_icon_picker_evernote">Evernote</string>
   <string name="shortcuts_icon_picker_facebook">Facebook</string>
-  <string name="shortcuts_icon_picker_favorite">Favoriten</string>
+  <string name="shortcuts_icon_picker_favorite">Favorit</string>
   <string name="shortcuts_icon_picker_file_browser">Dateimanager</string>
   <string name="shortcuts_icon_picker_file_browser2">Alternativer Dateimanager</string>
   <string name="shortcuts_icon_picker_fitness">Fitness</string>
@@ -154,10 +154,7 @@
   <!-- Color Picker -->
   <string name="dialog_color_picker">Farbauswahl</string>
   <string name="press_color_to_apply">Farbe unten antippen, um sie anzuwenden</string>
-  <string name="arrow_right">→</string>
-  <string name="arrow_down">↓</string>
   <string name="hex">Hex:</string>
-  <string name="hex_hint">#FF000000</string>
   <string name="set">Einstellen</string>
   <string name="color_default">Standard</string>
 </resources>

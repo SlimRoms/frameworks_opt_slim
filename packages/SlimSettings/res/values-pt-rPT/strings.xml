@@ -48,18 +48,43 @@
   <string name="app_ops_summaries_modify_calendar">modificar o calendário</string>
   <string name="app_ops_summaries_wifi_scan">Procurar wi-fi</string>
   <string name="app_ops_summaries_read_sms">ler SMS</string>
+  <string name="app_ops_summaries_write_sms">escrever SMS</string>
   <string name="app_ops_summaries_receive_sms">receber SMS</string>
   <string name="app_ops_summaries_receive_emergency_sms">receber SMS de emergência</string>
   <string name="app_ops_summaries_receive_mms">receber MMS</string>
+  <string name="app_ops_summaries_send_sms">enviar SMS</string>
   <string name="app_ops_summaries_modify_settings">modificar definições</string>
   <string name="app_ops_summaries_draw_on_top">desenhar na parte superior</string>
   <string name="app_ops_summaries_access_notifications">aceder às notificações</string>
   <string name="app_ops_summaries_camera">câmara</string>
   <string name="app_ops_summaries_record_audio">gravar áudio</string>
   <string name="app_ops_summaries_play_audio">reproduzir áudio</string>
+  <string name="app_ops_summaries_read_clipboard">ler área de transferência</string>
+  <string name="app_ops_summaries_modify_clipboard">modificar área de transferência</string>
   <string name="app_ops_summaries_media_buttons">botões multimédia</string>
+  <string name="app_ops_summaries_audio_focus">orientação do áudio</string>
   <string name="app_ops_summaries_master_volume">volume principal</string>
+  <string name="app_ops_summaries_voice_volume">volume de voz</string>
+  <string name="app_ops_summaries_ring_volume">volume do toque</string>
+  <string name="app_ops_summaries_media_volume">volume de multimédia</string>
+  <string name="app_ops_summaries_alarm_volume">volume do alarme</string>
+  <string name="app_ops_summaries_notification_volume">volume das notificações</string>
+  <string name="app_ops_summaries_bluetooth_volume">volume do bluetooth</string>
+  <string name="app_ops_summaries_keep_awake">manter o ecrã ligado</string>
+  <string name="app_ops_summaries_monitor_location">monitorizar localização</string>
+  <string name="app_ops_summaries_get_usage_stats">obter estatísticas de utilização</string>
+  <string name="app_ops_summaries_mute_unmute_microphone">silenciar/ativar microfone</string>
+  <string name="app_ops_summaries_activate_vpn">ativar VPN</string>
+  <string name="app_ops_summaries_make_call">fazer uma chamada</string>
+  <string name="app_ops_summaries_use_fingerprint">utilizar impressão digital</string>
+  <string name="app_ops_summaries_use_body_sensors">utilizar os sensores corporais</string>
+  <string name="app_ops_summaries_read_cell_broadcasts">ler as mensagens de difusão de rede</string>
+  <string name="app_ops_summaries_read_external_storage">ler o armazenamento externo</string>
+  <string name="app_ops_summaries_write_external_storage">escrever no armazenamento externo</string>
+  <string name="app_ops_summaries_turn_screen_on">ligar o ecrã</string>
+  <string name="app_ops_summaries_superuser">acesso root</string>
   <!-- User display names for app ops codes - extension of AOSP -->
+  <string name="app_ops_labels_gps">GPS</string>
   <string name="app_ops_labels_vibrate">Vibrar</string>
   <string name="app_ops_labels_read_contacts">Ler contatos</string>
   <string name="app_ops_labels_modify_contacts">Modificar contatos</string>
@@ -90,15 +115,32 @@
   <string name="app_ops_labels_alarm_volume">Volume do alarme</string>
   <string name="app_ops_labels_notification_volume">Volume de notificações</string>
   <string name="app_ops_labels_bluetooth_volume">Volume do Bluetooth</string>
+  <string name="app_ops_labels_superuser">Acesso Root</string>
   <!-- App ops permissions -->
+  <string name="app_ops_permissions_allowed">Permitido</string>
+  <string name="app_ops_permissions_ignored">Ignorado</string>
+  <string name="app_ops_permissions_always_ask">Perguntar sempre</string>
   <!-- App ops detail -->
   <!-- App ops menu options -->
+  <string name="app_ops_show_user_apps">Mostrar aplicações do utilizador</string>
+  <string name="app_ops_show_system_apps">Mostrar aplicações de sistema</string>
   <!-- Privacy Settings Header item -->
   <!-- Privacy Guard -->
+  <string name="privacy_guard_advanced_settings_title">Avançado</string>
   <!-- Setting checkbox title for root access -->
+  <string name="root_access">Acesso Root</string>
+  <string name="root_access_warning_title">Permitir acesso root?</string>
+  <string name="root_access_warning_message">Permitir que as aplicações solicitem acesso root é muito perigoso e pode comprometer a segurança do seu sistema!</string>
+  <string name="root_access_none">Desligado</string>
+  <string name="root_access_apps">Apenas aplicações</string>
+  <string name="root_access_all">Aplicações e ADB</string>
   <!-- Memory -->
+  <string name="memory_startup_apps_title">Aplicações iniciadas durante o arranque</string>
   <!-- About phone screen, Slim version -->
+  <string name="slim_version_title">Versão Slim</string>
+  <string name="slim_version_default">Desconhecido</string>
   <!-- Display & Lights screen, setting options for LCD density -->
+  <string name="lcd_density">Densidade do LCD</string>
   <!-- Wakeup options -->
   <!-- Proximity wake -->
   <!-- Doze options -->

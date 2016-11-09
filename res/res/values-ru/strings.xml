@@ -17,12 +17,16 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Labels for the WRITE_SETTINGS permission -->
+  <string name="permlab_writeSettings">изменить настройки системы Slim</string>
+  <string name="permdesc_writeSettings">Разрешать приложениям изменять параметры системы Slim.</string>
   <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
   <!-- General Strings -->
   <!-- Shortcut actions -->
   <string name="shortcut_action_reset">Сброс</string>
   <string name="shortcut_action_add">Добавить</string>
   <string name="shortcut_action_warning">Внимание</string>
+  <string name="shortcuts_applications">Приложения</string>
+  <string name="shortcuts_icon_picker_type">Выберите тип иконки:</string>
   <!-- Button shorcut actions -->
   <!-- Icon color options -->
   <!-- Slimseekbar -->
