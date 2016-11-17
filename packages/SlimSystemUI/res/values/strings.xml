@@ -23,4 +23,10 @@
     <!-- Battery level text while charging [CHAR LIMIT=2] -->
     <string name="battery_level_template_charging" translatable="false"><xliff:g id="level" example="45">%d</xliff:g>~</string>
 
+    <!-- Kill button in notification guts -->
+    <string name="force_stop_dlg_title">Force stop?</string>
+    <string name="force_stop_dlg_text">If you force stop an app, it may misbehave.</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_cancel">Cancel</string>
+
 </resources>
