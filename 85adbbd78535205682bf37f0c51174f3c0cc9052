@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_e978712d",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/slim/SlimStatusBar.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2016-11-18T17:14:39Z",
+      "side": 1,
+      "message": "buttonParent.findViewById(R.id.notification_inspect_kill) \u003d\u003d null",
+      "range": {
+        "startLine": 553,
+        "startChar": 12,
+        "endLine": 553,
+        "endChar": 42
+      },
+      "revId": "85adbbd78535205682bf37f0c51174f3c0cc9052",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
