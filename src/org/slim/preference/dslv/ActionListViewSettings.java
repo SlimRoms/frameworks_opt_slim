@@ -1018,8 +1018,10 @@ public class ActionListViewSettings extends ListFragment implements
                     .setNegativeButton(android.R.string.cancel,
                             new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            getOwner().mActionConfigsAdapter.insert(
-                                    getOwner().mTempActionConfig, getOwner().mTempActionIndex);
+                            if (getOwner().mTempActionIndex != -1) {
+                                getOwner().mActionConfigsAdapter.insert(
+                                        getOwner().mTempActionConfig, getOwner().mTempActionIndex);
+                            }
                             getOwner().mTempActionConfig = null;
                             getOwner().mTempActionIndex = -1;
                             dialog.cancel();
