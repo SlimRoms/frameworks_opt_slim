@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_aceda7f1",
+        "filename": "src/org/slim/provider/SlimSettings.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-11-26T20:43:45Z",
+      "side": 1,
+      "message": "spaces not tab",
+      "range": {
+        "startLine": 888,
+        "startChar": 0,
+        "endLine": 888,
+        "endChar": 5
+      },
+      "revId": "d9774fc18e4765e04ab750169ad2313bd2083f9a",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
