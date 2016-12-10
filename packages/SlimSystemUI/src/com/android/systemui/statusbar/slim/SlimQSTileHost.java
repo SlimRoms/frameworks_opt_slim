@@ -27,6 +27,7 @@ import com.android.systemui.qs.tiles.AmbientDisplayTile;
 import com.android.systemui.qs.tiles.CaffeineTile;
 import com.android.systemui.qs.tiles.ImeTile;
 import com.android.systemui.qs.tiles.NfcTile;
+import com.android.systemui.qs.tiles.ScreenshotTile;
 import com.android.systemui.qs.tiles.SyncTile;
 
 public class SlimQSTileHost extends QSTileHost {
@@ -58,6 +59,8 @@ public class SlimQSTileHost extends QSTileHost {
                 return new ImeTile(this);
             case "nfc":
                 return new NfcTile(this);
+            case "screenshot":
+                return new ScreenshotTile(this);
             case "sync":
                 return new SyncTile(this);
             default:
