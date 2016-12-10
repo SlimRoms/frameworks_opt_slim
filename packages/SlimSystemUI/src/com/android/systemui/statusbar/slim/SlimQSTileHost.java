@@ -23,6 +23,7 @@ import com.android.systemui.statusbar.policy.UserInfoController;
 import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 
+import com.android.systemui.qs.tiles.AmbientDisplayTile;
 import com.android.systemui.qs.tiles.CaffeineTile;
 import com.android.systemui.qs.tiles.ExpandedDesktopTile;
 import com.android.systemui.qs.tiles.ImeTile;
@@ -49,6 +50,8 @@ public class SlimQSTileHost extends QSTileHost {
     public QSTile<?> createTile(String tileSpec) {
         // handle additional tiles here
         switch(tileSpec) {
+            case "ambient_display":
+                return new AmbientDisplayTile(this);
             case "caffeine":
                 return new CaffeineTile(this);
             case "expanded_desktop":
