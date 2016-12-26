@@ -14,6 +14,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slim="http://schemas.android.com/apk/res/org.slim.framework"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingLeft="5dp"
