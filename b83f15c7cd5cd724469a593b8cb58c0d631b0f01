@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aade967_21cbf573",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2016-12-29T23:07:26Z",
+      "side": 1,
+      "message": "One to many parantesis",
+      "range": {
+        "startLine": 711,
+        "startChar": 90,
+        "endLine": 711,
+        "endChar": 91
+      },
+      "revId": "b83f15c7cd5cd724469a593b8cb58c0d631b0f01",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
