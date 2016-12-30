@@ -30,7 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import org.slim.framework.internal.R;
+import org.slim.preference.R;
 
 public class ColorPickerDialog
         extends
@@ -56,20 +56,12 @@ public class ColorPickerDialog
 
     private OnColorChangedListener mListener;
 
-    private Context mContext;
-
     public interface OnColorChangedListener {
         public void onColorChanged(int color);
     }
 
     public ColorPickerDialog(Context context, int initialColor) {
         super(context);
-
-        try {
-            mContext = getContext().createPackageContext("org.slim.framework", 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         init(initialColor);
     }
@@ -84,7 +76,7 @@ public class ColorPickerDialog
 
     private void setUp(int color) {
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         View layout = inflater.inflate(R.layout.dialog_color_picker, null);
@@ -93,16 +85,16 @@ public class ColorPickerDialog
 
         setTitle(R.string.dialog_color_picker);
 
-        mColorPicker = (ColorPickerView) layout.findViewById(R.id.color_picker_view);
-        mOldColor = (ColorPickerPanelView) layout.findViewById(R.id.old_color_panel);
-        mNewColor = (ColorPickerPanelView) layout.findViewById(R.id.new_color_panel);
+        mColorPicker = (ColorPickerView) layout.findViewById(org.slim.framework.R.id.color_picker_view);
+        mOldColor = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.old_color_panel);
+        mNewColor = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.new_color_panel);
 
-        mWhite = (ColorPickerPanelView) layout.findViewById(R.id.white_panel);
-        mBlack = (ColorPickerPanelView) layout.findViewById(R.id.black_panel);
-        mCyan = (ColorPickerPanelView) layout.findViewById(R.id.cyan_panel);
-        mRed = (ColorPickerPanelView) layout.findViewById(R.id.red_panel);
-        mGreen = (ColorPickerPanelView) layout.findViewById(R.id.green_panel);
-        mYellow = (ColorPickerPanelView) layout.findViewById(R.id.yellow_panel);
+        mWhite = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.white_panel);
+        mBlack = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.black_panel);
+        mCyan = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.cyan_panel);
+        mRed = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.red_panel);
+        mGreen = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.green_panel);
+        mYellow = (ColorPickerPanelView) layout.findViewById(org.slim.framework.R.id.yellow_panel);
 
         mHex = (EditText) layout.findViewById(R.id.hex);
         mSetButton = (ImageButton) layout.findViewById(R.id.enter);
