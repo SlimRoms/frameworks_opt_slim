@@ -477,6 +477,8 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
             boolean value = (Boolean) newValue;
             SlimSettings.System.putInt(getContentResolver(),
                     SlimSettings.System.DISABLE_HW_KEYS, value ? 0 : 1);
+            SlimSettings.System.putInt(getContentResolver(),
+                    SlimSettings.System.HARDWARE_KEY_REBINDING, value ? 1 : 0);
             if (!value) {
                 Settings.System.putInt(getContentResolver(),
                         Settings.System.BUTTON_BRIGHTNESS, 0);
