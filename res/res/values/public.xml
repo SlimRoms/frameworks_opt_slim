@@ -77,6 +77,18 @@
   <!-- DSLV -->
   <public type="color" name="dslv_float_background_color" id="0x02060000" />
 
+  <!-- Slim Colors -->
+  <public type="color" name="slim_blue" id="0x02060001" />
+  <public type="color" name="slim_grey" id="0x02060002" />
+  <public type="color" name="slim_ochre_yellow" id="0x02060003" />
+  <public type="color" name="slim_grey_870" id="0x02060004" />
+
+  <!-- Google Colors -->
+  <public type="color" name="google_red" id="0x02060005" />
+  <public type="color" name="google_yellow" id="0x02060006" />
+  <public type="color" name="google_green" id="0x02060007" />
+  <public type="color" name="google_blue" id="0x02060008" />
+
   <!-- array (start with 0x02070000) -->
   <public type="array" name="icon_color_mode_entries" id="0x02070000" />
   <public type="array" name="icon_color_mode_values" id="0x02070001" />
