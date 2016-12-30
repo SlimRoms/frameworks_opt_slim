@@ -108,11 +108,11 @@ public class SlimSeekBarPreference extends Preference
         mBar = (SeekBar) holder.findViewById(R.id.seek_bar);
         mBar.setOnSeekBarChangeListener(this);
         int progress = getPersistedInt(mSetDefault);
-        if (mMultiply != -1) {
-            progress = progress / mMultiply;
-        }
         if (mMinimum != -1) {
             progress -= mMinimum;
+        }
+        if (mMultiply > 0) {
+            progress = progress / mMultiply;
         }
         mBar.setProgress(progress);
     }
