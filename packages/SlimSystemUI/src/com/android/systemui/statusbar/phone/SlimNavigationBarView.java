@@ -302,7 +302,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     }
 
     public ViewGroup getNavButtons() {
-        return (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+        return (ViewGroup) mCurrentView.findViewById(R.id.navigation_inflater);
     }
 
     public void setOverrideMenuKeys(boolean b) {
