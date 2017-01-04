@@ -198,6 +198,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
                 if (mSlimNavigationBarView != null) {
                     mSlimNavigationBarView.updateNavigationBarSettings();
                     mSlimNavigationBarView.onNavButtonTouched();
+                    Log.d(TAG, "DIM1. onNavButtonTouched() because preference change");
                 }
             } else if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_SHOW))) {
