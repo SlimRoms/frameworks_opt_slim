@@ -200,6 +200,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     };
 
     public void onNavButtonTouched() {
+        Log.d(TAG, "DIM2. onNavButtonTouched() starting");
         if (mHandler == null) return;
         if (mIsHandlerCallbackActive) {
             mHandler.removeCallbacks(mNavButtonDimmer);
@@ -219,6 +220,7 @@ public class SlimNavigationBarView extends NavigationBarView {
             if (mDimNavButtons &&
                     !(mKgm != null ? mKgm.isDeviceLocked() : false)) {
                 mHandler.postDelayed(mNavButtonDimmer, mDimNavButtonsTimeout);
+                Log.d(TAG, "DIM3. onNavButtonTouched() is posting mNavButtonDimmer runnable");
                 mIsHandlerCallbackActive = true;
             }
         }
@@ -302,7 +304,7 @@ public class SlimNavigationBarView extends NavigationBarView {
     }
 
     public ViewGroup getNavButtons() {
-        return (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+        return (ViewGroup) getCurrentView().findViewById(R.id.nav_buttons);
     }
 
     public void setOverrideMenuKeys(boolean b) {
@@ -937,10 +939,24 @@ public class SlimNavigationBarView extends NavigationBarView {
     private Runnable mNavButtonDimmer = new Runnable() {
         @Override
         public void run() {
+            Log.d(TAG, "DIM4. mNavButtonDimmer runnable has started");
             if (getCurrentView().findViewById(R.id.lights_out).getAlpha() == 1f) return;
             mIsHandlerCallbackActive = false;
             final ViewGroup navButtons = getNavButtons();
+
+            // TESTING
+            Log.d(TAG, "DIMSTATUS: navButtons=" + (navButtons == null ? "null" : "not null") + " and mIsDim=" + (mIsDim ? "true" : "false"));
+            ViewGroup testA = (ViewGroup) getCurrentView().findViewById(R.id.nav_buttons);
+            ViewGroup testB = (ViewGroup) getCurrentView().findViewById(R.id.navigation_inflater);
+            ViewGroup testC = (ViewGroup) mCurrentView.findViewById(R.id.nav_buttons);
+            ViewGroup testD = (ViewGroup) mCurrentView.findViewById(R.id.navigation_inflater);
+            Log.d(TAG, "DIMtestA=" + (testA == null ? "null" : "non-null"));
+            Log.d(TAG, "DIMtestB=" + (testB == null ? "null" : "non-null"));
+            Log.d(TAG, "DIMtestC=" + (testC == null ? "null" : "non-null"));
+            Log.d(TAG, "DIMtestD=" + (testD == null ? "null" : "non-null"));
+
             if (navButtons != null && !mIsDim) {
+                Log.d(TAG, "DIM5GOOD. nav_buttons layout is not null yay!");
                 mIsDim = true;
                 if (mDimNavButtonsAnimate) {
                     mFadeOut = ObjectAnimator.ofFloat(
@@ -975,6 +991,7 @@ public class SlimNavigationBarView extends NavigationBarView {
                 } else {
                     navButtons.setAlpha(mDimNavButtonsAlpha);
                 }
+                Log.d(TAG, "DIM6. nav buttons should be dimming at this point.");
             }
         }
     };
