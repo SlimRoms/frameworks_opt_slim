@@ -34,7 +34,7 @@ import com.slim.settings.SettingsPreferenceFragment;
 import com.slim.settings.Utils;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 
 public class StatusBar extends SettingsPreferenceFragment implements OnPreferenceChangeListener {
