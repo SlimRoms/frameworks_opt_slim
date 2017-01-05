@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.service;
+package slim.service;
 
 import android.content.Context;
 

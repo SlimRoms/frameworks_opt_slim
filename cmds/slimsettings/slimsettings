@@ -2,4 +2,4 @@
 #
 base=/system
 export CLASSPATH=$base/framework/slimsettings.jar
-exec app_process $base/bin org.slim.commands.slimsettings.SlimSettingsCmd "$@"
+exec app_process $base/bin slim.commands.slimsettings.SlimSettingsCmd "$@"

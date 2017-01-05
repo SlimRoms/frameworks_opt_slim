@@ -40,7 +40,7 @@ import com.android.systemui.R;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 /**
  * This class handles our expanded card which shows the actual task screenshot.
