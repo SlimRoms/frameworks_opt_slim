@@ -68,12 +68,12 @@ import com.android.systemui.statusbar.slim.SlimKeyButtonView;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slim.action.ActionConfig;
-import org.slim.action.ActionConstants;
-import org.slim.action.ActionHelper;
-import org.slim.provider.SlimSettings;
-import org.slim.utils.ImageHelper;
-import org.slim.utils.DeviceUtils;
+import slim.action.ActionConfig;
+import slim.action.ActionConstants;
+import slim.action.ActionHelper;
+import slim.provider.SlimSettings;
+import slim.utils.ImageHelper;
+import slim.utils.DeviceUtils;
 
 public class SlimNavigationBarView extends NavigationBarView {
 

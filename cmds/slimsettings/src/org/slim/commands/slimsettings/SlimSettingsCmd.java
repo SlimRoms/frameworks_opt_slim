@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public final class SlimSettingsCmd {
 

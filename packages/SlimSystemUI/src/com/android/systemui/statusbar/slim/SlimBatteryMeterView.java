@@ -49,7 +49,7 @@ import com.android.systemui.R;
 import com.android.systemui.DemoMode;
 import com.android.systemui.statusbar.policy.BatteryController;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public class SlimBatteryMeterView extends View implements DemoMode,
         BatteryController.BatteryStateChangeCallback {

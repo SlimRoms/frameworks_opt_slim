@@ -41,8 +41,8 @@ import com.slim.settings.R;
 import com.slim.settings.SettingsPreferenceFragment;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.preference.SlimSeekBarPreference;
-import org.slim.provider.SlimSettings;
+import slim.preference.SlimSeekBarPreference;
+import slim.provider.SlimSettings;
 
 public class DozeSettingsFragment extends SettingsPreferenceFragment implements
         OnPreferenceChangeListener {

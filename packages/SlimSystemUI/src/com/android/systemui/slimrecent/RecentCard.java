@@ -51,8 +51,8 @@ import com.android.systemui.R;
 import com.android.systemui.SystemUIApplication;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
-import org.slim.provider.SlimSettings;
-import org.slim.utils.ColorUtils;
+import slim.provider.SlimSettings;
+import slim.utils.ColorUtils;
 
 /**
  * This class handles our base card view.
