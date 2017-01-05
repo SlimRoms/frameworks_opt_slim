@@ -57,9 +57,9 @@ import com.android.systemui.statusbar.policy.KeyButtonView;
 
 import java.util.ArrayList;
 
-import org.slim.action.ActionConstants;
-import org.slim.action.Action;
-import org.slim.action.SlimActionsManager;
+import slim.action.ActionConstants;
+import slim.action.Action;
+import slim.action.SlimActionsManager;
 
 import static android.view.accessibility.AccessibilityNodeInfo.ACTION_CLICK;
 import static android.view.accessibility.AccessibilityNodeInfo.ACTION_LONG_CLICK;

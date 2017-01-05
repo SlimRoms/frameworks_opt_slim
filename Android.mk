@@ -30,9 +30,9 @@ LOCAL_JAVA_LIBRARIES := \
 slim_platform_res := APPS/org.slim.framework-res_intermediates/src
 
 LOCAL_INTERMEDIATE_SOURCES := \
-    $(slim_platform_res)/org/slim/framework/R.java \
+    $(slim_platform_res)/slim/R.java \
     $(slim_platform_res)/org/slim/framework/internal/R.java \
-    $(slim_platform_res)/org/slim/framework/Manifest.java
+    $(slim_platform_res)/slim/Manifest.java
 
 include $(BUILD_JAVA_LIBRARY)
 slim_framework_module := $(LOCAL_INSTALLED_MODULE)
