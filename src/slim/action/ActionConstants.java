@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package org.slim.action;
+package slim.action;
 
 public class ActionConstants {
 

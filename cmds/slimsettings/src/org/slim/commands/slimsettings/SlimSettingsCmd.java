@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.commands.slimsettings;
+package slim.commands.slimsettings;
 
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public final class SlimSettingsCmd {
 

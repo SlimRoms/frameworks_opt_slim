@@ -36,7 +36,7 @@ import com.android.systemui.R;
 
 import java.util.ArrayList;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 /**
  * This class is our LRU cache controller. It holds

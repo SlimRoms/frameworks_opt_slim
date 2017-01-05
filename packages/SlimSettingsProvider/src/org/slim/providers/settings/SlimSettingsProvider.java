@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.providers.settings;
+package slim.providers.settings;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -46,7 +46,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 import java.util.HashMap;
 import java.util.List;

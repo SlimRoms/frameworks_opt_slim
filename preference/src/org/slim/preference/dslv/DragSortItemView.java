@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference.dslv;
+package slim.preference.dslv;
 
 import android.content.Context;
 import android.view.Gravity;

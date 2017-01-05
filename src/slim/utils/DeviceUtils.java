@@ -13,7 +13,7 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package org.slim.utils;
+package slim.utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
@@ -41,7 +41,7 @@ import com.android.internal.telephony.PhoneConstants;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slim.action.ActionConstants;
+import slim.action.ActionConstants;
 
 public class DeviceUtils {
 

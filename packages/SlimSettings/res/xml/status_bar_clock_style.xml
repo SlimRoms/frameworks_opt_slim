@@ -29,7 +29,7 @@
             android:defaultValue="false"
             android:dependency="status_bar_show_clock" />
 
-        <org.slim.preference.colorpicker.ColorPickerPreference
+        <slim.preference.colorpicker.ColorPickerPreference
             android:key="clock_color"
             android:title="@string/clock_color_title"
             android:defaultValue="0xffffff"

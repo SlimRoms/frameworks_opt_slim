@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package org.slim.utils;
+package slim.utils;
 
 import java.util.ArrayList;
 

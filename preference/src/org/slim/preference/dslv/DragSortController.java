@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference.dslv;
+package slim.preference.dslv;
 
 import android.graphics.Point;
 import android.view.GestureDetector;

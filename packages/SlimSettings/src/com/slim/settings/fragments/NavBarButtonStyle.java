@@ -38,8 +38,8 @@ import com.slim.settings.SettingsPreferenceFragment;
 import com.slim.settings.R;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.preference.colorpicker.ColorPickerPreference;
-import org.slim.provider.SlimSettings;
+import slim.preference.colorpicker.ColorPickerPreference;
+import slim.provider.SlimSettings;
 
 public class NavBarButtonStyle extends SettingsPreferenceFragment implements
         OnPreferenceChangeListener {

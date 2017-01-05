@@ -21,7 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import org.slim.action.Action;
+import slim.action.Action;
 
 public class SlimActionShortcut extends Activity  {
 

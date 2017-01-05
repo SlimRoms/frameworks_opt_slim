@@ -24,7 +24,7 @@ import android.support.v7.preference.PreferenceScreen;
 import android.view.IWindowManager;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 import com.slim.settings.R;
 import com.slim.settings.SettingsPreferenceFragment;

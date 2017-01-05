@@ -15,13 +15,13 @@
 * limitations under the License.
 */
 
-package org.slim.preference;
+package slim.preference;
 
 import android.content.Context;
 import android.os.UserHandle;
 import android.util.Log;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 class SlimPreference {
     static final int SLIM_SYSTEM_SETTING = 0;

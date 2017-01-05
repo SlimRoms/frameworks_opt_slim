@@ -23,9 +23,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import org.slim.action.ActionsArray;
-import org.slim.action.ActionHelper;
-import org.slim.utils.ImageHelper;
+import slim.action.ActionsArray;
+import slim.action.ActionHelper;
+import slim.utils.ImageHelper;
 import com.slim.settings.SlimActionShortcut;
 
 import com.slim.settings.R;

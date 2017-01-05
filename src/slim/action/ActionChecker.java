@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package org.slim.action;
+package slim.action;
 
 import android.content.Context;
 import android.os.UserHandle;
@@ -22,7 +22,7 @@ import android.text.TextUtils;
 
 import java.util.ArrayList;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public class ActionChecker {
 

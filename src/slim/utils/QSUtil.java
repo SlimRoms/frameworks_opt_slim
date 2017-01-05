@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slim.utils;
+package slim.utils;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;

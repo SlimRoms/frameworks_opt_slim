@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.utils;
+package slim.utils;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -30,7 +30,7 @@ import android.util.Log;
 
 import org.slim.framework.internal.R;
 
-import org.slim.utils.AppHelper;
+import slim.utils.AppHelper;
 
 import java.util.ArrayList;
 

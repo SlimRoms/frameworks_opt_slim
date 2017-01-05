@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.slim.action;
+package slim.action;
 
 import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slim.action.ActionConstants;
-import org.slim.utils.DeviceUtils;
+import slim.action.ActionConstants;
+import slim.utils.DeviceUtils;
 
 public class ActionsArray {
 
