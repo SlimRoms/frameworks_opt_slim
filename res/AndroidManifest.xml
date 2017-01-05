@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.slim.framework"
+          package="slim"
           coreApp="true" android:sharedUserId="android.uid.system">
 
     <!-- Allows an application to write to Slim system settings -->

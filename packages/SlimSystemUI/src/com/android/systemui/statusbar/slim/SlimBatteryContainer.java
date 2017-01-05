@@ -31,7 +31,7 @@ import android.widget.TextView;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.policy.BatteryController;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public class SlimBatteryContainer extends LinearLayout implements
         BatteryController.BatteryStateChangeCallback {
