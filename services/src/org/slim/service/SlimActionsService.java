@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.service;
+package slim.service;
 
 import android.content.Context;
 import android.content.Intent;
@@ -26,8 +26,8 @@ import android.view.WindowManagerPolicy;
 
 import com.android.server.LocalServices;
 
-import org.slim.action.ISlimActionsService;
-import org.slim.constants.SlimServiceConstants;
+import slim.action.ISlimActionsService;
+import slim.constants.SlimServiceConstants;
 import org.slim.framework.internal.statusbar.ISlimStatusBar;
 
 public class SlimActionsService extends SlimSystemService {
