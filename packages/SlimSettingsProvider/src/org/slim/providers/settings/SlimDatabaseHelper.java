@@ -37,7 +37,7 @@ import android.util.Log;
 
 import java.io.File;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 /**
  * The SlimDatabaseHelper allows creation of a database to store Slim specific settings for a user

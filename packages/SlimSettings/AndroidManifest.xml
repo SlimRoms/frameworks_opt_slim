@@ -71,7 +71,7 @@
 
         <activity
             android:name="com.slim.settings.activities.ProxAutoSpeakerActivity"
-            android:label="@org.slim.framework:string/prox_auto_speaker_title"
+            android:label="@slim:string/prox_auto_speaker_title"
             android:theme="@style/Theme.Settings" >
 
             <intent-filter>

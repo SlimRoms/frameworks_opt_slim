@@ -48,14 +48,14 @@ import com.slim.settings.preference.ButtonBacklightBrightness;
 import com.slim.settings.R;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.action.ActionsArray;
-import org.slim.action.ActionConstants;
-import org.slim.action.ActionHelper;
-import org.slim.provider.SlimSettings;
-import org.slim.utils.AppHelper;
-import org.slim.utils.DeviceUtils;
-import org.slim.utils.HwKeyHelper;
-import org.slim.utils.ShortcutPickerHelper;
+import slim.action.ActionsArray;
+import slim.action.ActionConstants;
+import slim.action.ActionHelper;
+import slim.provider.SlimSettings;
+import slim.utils.AppHelper;
+import slim.utils.DeviceUtils;
+import slim.utils.HwKeyHelper;
+import slim.utils.ShortcutPickerHelper;
 
 import java.io.DataOutputStream;
 import java.io.File;
