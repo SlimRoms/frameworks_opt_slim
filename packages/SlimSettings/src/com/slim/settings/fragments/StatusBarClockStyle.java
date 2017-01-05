@@ -46,8 +46,8 @@ import com.slim.settings.Utils;
 import java.util.Date;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.preference.colorpicker.ColorPickerPreference;
-import org.slim.provider.SlimSettings;
+import slim.preference.colorpicker.ColorPickerPreference;
+import slim.provider.SlimSettings;
 
 public class StatusBarClockStyle extends SettingsPreferenceFragment
         implements OnPreferenceChangeListener {
