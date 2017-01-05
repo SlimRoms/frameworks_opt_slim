@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package org.slim.utils;
+package slim.utils;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -23,8 +23,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import org.slim.action.ActionConfig;
-import org.slim.action.ActionConstants;
+import slim.action.ActionConfig;
+import slim.action.ActionConstants;
 
 public class ConfigSplitHelper {
 

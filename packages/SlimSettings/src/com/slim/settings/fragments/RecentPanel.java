@@ -43,9 +43,9 @@ import com.slim.settings.SettingsPreferenceFragment;
 
 import org.slim.framework.R;
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.utils.DeviceUtils;
-import org.slim.preference.colorpicker.ColorPickerPreference;
-import org.slim.provider.SlimSettings;
+import slim.utils.DeviceUtils;
+import slim.preference.colorpicker.ColorPickerPreference;
+import slim.provider.SlimSettings;
 
 public class RecentPanel extends SettingsPreferenceFragment implements DialogCreatable,
         Preference.OnPreferenceChangeListener {

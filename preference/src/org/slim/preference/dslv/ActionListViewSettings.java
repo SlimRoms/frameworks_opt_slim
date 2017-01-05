@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference.dslv;
+package slim.preference.dslv;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,16 +60,16 @@ import android.widget.TextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import org.slim.action.ActionsArray;
-import org.slim.action.ActionChecker;
-import org.slim.action.ActionConfig;
-import org.slim.action.ActionConstants;
-import org.slim.action.ActionHelper;
-import org.slim.utils.ImageHelper;
-import org.slim.utils.DeviceUtils;
+import slim.action.ActionsArray;
+import slim.action.ActionChecker;
+import slim.action.ActionConfig;
+import slim.action.ActionConstants;
+import slim.action.ActionHelper;
+import slim.utils.ImageHelper;
+import slim.utils.DeviceUtils;
 
 import org.slim.framework.internal.R;
-import org.slim.utils.ShortcutPickerHelper;
+import slim.utils.ShortcutPickerHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;

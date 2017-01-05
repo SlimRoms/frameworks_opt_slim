@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference;
+package slim.preference;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -22,11 +22,11 @@ import android.support.v7.preference.ListPreference;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
-import org.slim.utils.AttributeHelper;
+import slim.utils.AttributeHelper;
 
-import static org.slim.preference.SlimPreference.SLIM_GLOBAL_SETTING;
-import static org.slim.preference.SlimPreference.SLIM_SECURE_SETTING;
-import static org.slim.preference.SlimPreference.SLIM_SYSTEM_SETTING;
+import static slim.preference.SlimPreference.SLIM_GLOBAL_SETTING;
+import static slim.preference.SlimPreference.SLIM_SECURE_SETTING;
+import static slim.preference.SlimPreference.SLIM_SYSTEM_SETTING;
 
 public class SlimListPreference extends ListPreference {
 

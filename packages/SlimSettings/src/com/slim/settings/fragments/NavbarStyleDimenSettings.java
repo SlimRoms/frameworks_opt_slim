@@ -38,8 +38,8 @@ import com.slim.settings.SettingsPreferenceFragment;
 import com.slim.settings.R;
 
 import org.slim.framework.internal.logging.SlimMetricsLogger;
-import org.slim.provider.SlimSettings;
-import org.slim.utils.DeviceUtils;
+import slim.provider.SlimSettings;
+import slim.utils.DeviceUtils;
 
 public class NavbarStyleDimenSettings extends SettingsPreferenceFragment implements
         OnPreferenceChangeListener {

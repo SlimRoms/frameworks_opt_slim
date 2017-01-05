@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.utils;
+package slim.utils;
 
 import android.content.Context;
 import android.content.res.Resources;

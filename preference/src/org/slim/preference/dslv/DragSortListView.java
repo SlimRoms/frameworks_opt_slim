@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference.dslv;
+package slim.preference.dslv;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -44,7 +44,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import org.slim.framework.internal.R;
-import org.slim.utils.AttributeHelper;
+import slim.utils.AttributeHelper;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package org.slim.utils;
+package slim.utils;
 
 import android.content.Context;
 import android.os.UserHandle;
 import android.provider.Settings;
 
-import org.slim.action.ActionConstants;
-import org.slim.provider.SlimSettings;
+import slim.action.ActionConstants;
+import slim.provider.SlimSettings;
 
 public class HwKeyHelper {
 

@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package org.slim.action;
+package slim.action;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -33,10 +33,10 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import org.slim.provider.SlimSettings;
-import org.slim.utils.ConfigSplitHelper;
-import org.slim.utils.DeviceUtils;
-import org.slim.utils.ImageHelper;
+import slim.provider.SlimSettings;
+import slim.utils.ConfigSplitHelper;
+import slim.utils.DeviceUtils;
+import slim.utils.ImageHelper;
 
 public class ActionHelper {
 

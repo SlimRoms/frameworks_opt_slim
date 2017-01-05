@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.slim.preference.colorpicker;
+package slim.preference.colorpicker;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;

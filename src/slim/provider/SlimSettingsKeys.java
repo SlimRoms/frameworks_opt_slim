@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.slim.provider;
+package slim.provider;
 
 public final class SlimSettingsKeys {
 

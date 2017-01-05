@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.slim.action;
+package slim.action;
 
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +22,8 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.ServiceManager;
 
-import org.slim.constants.SlimServiceConstants;
-import org.slim.action.ISlimActionsService;
+import slim.constants.SlimServiceConstants;
+import slim.action.ISlimActionsService;
 
 import org.slim.framework.internal.statusbar.ISlimStatusBar;
 

@@ -14,27 +14,10 @@
  * limitations under the License.
  */
 
-package org.slim.action;
+package slim.constants;
 
-import android.content.Intent;
-import android.os.Bundle;
+public final class SlimServiceConstants {
 
-import org.slim.framework.internal.statusbar.ISlimStatusBar;
+    public static final String SLIM_ACTIONS_SERVICE = "slimactions";
 
-/** @hide */
-interface ISlimActionsService {
-
-    void registerSlimStatusBar(ISlimStatusBar bar);
-
-    void showCustomIntentAfterKeyguard(inout Intent intent);
-    void toggleScreenshot();
-    void toggleLastApp();
-    void toggleKillApp();
-
-    void toggleGlobalMenu();
-
-    void startAssist(in Bundle bundle);
-    void toggleRecentApps();
-    void preloadRecentApps();
-    void cancelPreloadRecentApps();
 }
