@@ -63,7 +63,7 @@ import com.android.systemui.RecentsComponent;
 import com.android.systemui.recents.misc.Utilities;
 import com.android.systemui.statusbar.BaseStatusBar;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 /**
  * Our main recents controller.

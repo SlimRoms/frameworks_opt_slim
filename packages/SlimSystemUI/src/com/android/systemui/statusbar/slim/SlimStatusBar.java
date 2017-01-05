@@ -58,8 +58,8 @@ import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 
 import java.util.List;
 
-import org.slim.action.SlimActionsManager;
-import org.slim.provider.SlimSettings;
+import slim.action.SlimActionsManager;
+import slim.provider.SlimSettings;
 
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_LIGHTS_OUT;
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_LIGHTS_OUT_TRANSPARENT;
