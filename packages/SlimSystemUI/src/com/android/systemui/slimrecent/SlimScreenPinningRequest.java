@@ -50,7 +50,7 @@ import com.android.systemui.statusbar.phone.SlimNavigationBarView;
 
 import java.util.ArrayList;
 
-import org.slim.provider.SlimSettings;
+import slim.provider.SlimSettings;
 
 public class SlimScreenPinningRequest implements View.OnClickListener {
 
