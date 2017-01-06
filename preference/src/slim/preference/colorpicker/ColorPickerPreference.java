@@ -81,6 +81,10 @@ public class ColorPickerPreference extends Preference implements
         return a.getInt(index, Color.BLACK);
     }
 
+    public int getDefaultColor() {
+        return mDefaultColor;
+    }
+
     @Override
     protected void onSetInitialValue(boolean restoreValue, Object defaultValue) {
         onColorChanged(restoreValue ? getPersistedInt(mValue) : (Integer) defaultValue);

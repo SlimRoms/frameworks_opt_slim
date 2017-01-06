@@ -106,15 +106,16 @@ public final class Utils {
      * @param title String to display for the title of this set of preferences.
      */
     public static void startWithFragment(Context context, String fragmentName, Bundle args,
-            Fragment resultTo, int resultRequestCode, CharSequence title) {
+            Fragment resultTo, int resultRequestCode, CharSequence title, boolean showMenu) {
         startWithFragment(context, fragmentName, args, resultTo, resultRequestCode,
                 title, false /* not a shortcut */);
     }
 
     public static void startWithFragment(Context context, String fragmentName, Bundle args,
             Fragment resultTo, int resultRequestCode,
-            CharSequence title, boolean isShortcut) {
-        Intent intent = onBuildStartFragmentIntent(context, fragmentName, args, title, isShortcut);
+            CharSequence title, boolean isShortcut, boolean showMenu) {
+        Intent intent = onBuildStartFragmentIntent(context, fragmentName, args,
+                title, isShortcut, showMenu);
         if (resultTo == null) {
             context.startActivity(intent);
         } else {
@@ -137,13 +138,15 @@ public final class Utils {
      * fragment.
      */
     public static Intent onBuildStartFragmentIntent(Context context,
-            String fragmentName, Bundle args, CharSequence title, boolean isShortcut) {
+            String fragmentName, Bundle args, CharSequence title,
+            boolean isShortcut, boolean showMenu) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setClass(context, SubSettings.class);
         intent.putExtra(SubSettings.EXTRA_SHOW_FRAGMENT, fragmentName);
         intent.putExtra(SubSettings.EXTRA_SHOW_FRAGMENT_ARGUMENTS, args);
         intent.putExtra(SubSettings.EXTRA_SHOW_FRAGMENT_TITLE, title);
         intent.putExtra(SubSettings.EXTRA_SHOW_FRAGMENT_AS_SHORTCUT, isShortcut);
+        intent.putExtra(SubSettings.EXTRA_SHOW_FRAGMENT_SHOW_MENU, showMenu);
         return intent;
     }
 }

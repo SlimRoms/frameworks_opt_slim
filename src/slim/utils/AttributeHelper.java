@@ -134,6 +134,15 @@ public class AttributeHelper {
         }
     }
 
+    public String getString(int index) {
+        AttributeInfo info = mMap.get(getIdForIndex(index));
+        try {
+            return info.value;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     private void loadMap(AttributeSet attrs) {
         int count = attrs.getAttributeCount();
         for (int i = 0; i < count; i++) {
