@@ -22,8 +22,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.support.v7.preference.PreferenceManager;
+import android.os.Bundle;
 
-import com.slim.settings.fragments.AdvancedSettings;
+import com.slim.settings.fragments.SlimPreferenceFragment;
 import com.slim.settings.SettingsActivity;
 
 import java.util.List;
@@ -32,7 +33,14 @@ public class AdvancedSettingsActivity extends SettingsActivity {
 
     @Override
     public Fragment getFragment() {
-        return new AdvancedSettings();
+        return new SlimPreferenceFragment();
+    }
+
+    @Override
+    public Bundle getFragmentBundle() {
+        Bundle b = new Bundle();
+        b.putString("preference_xml", "slim_advanced_settings");
+        return b;
     }
 
     public static void checkSettings(Context context) {

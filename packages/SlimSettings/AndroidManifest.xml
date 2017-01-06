@@ -40,6 +40,10 @@
                 android:name="com.android.settings.category"
                 android:value="com.android.settings.category.personalization" />
 
+            <meta-data
+                android:name="preference_xml"
+                android:value="slim_navigation_settings" />
+
         </activity>
 
         <activity
