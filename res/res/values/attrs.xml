@@ -62,4 +62,10 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="defaultColor" format="color" />
+        <attr name="alphaSliderEnabled" format="boolean" />
+    </declare-styleable>
+
+
 </resources>
