@@ -60,6 +60,12 @@
             <enum name="global" value="1" />
             <enum name="secure" value="2" />
         </attr>
+        <attr name="listDependency" format="string" />
+        <attr name="hidePreference" format="boolean" />
+        <attr name="hidePreferenceInt" format="integer" />
+        <attr name="hidePreferenceIntDependency" format="integer" />
+        <attr name="removePreference" format="boolean" />
+        <attr name="removePreferenceIntent" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ColorPickerPreference">
