@@ -21,12 +21,72 @@ import android.content.Context;
 import android.os.UserHandle;
 import android.util.Log;
 
+import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
+
 import slim.provider.SlimSettings;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 
 public class SlimPreference {
     public static final int SLIM_SYSTEM_SETTING = 0;
     public static final int SLIM_GLOBAL_SETTING = 1;
     public static final int SLIM_SECURE_SETTING = 2;
+
+    private static SlimPreference INSTANCE;
+
+    private HashMap<String, ArrayList<Dependent>> mDependents = new HashMap<>();
+
+    public class Dependent {
+        Preference dependent;
+        String dependencyKey;
+        String[] values;
+    }
+
+    private SlimPreference() {
+    }
+
+    public static SlimPreference get() {
+        if (INSTANCE == null) {
+            INSTANCE = new SlimPreference();
+        }
+        return INSTANCE;
+    }
+
+    public void registerListDependent(Preference dep, String key, String[] values) {
+        Dependent dependent = new Dependent();
+        dependent.dependent = dep;
+        dependent.dependencyKey = key;
+        dependent.values = values;
+        ArrayList<Dependent> deps = mDependents.get(key);
+        if (deps == null) deps = new ArrayList<>();
+        deps.add(dependent);
+        mDependents.put(key, deps);
+    }
+
+    public void unregisterListDependent(Preference dep, String key) {
+        ArrayList<Dependent> deps = mDependents.get(key);
+        if (deps == null) return;
+        for (Dependent dependent : deps) {
+            if (dependent.dependent.getKey().equals(dep.getKey())) {
+                deps.remove(dependent);
+            }
+        }
+    }
+
+    public void updateDependents(ListPreference dep) {
+        ArrayList<Dependent> deps = mDependents.get(dep.getKey());
+        if (deps == null) return;
+        for (Dependent dependent : deps) {
+            if (Arrays.asList(dependent.values).contains(dep.getValue())) {
+                dependent.dependent.setEnabled(false);
+            } else {
+                dependent.dependent.setEnabled(true);
+            }
+        }
+    }
 
     public static int getIntFromSlimSettings(
             Context context, int settingType, String key, int def) {

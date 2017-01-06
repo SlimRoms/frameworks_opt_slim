@@ -32,6 +32,11 @@ public class SlimListPreference extends ListPreference {
 
     private int mSettingType;
 
+    private SlimPreference mSlimPreference;
+
+    private String mListDependency;
+    private String[] mListDependencyValues;
+
     public SlimListPreference(Context context) {
         super(context);
         init(context, null);
@@ -48,6 +53,9 @@ public class SlimListPreference extends ListPreference {
     }
 
     private void init(Context context, AttributeSet attrs) {
+
+        mSlimPreference = SlimPreference.get();
+
         if (attrs != null) {
 
             AttributeHelper a = new AttributeHelper(context, attrs,
@@ -67,6 +75,29 @@ public class SlimListPreference extends ListPreference {
                     mSettingType = SLIM_SYSTEM_SETTING;
                     break;
             }
+
+            String list = a.getString(slim.R.styleable.SlimPreference_listDependency);
+            if (!TextUtils.isEmpty(list)) {
+                String[] listParts = list.split(":");
+                mListDependency = listParts[0];
+                mListDependencyValues = listParts[1].split("\\|");
+            }
+        }
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        if (mListDependency != null) {
+            mSlimPreference.registerListDependent(this, mListDependency, mListDependencyValues);
+        }
+    }
+
+    @Override
+    public void onDetached() {
+        super.onDetached();
+        if (mListDependency != null) {
+            mSlimPreference.unregisterListDependent(this, mListDependency);
         }
     }
 
@@ -77,6 +108,7 @@ public class SlimListPreference extends ListPreference {
                 return true;
             }
             SlimPreference.putStringInSlimSettings(getContext(), mSettingType, getKey(), value);
+            mSlimPreference.updateDependents(this);
             return true;
         }
         return false;
