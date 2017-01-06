@@ -26,7 +26,6 @@ import android.support.v7.preference.PreferenceScreen;
 import android.view.MenuItem;
 
 import com.slim.settings.fragments.AdvancedSettings;
-import com.slim.settings.fragments.InterfaceSettings;
 import com.slim.settings.Utils;
 import com.android.settingslib.drawer.SettingsDrawerActivity;
 
@@ -38,28 +37,40 @@ public class SettingsActivity extends SettingsDrawerActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getFragment() != null) {
-        getFragmentManager().beginTransaction().replace(R.id.content_frame,
-                getFragment()).commit();
+        Fragment fragment = getFragment();
+        if (fragment != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            if (getFragmentBundle() != null) {
+                fragment.setArguments(getFragmentBundle());
+            }
+            transaction.replace(R.id.content_frame, fragment);
+            transaction.commit();
+            showMenuIcon();
         }
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        //getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragment caller, Preference pref) {
         // Override the fragment title for Wallpaper settings
         startPreferencePanel(pref.getFragment(), pref.getExtras(), pref.getTitle(),
-                null, 0);
+                null, 0, false);
         return true;
     }
 
     public void startPreferencePanel(String fragmentClass, Bundle args,
-            CharSequence title, Fragment resultTo, int resultRequestCode) {
-        Utils.startWithFragment(this, fragmentClass, args, resultTo, resultRequestCode, title);
+            CharSequence title, Fragment resultTo, int resultRequestCode, boolean showMenu) {
+        Utils.startWithFragment(this, fragmentClass, args, resultTo,
+                resultRequestCode, title, showMenu);
     }
 
     @Override
     public boolean onPreferenceStartScreen(PreferenceFragment caller, PreferenceScreen pref) {
+        return startPreferenceScreen(caller, pref, true);
+    }
+
+    public boolean startPreferenceScreen(PreferenceFragment caller, PreferenceScreen pref,
+                                         boolean addToBackStack) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         SubSettingsFragment fragment = new SubSettingsFragment();
         final Bundle b = new Bundle(1);
@@ -67,20 +78,32 @@ public class SettingsActivity extends SettingsDrawerActivity implements
         fragment.setArguments(b);
         fragment.setTargetFragment(caller, 0);
         transaction.replace(R.id.content_frame, fragment);
-        transaction.addToBackStack("PreferenceFragment");
+        if (addToBackStack) {
+            transaction.addToBackStack("PreferenceFragment");
+        }
         transaction.commit();
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     public static class SubSettingsFragment extends PreferenceFragment {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            android.util.Log.d("TEST", "rootKey=" + rootKey);
             setPreferenceScreen((PreferenceScreen) ((PreferenceFragment) getTargetFragment())
                     .getPreferenceScreen().findPreference(rootKey));
         }
     }
 
     public Fragment getFragment() {
+        return null;
+    }
+
+    public Bundle getFragmentBundle() {
         return null;
     }
 }

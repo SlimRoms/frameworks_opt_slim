@@ -27,6 +27,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -61,6 +62,10 @@ public class ColorPickerPreference extends Preference implements
 
     private EditText mEditText;
 
+    private SlimPreference mSlimPreference = SlimPreference.get();
+    private String mListDependency;
+    private String[] mListDependencyValues;
+
     public ColorPickerPreference(Context context) {
         super(context);
         init(context, null);
@@ -79,6 +84,10 @@ public class ColorPickerPreference extends Preference implements
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {
         return a.getInt(index, Color.BLACK);
+    }
+
+    public int getDefaultColor() {
+        return mDefaultColor;
     }
 
     @Override
@@ -111,6 +120,32 @@ public class ColorPickerPreference extends Preference implements
                     mSettingType = SLIM_SYSTEM_SETTING;
                     break;
             }
+
+            String list = a.getString(slim.R.styleable.SlimPreference_listDependency);
+            if (!TextUtils.isEmpty(list)) {
+                String[] listParts = list.split(":");
+                if (listParts.length == 2) {
+                    mListDependency = listParts[0];
+                    mListDependencyValues = listParts[1].split("\\|");
+                    android.util.Log.d("TEST", "values=" + mListDependencyValues);
+                }
+           }
+        }
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        if (mListDependency != null) {
+            mSlimPreference.registerListDependent(this, mListDependency, mListDependencyValues);
+        }
+    }
+
+    @Override
+    public void onDetached() {
+        super.onDetached();
+        if (mListDependency != null) {
+            mSlimPreference.unregisterListDependent(this, mListDependency);
         }
     }
 
