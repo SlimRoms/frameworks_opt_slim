@@ -25,7 +25,7 @@ import org.slim.framework.internal.statusbar.ISlimStatusBar;
 
 public class SlimCommandQueue extends ISlimStatusBar.Stub {
 
-    private static final int MSG_SHIFT = 61;
+    private static final int MSG_SHIFT = 16;
     private static final int MSG_MASK  = 0xffff << MSG_SHIFT;
 
     private static final int MSG_START_CUSTOM_INTENT_AFTER_KEYGUARD = 1 << MSG_SHIFT;
@@ -36,6 +36,7 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
     private static final int MSG_PRELOAD_RECENT_APPS                = 6 << MSG_SHIFT;
     private static final int MSG_CANCEL_PRELOAD_RECENT_APPS         = 7 << MSG_SHIFT;
     private static final int MSG_START_ASSIST                       = 8 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_SPLIT_SCREEN                = 9 << MSG_SHIFT;
 
     private Callbacks mCallbacks;
     private Handler mHandler = new H();
@@ -47,6 +48,7 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
         public void toggleKillApp();
         public void toggleScreenshot();
         public void toggleRecentApps();
+        public void toggleSplitScreen();
         public void preloadRecentApps();
         public void cancelPreloadRecentApps();
         public void startAssist(Bundle args);
@@ -78,6 +80,14 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
         synchronized (mLock) {
             mHandler.removeMessages(MSG_TOGGLE_KILL_APP);
             mHandler.obtainMessage(MSG_TOGGLE_KILL_APP, 0, 0, null).sendToTarget();
+        }
+    }
+
+    @Override
+    public void toggleSplitScreen() {
+        synchronized (mLock) {
+            mHandler.removeMessages(MSG_TOGGLE_SPLIT_SCREEN);
+            mHandler.obtainMessage(MSG_TOGGLE_SPLIT_SCREEN, 0, 0, null).sendToTarget();
         }
     }
 
@@ -149,6 +159,9 @@ public class SlimCommandQueue extends ISlimStatusBar.Stub {
                     break;
                 case MSG_START_ASSIST:
                     mCallbacks.startAssist((Bundle) msg.obj);
+                    break;
+                case MSG_TOGGLE_SPLIT_SCREEN:
+                    mCallbacks.toggleSplitScreen();
                     break;
             }
         }
