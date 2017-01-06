@@ -22,6 +22,7 @@ import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
@@ -60,6 +61,10 @@ public class SlimSeekBarPreference extends Preference
 
     private int mSettingType;
 
+    private SlimPreference mSlimPreference = SlimPreference.get();
+    private String mListDependency;
+    private String[] mListDependencyValues;
+
     private OnPreferenceChangeListener mChanger;
 
     public SlimSeekBarPreference(Context context, AttributeSet attrs) {
@@ -96,6 +101,31 @@ public class SlimSeekBarPreference extends Preference
             default:
                 mSettingType = SLIM_SYSTEM_SETTING;
                 break;
+        }
+
+        String list = a.getString(slim.R.styleable.SlimPreference_listDependency);
+        if (!TextUtils.isEmpty(list)) {
+            String[] listParts = list.split(":");
+            if (listParts.length == 2) {
+                mListDependency = listParts[0];
+                mListDependencyValues = listParts[1].split("\\|");
+            }
+        }
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        if (mListDependency != null) {
+            mSlimPreference.registerListDependent(this, mListDependency, mListDependencyValues);
+        }
+    }
+
+    @Override
+    public void onDetached() {
+        super.onDetached();
+        if (mListDependency != null) {
+            mSlimPreference.unregisterListDependent(this, mListDependency);
         }
     }
 

@@ -19,6 +19,7 @@ package slim.preference;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v14.preference.SwitchPreference;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import slim.utils.AttributeHelper;
@@ -30,6 +31,10 @@ import static slim.preference.SlimPreference.SLIM_SYSTEM_SETTING;
 public class SlimSwitchPreference extends SwitchPreference {
 
     private int mSettingType = SLIM_SYSTEM_SETTING;
+
+    private SlimPreference mSlimPreference = SlimPreference.get();
+    private String mListDependency;
+    private String[] mListDependencyValues;
 
     public SlimSwitchPreference(Context context, AttributeSet attrs, int defStyleAttr,
             int defStyleRes) {
@@ -68,6 +73,29 @@ public class SlimSwitchPreference extends SwitchPreference {
             default:
                 mSettingType = SLIM_SYSTEM_SETTING;
                 break;
+        }
+
+        String list = a.getString(slim.R.styleable.SlimPreference_listDependency);
+        if (!TextUtils.isEmpty(list)) {
+            String[] listParts = list.split(":");
+            mListDependency = listParts[0];
+            mListDependencyValues = listParts[1].split("\\|");
+        }
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        if (mListDependency != null) {
+            mSlimPreference.registerListDependent(this, mListDependency, mListDependencyValues);
+        }
+    }
+
+    @Override
+    public void onDetached() {
+        super.onDetached();
+        if (mListDependency != null) {
+            mSlimPreference.unregisterListDependent(this, mListDependency);
         }
     }
 
