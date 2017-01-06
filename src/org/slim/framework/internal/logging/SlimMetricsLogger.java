@@ -25,6 +25,7 @@ public class SlimMetricsLogger extends MetricsLogger {
 
     private static final int BASE = -Integer.MAX_VALUE;
 
+    public static final int SLIM_SETTINGS = BASE + 1;
     public static final int INTERFACE_SETTINGS = BASE + 2;
     public static final int STATUS_BAR_SETTINGS = BASE + 3;
     public static final int NAVIGATION_SETTINGS = BASE + 4;
