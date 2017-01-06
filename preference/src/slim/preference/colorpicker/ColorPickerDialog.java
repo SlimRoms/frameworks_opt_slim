@@ -30,7 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import org.slim.framework.internal.R;
+import org.slim.preference.R;
 
 public class ColorPickerDialog
         extends
@@ -56,20 +56,12 @@ public class ColorPickerDialog
 
     private OnColorChangedListener mListener;
 
-    private Context mContext;
-
     public interface OnColorChangedListener {
         public void onColorChanged(int color);
     }
 
     public ColorPickerDialog(Context context, int initialColor) {
         super(context);
-
-        try {
-            mContext = getContext().createPackageContext("org.slim.framework", 0);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         init(initialColor);
     }
@@ -84,7 +76,7 @@ public class ColorPickerDialog
 
     private void setUp(int color) {
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
 
         View layout = inflater.inflate(R.layout.dialog_color_picker, null);
