@@ -55,6 +55,8 @@ public class ColorPickerPreference extends Preference implements
     private int mValue = Color.BLACK;
     private float mDensity = 0;
     private boolean mAlphaSliderEnabled = false;
+    private int mDefaultColor = Color.WHITE;
+    private int mSettingType = SLIM_SYSTEM_SETTING;
 
     private EditText mEditText;
 
@@ -87,9 +89,12 @@ public class ColorPickerPreference extends Preference implements
         mDensity = getContext().getResources().getDisplayMetrics().density;
         setOnPreferenceClickListener(this);
         if (attrs != null) {
+<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
 <<<<<<< HEAD:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
             mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
 =======
+=======
+>>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
             AttributeHelper a =
                     new AttributeHelper(context, attrs, R.styleable.SlimSeekBarPreference);
 
@@ -97,7 +102,11 @@ public class ColorPickerPreference extends Preference implements
             mAlphaSliderEnabled = a.getBoolean(
                     R.styleable.ColorPickerPreference_alphaSliderEnabled, false);
 
+<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
             int s = a.getInt(R.styleable.SlimPreference_slimSettingType,
+=======
+            int s = a.getInt(org.slim.framework.R.styleable.SlimPreference_slimSettingType,
+>>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
                     SLIM_SYSTEM_SETTING);
 
             switch (s) {
@@ -111,7 +120,10 @@ public class ColorPickerPreference extends Preference implements
                     mSettingType = SLIM_SYSTEM_SETTING;
                     break;
             }
+<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
 >>>>>>> 7547f36... TEMP:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
+=======
+>>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
         }
     }
 
@@ -187,6 +199,16 @@ public class ColorPickerPreference extends Preference implements
         try {
             mEditText.setText(Integer.toString(color, 16));
         } catch (NullPointerException e) {
+        }
+        handleSetSummary();
+    }
+
+    public void handleSetSummary() {
+        if (mValue == mDefaultColor || mValue == -2) {
+            setSummary(getContext().getResources()
+                    .getString(org.slim.framework.internal.R.string.default_string));
+        } else {
+            setSummary(String.format("#%08x", (0xffffffff & mValue)));
         }
     }
 
@@ -343,5 +365,32 @@ public class ColorPickerPreference extends Preference implements
                 return new SavedState[size];
             }
         };
+    }
+
+    @Override
+    protected boolean persistInt(int value) {
+        if (shouldPersist()) {
+            if (value == getPersistedInt(Integer.MIN_VALUE)) {
+                return true;
+            }
+            SlimPreference.putIntInSlimSettings(getContext(),
+                    mSettingType, getKey(), value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected int getPersistedInt(int defaultReturnValue) {
+        if (!shouldPersist()) {
+            return defaultReturnValue;
+        }
+        return SlimPreference.getIntFromSlimSettings(getContext(), mSettingType,
+                getKey(), defaultReturnValue);
+    }
+
+    @Override
+    protected boolean isPersisted() {
+        return SlimPreference.settingExists(getContext(), mSettingType, getKey());
     }
 }

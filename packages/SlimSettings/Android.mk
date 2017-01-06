@@ -38,7 +38,8 @@ LOCAL_RESOURCE_DIR := \
     frameworks/support/v7/preference/res \
     frameworks/support/v14/preference/res \
     frameworks/support/v7/appcompat/res \
-    frameworks/support/v7/recyclerview/res
+    frameworks/support/v7/recyclerview/res \
+    frameworks/opt/slim/preference/res
 
 LOCAL_AAPT_FLAGS := --auto-add-overlay \
     --extra-packages android.support.v7.preference:android.support.v14.preference:android.support.v7.appcompat:android.support.v7.recyclerview
