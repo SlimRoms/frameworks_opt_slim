@@ -30,7 +30,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import org.slim.framework.internal.R;
+import org.slim.preference.R;
 
 public class ColorPickerDialog
         extends
@@ -77,6 +77,7 @@ public class ColorPickerDialog
     private void setUp(int color) {
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
+
         View layout = inflater.inflate(R.layout.dialog_color_picker, null);
 
         setContentView(layout);

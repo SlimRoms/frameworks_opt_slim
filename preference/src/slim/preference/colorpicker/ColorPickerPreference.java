@@ -49,6 +49,8 @@ public class ColorPickerPreference extends Preference implements
     private int mValue = Color.BLACK;
     private float mDensity = 0;
     private boolean mAlphaSliderEnabled = false;
+    private int mDefaultColor = Color.WHITE;
+    private int mSettingType = SLIM_SYSTEM_SETTING;
 
     private EditText mEditText;
 
@@ -81,7 +83,27 @@ public class ColorPickerPreference extends Preference implements
         mDensity = getContext().getResources().getDisplayMetrics().density;
         setOnPreferenceClickListener(this);
         if (attrs != null) {
-            mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
+            AttributeHelper a =
+                    new AttributeHelper(context, attrs, slim.R.styleable.SlimSeekBarPreference);
+
+            mDefaultColor = a.getInt(slim.R.styleable.ColorPickerPreference_defaultColor, Color.WHITE);
+            mAlphaSliderEnabled = a.getBoolean(
+                    slim.R.styleable.ColorPickerPreference_alphaSliderEnabled, false);
+
+            int s = a.getInt(slim.R.styleable.SlimPreference_slimSettingType,
+                    SLIM_SYSTEM_SETTING);
+
+            switch (s) {
+                case SLIM_GLOBAL_SETTING:
+                    mSettingType = SLIM_GLOBAL_SETTING;
+                    break;
+                case SLIM_SECURE_SETTING:
+                    mSettingType = SLIM_SECURE_SETTING;
+                    break;
+                default:
+                    mSettingType = SLIM_SYSTEM_SETTING;
+                    break;
+            }
         }
     }
 
@@ -157,6 +179,16 @@ public class ColorPickerPreference extends Preference implements
         try {
             mEditText.setText(Integer.toString(color, 16));
         } catch (NullPointerException e) {
+        }
+        handleSetSummary();
+    }
+
+    public void handleSetSummary() {
+        if (mValue == mDefaultColor || mValue == -2) {
+            setSummary(getContext().getResources()
+                    .getString(org.slim.framework.internal.R.string.default_string));
+        } else {
+            setSummary(String.format("#%08x", (0xffffffff & mValue)));
         }
     }
 
@@ -313,5 +345,32 @@ public class ColorPickerPreference extends Preference implements
                 return new SavedState[size];
             }
         };
+    }
+
+    @Override
+    protected boolean persistInt(int value) {
+        if (shouldPersist()) {
+            if (value == getPersistedInt(Integer.MIN_VALUE)) {
+                return true;
+            }
+            SlimPreference.putIntInSlimSettings(getContext(),
+                    mSettingType, getKey(), value);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected int getPersistedInt(int defaultReturnValue) {
+        if (!shouldPersist()) {
+            return defaultReturnValue;
+        }
+        return SlimPreference.getIntFromSlimSettings(getContext(), mSettingType,
+                getKey(), defaultReturnValue);
+    }
+
+    @Override
+    protected boolean isPersisted() {
+        return SlimPreference.settingExists(getContext(), mSettingType, getKey());
     }
 }
