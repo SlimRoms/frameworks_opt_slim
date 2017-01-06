@@ -89,12 +89,6 @@ public class ColorPickerPreference extends Preference implements
         mDensity = getContext().getResources().getDisplayMetrics().density;
         setOnPreferenceClickListener(this);
         if (attrs != null) {
-<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
-<<<<<<< HEAD:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
-            mAlphaSliderEnabled = attrs.getAttributeBooleanValue(null, "alphaSlider", false);
-=======
-=======
->>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
             AttributeHelper a =
                     new AttributeHelper(context, attrs, R.styleable.SlimSeekBarPreference);
 
@@ -102,11 +96,7 @@ public class ColorPickerPreference extends Preference implements
             mAlphaSliderEnabled = a.getBoolean(
                     R.styleable.ColorPickerPreference_alphaSliderEnabled, false);
 
-<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
             int s = a.getInt(R.styleable.SlimPreference_slimSettingType,
-=======
-            int s = a.getInt(org.slim.framework.R.styleable.SlimPreference_slimSettingType,
->>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
                     SLIM_SYSTEM_SETTING);
 
             switch (s) {
@@ -120,10 +110,6 @@ public class ColorPickerPreference extends Preference implements
                     mSettingType = SLIM_SYSTEM_SETTING;
                     break;
             }
-<<<<<<< HEAD:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
->>>>>>> 7547f36... TEMP:preference/src/slim/preference/colorpicker/ColorPickerPreference.java
-=======
->>>>>>> 6eadd16... Cleanup and fix ColorPickerPreference:preference/src/org/slim/preference/colorpicker/ColorPickerPreference.java
         }
     }
 

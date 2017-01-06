@@ -42,7 +42,7 @@ LOCAL_RESOURCE_DIR := \
     frameworks/opt/slim/preference/res
 
 LOCAL_AAPT_FLAGS := --auto-add-overlay \
-    --extra-packages android.support.v7.preference:android.support.v14.preference:android.support.v7.appcompat:android.support.v7.recyclerview
+    --extra-packages android.support.v7.preference:android.support.v14.preference:android.support.v7.appcompat:android.support.v7.recyclerview:org.slim.preference
 
 LOCAL_CERTIFICATE := platform
 LOCAL_PACKAGE_NAME := SlimSettings
