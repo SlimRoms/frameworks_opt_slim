@@ -16,14 +16,22 @@
 package com.slim.settings.activities;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
-import com.slim.settings.fragments.InterfaceSettings;
+import com.slim.settings.fragments.SlimPreferenceFragment;
 import com.slim.settings.SettingsActivity;
 
 public class InterfaceSettingsActivity extends SettingsActivity {
 
     @Override
     public Fragment getFragment() {
-        return new InterfaceSettings();
+        return new SlimPreferenceFragment();
+    }
+
+    @Override
+    public Bundle getFragmentBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("preference_xml", "slim_interface_settings");
+        return bundle;
     }
 }
