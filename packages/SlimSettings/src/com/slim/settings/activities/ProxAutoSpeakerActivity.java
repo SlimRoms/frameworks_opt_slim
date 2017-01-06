@@ -16,14 +16,22 @@
 package com.slim.settings.activities;
 
 import android.app.Fragment;
+import android.os.Bundle;
 
-import com.slim.settings.fragments.ProxAutoSpeakerFragment;
+import com.slim.settings.fragments.SlimPreferenceFragment;
 import com.slim.settings.SettingsActivity;
 
 public class ProxAutoSpeakerActivity extends SettingsActivity {
 
     @Override
     public Fragment getFragment() {
-        return new ProxAutoSpeakerFragment();
+        return new SlimPreferenceFragment();
+    }
+
+    @Override
+    public Bundle getFragmentBundle() {
+        Bundle b = new Bundle();
+        b.putString("preference_xml", "prox_auto_speaker");
+        return b;
     }
 }
