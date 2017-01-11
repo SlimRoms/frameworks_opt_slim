@@ -704,4 +704,59 @@ public class SlimStatusBar extends PhoneStatusBar implements
             am.moveTaskToFront(lastAppId, am.MOVE_TASK_NO_USER_ACTION);
         }
     }
+
+    @Override
+    protected void bindGuts(ExpandableNotificationRow row) {
+        super.bindGuts(row);
+
+        LinearLayout buttonParent = (LinearLayout) settingsButton.getParent();
+        final View killButton = LayoutInflater.from(mContext).inflate(R.layout.kill_button,
+                buttonParent, false /* attachToRoot */);
+        if (buttonParent.findViewById(R.id.notification_inspect_kill) == null) { // only add once
+            buttonParent.addView(killButton, buttonParent.indexOfChild(settingsButton)/*index*/);
+        }
+
+        if (appUid >= 0) {
+            final int appUidF = appUid;
+            if (isThisASystemPackage(pkg, pmUser)) {
+                killButton.setVisibility(View.GONE);
+            } else {
+                killButton.setVisibility(View.VISIBLE);
+                killButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        final SystemUIDialog killDialog = new SystemUIDialog(mContext);
+                        killDialog.setTitle(mContext.getText(R.string.force_stop_dlg_title));
+                        killDialog.setMessage(mContext.getText(R.string.force_stop_dlg_text));
+                        killDialog.setPositiveButton(
+                                R.string.dlg_ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // kill pkg
+                                ActivityManager actMan =
+                                        (ActivityManager) mContext.getSystemService(
+                                        Context.ACTIVITY_SERVICE);
+                                actMan.forceStopPackage(pkg);
+                            }
+                        });
+                        killDialog.setNegativeButton(R.string.dlg_cancel, null);
+                        killDialog.show();
+                    }
+                });
+                killButton.setText(R.string.kill);
+            }
+        } else {
+            killButton.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean isThisASystemPackage(String packageName, PackageManager pm) {
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo(packageName,
+                    PackageManager.GET_SIGNATURES);
+            PackageInfo sys = pm.getPackageInfo("android", PackageManager.GET_SIGNATURES);
+            return (packageInfo != null && packageInfo.signatures != null &&
+                    sys.signatures[0].equals(packageInfo.signatures[0]));
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
