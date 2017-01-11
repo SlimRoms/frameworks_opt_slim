@@ -188,7 +188,10 @@ public class Action {
                 actionsManager.toggleLastApp();
                 return;
             } else if (action.equals(ActionConstants.ACTION_SCREENSHOT)) {
-                    actionsManager.toggleScreenshot();
+                actionsManager.toggleScreenshot();
+                return;
+            } else if (action.equals(ActionConstants.ACTION_SPLIT_SCREEN)) {
+                actionsManager.toggleSplitScreen();
                 return;
             } else if (action.equals(ActionConstants.ACTION_RECENTS)) {
                 if (isKeyguardShowing) {
