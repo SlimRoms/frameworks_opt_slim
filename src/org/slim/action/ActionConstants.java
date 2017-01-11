@@ -60,6 +60,7 @@ public class ActionConstants {
     public static final String ACTION_SOUND                = "**sound**";
     public static final String ACTION_USERS                = "**users**";
     public static final String ACTION_NOWONTAP             = "**nowontap**";
+    public static final String ACTION_SPLIT_SCREEN         = "**split_screen**";
 
     // no action
     public static final String ACTION_NULL                 = "**null**";
