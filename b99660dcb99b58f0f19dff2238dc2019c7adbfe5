@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_c56c7a39",
+        "filename": "packages/SlimSettings/AndroidManifest.xml",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-01-11T21:59:07Z",
+      "side": 1,
+      "message": "INTERFACE_SETTINGS",
+      "parentUuid": "5aaae553_657ee6e6",
+      "revId": "b99660dcb99b58f0f19dff2238dc2019c7adbfe5",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_a51cdec2",
         "filename": "packages/SlimSettings/AndroidManifest.xml",
         "patchSetId": 6
