@@ -34,6 +34,7 @@ interface ISlimActionsService {
     void toggleGlobalMenu();
 
     void startAssist(in Bundle bundle);
+    void toggleSplitScreen();
     void toggleRecentApps();
     void preloadRecentApps();
     void cancelPreloadRecentApps();
