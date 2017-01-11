@@ -120,6 +120,14 @@ public class SlimActionsManager {
         }
     }
 
+    public void toggleSplitScreen() {
+        try {
+            getService().toggleSplitScreen();
+        } catch (RemoteException e) {
+            // ignore
+        }
+    }
+
     public void toggleRecentApps() {
         try {
             getService().toggleRecentApps();
