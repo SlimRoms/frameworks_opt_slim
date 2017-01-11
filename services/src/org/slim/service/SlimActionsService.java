@@ -62,6 +62,15 @@ public class SlimActionsService extends SlimSystemService {
         }
 
         @Override
+        public void toggleSplitScreen() {
+            if (mBar != null) {
+                try {
+                    mBar.toggleSplitScreen();
+                } catch (RemoteException ex) {}
+            }
+        }
+
+        @Override
         public void toggleScreenshot() {
             if (mBar != null) {
                 try {
