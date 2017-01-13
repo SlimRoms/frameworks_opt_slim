@@ -85,10 +85,12 @@
   <string name="app_ops_summaries_toast_window">Mostrar emergentes</string>
   <string name="app_ops_summaries_project_media">Proyecto multimedia</string>
   <string name="app_ops_summaries_activate_vpn">Habilitar VPN</string>
+  <string name="app_ops_summaries_write_wallpaper">establecer fondo de pantalla</string>
   <string name="app_ops_summaries_assist_structure">assist structure</string>
   <string name="app_ops_summaries_assist_screenshot">assist screenshot</string>
   <string name="app_ops_summaries_read_phone_state">Leer el estado del teléfono</string>
   <string name="app_ops_summaries_add_voicemail">Añadir correo de voz</string>
+  <string name="app_ops_summaries_use_sip">Utilizar SIP</string>
   <string name="app_ops_summaries_make_call">Realizar una llamada</string>
   <string name="app_ops_summaries_use_fingerprint">Utilizar huella dactilar</string>
   <string name="app_ops_summaries_use_body_sensors">Utilizar sensores de presencia</string>
@@ -153,8 +155,12 @@
   <string name="app_ops_labels_toast_window">Ventanas emergentes</string>
   <string name="app_ops_labels_project_media">Proyecto multimedia</string>
   <string name="app_ops_labels_activate_vpn">Habilitar VPN</string>
+  <string name="app_ops_labels_write_wallpaper">Establecer fondo de pantalla</string>
+  <string name="app_ops_labels_assist_structure">Ayuda en la estructura</string>
+  <string name="app_ops_labels_assist_screenshot">Ayuda en la captura de pantalla</string>
   <string name="app_ops_labels_read_phone_state">Leer el estado del teléfono</string>
   <string name="app_ops_labels_add_voicemail">Añadir correo de voz</string>
+  <string name="app_ops_labels_use_sip">Utilizar SIP</string>
   <string name="app_ops_labels_make_call">Realizar llamada</string>
   <string name="app_ops_labels_use_fingerprint">Utilizar huella dactilar</string>
   <string name="app_ops_labels_use_body_sensors">Utilizar sensores de presencia</string>
@@ -235,6 +241,9 @@
   <string name="doze_settings_title">Opciones avanzadas de doze</string>
   <string name="doze_timeout_title">Tiempo de espera doze</string>
   <string name="doze_timeout_summary">Tiempo que la pantalla se queda encendida con las notificaciones</string>
+  <string name="doze_trigger_pickup_title">Activador de gesto de recogida</string>
+  <string name="doze_trigger_pickup_summary_on">La visualización ambiental se activará por los eventos del sensor de gestos</string>
+  <string name="doze_trigger_pickup_summary_off">El sensor de gesto de recogida no se utilizará como mecanismo de activación</string>
   <string name="doze_trigger_sigmotion_title">Activador de movimiento significativo</string>
   <string name="doze_trigger_sigmotion_summary_on">Doze en modo Pulse se activará con movimientos significativos del sensor de eventos</string>
   <string name="doze_trigger_sigmotion_summary_off">El sensor de movimiento significativo no se usará como mecanismo de activación</string>

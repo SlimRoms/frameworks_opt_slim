@@ -265,8 +265,22 @@
   <string name="advanced_reboot_hide_on_keyguard">Приховати на екрані блокування</string>
   <string name="advanced_reboot_show_always">Завжди показувати</string>
   <!-- Hardware keys and lights -->
+  <string name="hardware_keys_enable_title">Увімкнути апаратні кнопки</string>
+  <string name="hardware_keys_enable_summary">Увімкнення/Вимкнення апаратних кнопок</string>
+  <string name="hardware_keys_lights_enable_title">Налаштування підсвітки апаратних клавіш</string>
   <!-- Key backlight -->
+  <string name="settings_reset_button">Скидання</string>
+  <string name="button_backlight_enabled">Підсвічування клавіш</string>
+  <string name="keyboard_backlight_enabled">Підсвічування клавіатури</string>
+  <string name="button_backlight_seekbar_title">Яскравість кнопок</string>
+  <string name="keyboard_backlight_seekbar_title">Яскравість клавіатури</string>
+  <string name="backlight_timeout_title">Тривалість підсвічування</string>
+  <string name="backlight_timeout_unlimited">Не вимикати</string>
+  <string name="backlight_summary_disabled">Вимкнено</string>
+  <string name="backlight_summary_enabled_with_timeout">Увімкнено протягом <xliff:g id="timeout">%s</xliff:g></string>
+  <string name="backlight_summary_enabled">Увімкнено</string>
   <!-- Hardware keys -->
+  <string name="enable_hw_keys_title">Увімкнути апаратні кнопки</string>
   <string name="button_keys_title">Апаратні Кнопки</string>
   <string name="keys_bindings_title">Дії кнопок</string>
   <string name="keys_enable_custom_title">Увімкнути настроюванні дії</string>
@@ -361,6 +375,20 @@
   <string name="navbar_dimensions_reset_message">Скинути всі розміри до типових?</string>
   <string name="navbar_button_style_reset_message">Скинути всі параметри стилю до типових?</string>
   <!-- SlimDim -->
+  <string name="dim_nav_buttons_category">SlimDim</string>
+  <string name="dim_nav_buttons_title">Затемняти кнопки при бездіяльності</string>
+  <string name="dim_nav_buttons_summary">Затемнення навігаційних кнопок при бездіяльності протягом певного часу</string>
+  <string name="dim_nav_buttons_timeout_title">Час очікування перед затемненням</string>
+  <string name="dim_nav_buttons_timeout_summary">Час (в мілісекундах) до затемнення кнопок</string>
+  <string name="dim_nav_buttons_alpha_title">Ступінь затемнення</string>
+  <string name="dim_nav_buttons_alpha_summary">Значення, до якого заменювати</string>
+  <string name="dim_nav_buttons_animate_title">Анімація затемнення</string>
+  <string name="dim_nav_buttons_animate_summary">Анімація затемнення</string>
+  <string name="dim_nav_buttons_animate_duration_title">Тривалість анімації</string>
+  <string name="dim_nav_buttons_animate_duration_summary">Тривалість анімації (у мілісекундах)</string>
+  <string name="dim_nav_buttons_touch_anywhere_title">Враховувати доторкання на всьому екрані</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_on">Торкання в будь-якому місці екрана увімкне підсвітку клавіш</string>
+  <string name="dim_nav_buttons_touch_anywhere_summary_off">Тільки дотики на панелі навігації увімкнуть підсвічування кнопок</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">Стиль кнопок</string>
   <string name="nav_bar_button_style_summary">Змінити стиль кнопок панелі навігації</string>

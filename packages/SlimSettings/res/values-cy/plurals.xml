@@ -15,14 +15,4 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!-- Labels for the WRITE_SETTINGS permission -->
-  <string name="permlab_writeSettings">wijzig Slim systeeminstellingen</string>
-  <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
-  <!-- General Strings -->
-  <!-- Shortcut actions -->
-  <!-- Button shorcut actions -->
-  <!-- Icon color options -->
-  <!-- Slimseekbar -->
-  <!-- Color Picker -->
-</resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"></resources>

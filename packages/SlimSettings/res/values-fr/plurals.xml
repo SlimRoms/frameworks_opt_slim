@@ -16,20 +16,8 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <!-- Labels for the WRITE_SETTINGS permission -->
-  <!-- Labels for the WRITE_SECURE_SETTINGS permission -->
-  <!-- General Strings -->
-  <string name="help">Yardım</string>
-  <string name="attention">Dikkat</string>
-  <!-- Shortcut actions -->
-  <string name="shortcut_action_none">Hiçbiri</string>
-  <string name="shortcut_action_menu">Menü</string>
-  <string name="shortcut_action_ring_vib">Ses/Titreşim</string>
-  <string name="shortcut_action_ring_silent">Zil/Sessiz</string>
-  <string name="shortcut_action_ring_vib_silent">Zil/Titreşim/Sessiz</string>
-  <string name="shortcuts_applications">Uygulamalar</string>
-  <!-- Button shorcut actions -->
-  <!-- Icon color options -->
-  <!-- Slimseekbar -->
-  <!-- Color Picker -->
+  <plurals name="backlight_timeout_time">
+    <item quantity="one"><xliff:g id="seconds">%d</xliff:g> seconde</item>
+    <item quantity="other"><xliff:g id="seconds">%d</xliff:g> secondes</item>
+  </plurals>
 </resources>
