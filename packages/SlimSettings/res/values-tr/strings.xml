@@ -17,13 +17,124 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!-- Common strings -->
+  <string name="disabled">Pasif</string>
+  <string name="menu_save">Kaydet</string>
+  <string name="menu_cancel">Çıkar</string>
   <!-- Slim settings screens -->
+  <string name="navigation_settings_title">Gezinti Tuşları</string>
+  <string name="interface_settings_title">Arayüz</string>
+  <string name="advanced_settings">Gelişmiş</string>
+  <string name="quick_settings">Hızlı ayarlar</string>
+  <string name="status_bar_icons">Durum çubuğu simgeleri</string>
   <!-- Navigation settings -->
+  <string name="navigation_settings_options_title">Gezinti tuş ayarları</string>
   <!-- Names of categories of app ops tabs - extension of AOSP -->
+  <string name="app_ops_categories_location">Konum</string>
+  <string name="app_ops_categories_personal">Kişisel</string>
+  <string name="app_ops_categories_messaging">Mesajlaşma</string>
+  <string name="app_ops_categories_media">Medya</string>
+  <string name="app_ops_categories_device">Cihaz</string>
+  <string name="app_ops_categories_bootup">Açılış</string>
+  <string name="app_ops_categories_su">Yetkili kullanıcı</string>
   <!-- User display names for app ops codes - extension of AOSP -->
+  <string name="app_ops_summaries_coarse_location">kaba konum</string>
+  <string name="app_ops_summaries_fine_location">iyi konum</string>
+  <string name="app_ops_summaries_gps">GPS</string>
+  <string name="app_ops_summaries_vibrate">titreşim</string>
+  <string name="app_ops_summaries_read_contacts">kişileri oku</string>
+  <string name="app_ops_summaries_modify_contacts">kişileri düzenle</string>
+  <string name="app_ops_summaries_read_call_log">arama kaydını oku</string>
+  <string name="app_ops_summaries_modify_call_log">arama kaydını düzenle</string>
+  <string name="app_ops_summaries_read_calendar">takvimi oku</string>
+  <string name="app_ops_summaries_modify_calendar">takvimi düzenle</string>
+  <string name="app_ops_summaries_wifi_scan">Kablosuz ağ tarama</string>
+  <string name="app_ops_summaries_notification">bildirim/tost</string>
+  <string name="app_ops_summaries_cell_scan">hücre tarama</string>
+  <string name="app_ops_summaries_call_phone">arama yap</string>
+  <string name="app_ops_summaries_read_sms">SMS oku</string>
+  <string name="app_ops_summaries_write_sms">SMS yaz</string>
+  <string name="app_ops_summaries_receive_sms">SMS al</string>
+  <string name="app_ops_summaries_receive_emergency_sms">Acil durum SMS\'i al</string>
+  <string name="app_ops_summaries_receive_mms">MMS alma</string>
+  <string name="app_ops_summaries_receive_wap_push">WAP push al</string>
+  <string name="app_ops_summaries_send_sms">SMS gönder</string>
+  <string name="app_ops_summaries_read_icc_sms">ICC SMS oku</string>
+  <string name="app_ops_summaries_write_icc_sms">ICC SMS yaz</string>
+  <string name="app_ops_summaries_modify_settings">ayarları değiştir</string>
+  <string name="app_ops_summaries_draw_on_top">en üstte görüntüle</string>
+  <string name="app_ops_summaries_access_notifications">bildirimlere erişme</string>
+  <string name="app_ops_summaries_camera">kamera</string>
+  <string name="app_ops_summaries_record_audio">ses kaydet</string>
+  <string name="app_ops_summaries_play_audio">ses oynatma</string>
+  <string name="app_ops_summaries_read_clipboard">panoyu oku</string>
+  <string name="app_ops_summaries_modify_clipboard">panoyu düzenleme</string>
+  <string name="app_ops_summaries_media_buttons">ortam butonları</string>
+  <string name="app_ops_summaries_audio_focus">ses odağı</string>
+  <string name="app_ops_summaries_master_volume">ana ses</string>
+  <string name="app_ops_summaries_voice_volume">konuşma sesi</string>
+  <string name="app_ops_summaries_ring_volume">çalma sesi</string>
+  <string name="app_ops_summaries_media_volume">ortam sesi</string>
+  <string name="app_ops_summaries_alarm_volume">alarm sesi</string>
+  <string name="app_ops_summaries_notification_volume">bildirim sesi</string>
+  <string name="app_ops_summaries_bluetooth_volume">bluetooth sesi</string>
+  <string name="app_ops_summaries_keep_awake">uyanık tut</string>
+  <string name="app_ops_summaries_monitor_location">konumu izle</string>
+  <string name="app_ops_summaries_monitor_high_power_location">yüksek güç konumu izle</string>
+  <string name="app_ops_summaries_get_usage_stats">kullanım istatistiklerini al</string>
+  <string name="app_ops_summaries_mute_unmute_microphone">mikrofonu sessiz/sesli yap</string>
   <!-- User display names for app ops codes - extension of AOSP -->
+  <string name="app_ops_labels_camera">Kamera</string>
+  <string name="app_ops_labels_record_audio">Sesi kaydet</string>
+  <string name="app_ops_labels_play_audio">Ses çal</string>
+  <string name="app_ops_labels_read_clipboard">Panoyu oku</string>
+  <string name="app_ops_labels_modify_clipboard">Panoyu düzenle</string>
+  <string name="app_ops_labels_media_buttons">Ortam tuşları</string>
+  <string name="app_ops_labels_audio_focus">Ses odağı</string>
+  <string name="app_ops_labels_master_volume">Ana ses</string>
+  <string name="app_ops_labels_voice_volume">Konuşma sesi</string>
+  <string name="app_ops_labels_ring_volume">Zil sesi</string>
+  <string name="app_ops_labels_media_volume">Ortam sesi</string>
+  <string name="app_ops_labels_alarm_volume">Alarm sesi</string>
+  <string name="app_ops_labels_notification_volume">Bildirim sesi</string>
+  <string name="app_ops_labels_bluetooth_volume">Bluetooth Sesi</string>
+  <string name="app_ops_labels_keep_awake">Uyanık tut</string>
+  <string name="app_ops_labels_monitor_location">Konumu izle</string>
+  <string name="app_ops_labels_monitor_high_power_location">Yüksek güç konumu izle</string>
+  <string name="app_ops_labels_get_usage_stats">Kullanım istatistiklerini al</string>
+  <string name="app_ops_labels_mute_unmute_microphone">Mikrofonu sessiz/sesli yap</string>
+  <string name="app_ops_labels_toast_window">Toast\'ları görüntüle</string>
+  <string name="app_ops_labels_project_media">Medyayı yansıt</string>
+  <string name="app_ops_labels_activate_vpn">VPN\'yi etkinleştir</string>
+  <string name="app_ops_labels_write_wallpaper">Duvar kağıdını ayarla</string>
+  <string name="app_ops_labels_assist_structure">Yardımcı yapısı</string>
+  <string name="app_ops_labels_assist_screenshot">Ekran görüntüsü yardımcısı</string>
+  <string name="app_ops_labels_read_phone_state">Telefon durumunu oku</string>
+  <string name="app_ops_labels_add_voicemail">Sesli mesaj ekle</string>
+  <string name="app_ops_labels_use_sip">SIP kullan</string>
+  <string name="app_ops_labels_make_call">Arama yap</string>
+  <string name="app_ops_labels_use_fingerprint">Parmak izi kullan</string>
+  <string name="app_ops_labels_use_body_sensors">Vücut sensörleri kullan</string>
+  <string name="app_ops_labels_read_cell_broadcasts">Hücre yayınları oku</string>
+  <string name="app_ops_labels_mock_location">Sahte konum</string>
+  <string name="app_ops_labels_read_external_storage">Harici depolamayı oku</string>
+  <string name="app_ops_labels_write_external_storage">Harici depolamaya yaz</string>
+  <string name="app_ops_labels_turn_screen_on">Ekranı Aç</string>
+  <string name="app_ops_labels_get_accounts">Hesapları al</string>
+  <string name="app_ops_labels_change_wifi">Wi-Fi aç kapat</string>
+  <string name="app_ops_labels_toggle_bluetooth">Bluetooth\'u aç-kapat</string>
+  <string name="app_ops_labels_start_at_boot">Açılışta başlat</string>
+  <string name="app_ops_labels_toggle_nfc">NFC aç-kapat</string>
+  <string name="app_ops_labels_toggle_mobile_data">Mobil veriyi aç-kapat</string>
+  <string name="app_ops_labels_superuser">Root erişimi</string>
   <!-- App ops permissions -->
+  <string name="app_ops_permissions_allowed">İzin Verilen</string>
+  <string name="app_ops_permissions_ignored">Reddedilen</string>
+  <string name="app_ops_permissions_always_ask">Her zaman sor</string>
   <!-- App ops detail -->
+  <string name="app_ops_entry_summary"><xliff:g id="op">%1$s</xliff:g> (<xliff:g id="count">%2$s</xliff:g> kullanıldı)</string>
+  <string name="app_ops_allowed_count"><xliff:g id="count" example="2 times">%s</xliff:g> izin verildi</string>
+  <string name="app_ops_ignored_count"><xliff:g id="count" example="2 times">%s</xliff:g> reddedildi</string>
+  <string name="app_ops_both_count"><xliff:g id="count">%1$s</xliff:g>, <xliff:g id="count">%2$s</xliff:g> izin verildi</string>
   <!-- App ops menu options -->
   <!-- Privacy Settings Header item -->
   <!-- Privacy Guard -->
@@ -34,6 +145,17 @@
   <!-- Wakeup options -->
   <!-- Proximity wake -->
   <!-- Doze options -->
+  <string name="doze_trigger_sigmotion_summary_on">Doze önemli hareket sensörleriyle tetiklenir</string>
+  <string name="doze_trigger_sigmotion_summary_off">Hareket sensörü bir tetikleme mekanizması olarak kullanılmayacak</string>
+  <string name="doze_trigger_notification_title">Bildirim tetikleyicisi</string>
+  <string name="doze_trigger_notification_summary_on">Doze bildirimler ile tetiklenir</string>
+  <string name="doze_trigger_notification_summary_off">Bildirimler bir tetikleme mekanizması olarak kullanılmayacak</string>
+  <string name="doze_schedule_title">Doze zamanlaması</string>
+  <string name="doze_schedule_summary_on">Önceden tanımlanmış ortam ekranı tekrar aralıkları (normalde [1s,10s,30s,60s,120s]) kullanılacaktır (varsayılan)</string>
+  <string name="doze_schedule_summary_off">Doze yalnızca bildirim başına bir kez yanacak</string>
+  <string name="doze_brightness_title">Doze parlaklık seviyesi</string>
+  <string name="doze_brightness_summary">Doze ekran parlaklık seviyesi (% maksimum izin verilen parlaklık)</string>
+  <string name="doze_wakeup_doubletap_title">Doze bildirimlerimde cihazı uyandırmak için çift dokunun</string>
   <!-- Advanced reboot options -->
   <!-- Hardware keys and lights -->
   <!-- Key backlight -->

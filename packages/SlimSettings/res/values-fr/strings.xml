@@ -152,9 +152,11 @@
   <string name="app_ops_labels_mute_unmute_microphone">Activer/désactiver le microphone</string>
   <string name="app_ops_labels_activate_vpn">Activer le VPN</string>
   <string name="app_ops_labels_write_wallpaper">Définir comme fond d\'écran</string>
+  <string name="app_ops_labels_assist_screenshot">Aide à la capture d\'écran</string>
   <string name="app_ops_labels_read_phone_state">Accéder à l\'état du téléphone</string>
   <string name="app_ops_labels_add_voicemail">Ajouter un message vocal</string>
   <string name="app_ops_labels_make_call">Passer un appel</string>
+  <string name="app_ops_labels_use_body_sensors">Utiliser les capteurs corporels</string>
   <string name="app_ops_labels_read_cell_broadcasts">Lire les diffusions cellulaires</string>
   <string name="app_ops_labels_mock_location">Positions fictives</string>
   <string name="app_ops_labels_read_external_storage">Lire le stockage externe</string>
@@ -189,12 +191,32 @@
   <string name="privacy_guard_dlg_text">Quand la protection des données est activée, l\'application n\'est pas en mesure d\'accéder aux données personnelles tel que les contacts, les messages, la localisation ou le journal d\'appels.</string>
   <string name="privacy_guard_dlg_system_app_text">Lorsque vous activez la protection des données pour une application intégrée, l\'application ne sera pas en mesure d\'accéder ou de fournir des données à caractère personnel. Cela peut avoir des conséquences sur d\'autres applications.</string>
   <string name="privacy_guard_default_title">Activé par défaut</string>
+  <string name="privacy_guard_default_summary">Activer par défaut pour les applications nouvellement installées</string>
+  <string name="privacy_guard_manager_title">Protection des données</string>
+  <string name="privacy_guard_no_user_apps">Aucune application installée</string>
+  <string name="privacy_guard_help_title">Aide</string>
+  <string name="privacy_guard_reset_title">Réinitialiser</string>
+  <string name="privacy_guard_manager_show_system_apps">Afficher les applications système</string>
+  <string name="privacy_guard_advanced_settings_title">Avancé</string>
   <!-- Setting checkbox title for root access -->
+  <string name="root_access">Accès Root</string>
+  <string name="root_access_warning_title">Autoriser l\'accès Root ?</string>
+  <string name="root_access_none">Désactivé</string>
+  <string name="root_access_apps">Applications uniquement</string>
+  <string name="root_access_adb">ADB uniquement</string>
+  <string name="root_access_all">Applications et ADB</string>
   <!-- Memory -->
+  <string name="memory_startup_apps_title">Applications lancées au démarrage</string>
   <!-- About phone screen, Slim version -->
+  <string name="slim_version_title">Version Slim</string>
+  <string name="slim_version_default">Inconnu</string>
   <!-- Display & Lights screen, setting options for LCD density -->
+  <string name="lcd_density_value_format">%d DPI</string>
+  <string name="lcd_density_default_value_format">%d DPI (par défaut)</string>
+  <string name="restarting_ui">Redémarrage IU\u2026</string>
   <!-- Wakeup options -->
   <!-- Proximity wake -->
+  <string name="proximity_wake_summary">Utiliser le capteur de proximité pour prévenir les réveils accidentels de l\'écran</string>
   <!-- Doze options -->
   <string name="doze_trigger_sigmotion_summary_off">L\'impulsion ne sera pas déclenchée par des mouvements importants</string>
   <string name="doze_trigger_notification_title">Déclencheur de notification</string>
