@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_0b3b81ec",
+        "filename": "packages/SlimSettings/res/xml/slim_navigation_settings.xml",
+        "patchSetId": 15
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-01-14T16:05:33Z",
+      "side": 1,
+      "message": "Does this effectively hide the SOG menu for everyone?",
+      "revId": "e6e68282746420ab1f663a6395704e1a2edd5155",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
