@@ -58,7 +58,7 @@ public class ColorPickerPreference extends Preference implements
 
     private EditText mEditText;
 
-    private SlimPreferenceManager mSlimPreferenceManager = SlimPreferenceManager.get();
+    private SlimPreferenceManager mSlimPreferenceManager = SlimPreferenceManager.getInstance();
     private String mListDependency;
     private String[] mListDependencyValues;
 
