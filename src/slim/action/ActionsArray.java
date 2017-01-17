@@ -42,7 +42,7 @@ public class ActionsArray {
     }
 
     public ActionsArray(Context context, boolean showNone, boolean showWake,
-            ArrayList<String> actionsToExclude) {
+            List<String> actionsToExclude) {
         String[] initialValues = context.getResources().getStringArray(
                 slim.R.array.shortcut_action_values);
         String[] initialEntries = context.getResources().getStringArray(
@@ -53,6 +53,7 @@ public class ActionsArray {
 
         for (int i = 0; i < initialValues.length; i++) {
             if (!showNone && ActionConstants.ACTION_NULL.equals(initialValues[i])
+                    || !showWake && ActionConstants.ACTION_DOZE_PULSE.equals(initialValues[i])
                     || !showWake && ActionConstants.ACTION_WAKE_DEVICE.equals(initialValues[i])) {
                 continue;
             } else if (actionsToExclude != null && actionsToExclude.contains(initialValues[i])) {
