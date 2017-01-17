@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_b98f27cc",
+        "filename": "preference/src/slim/preference/SlimPreferenceManager.java",
+        "patchSetId": 22
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-17T22:27:29Z",
+      "side": 1,
+      "message": "to long",
+      "range": {
+        "startLine": 69,
+        "startChar": 8,
+        "endLine": 69,
+        "endChar": 156
+      },
+      "revId": "ada1d0b48590799b19797a961404855fecc236b9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_59bcf36c",
+        "filename": "preference/src/slim/preference/SlimSwitchPreference.java",
+        "patchSetId": 22
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-17T22:27:29Z",
+      "side": 1,
+      "message": "dead space",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 8
+      },
+      "revId": "ada1d0b48590799b19797a961404855fecc236b9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
