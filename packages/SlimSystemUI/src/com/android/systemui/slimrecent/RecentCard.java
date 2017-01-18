@@ -184,7 +184,7 @@ public class RecentCard extends Card {
 
         if (mHeader != null) {
             // Set visible the expand/collapse button.
-            mHeader.setButtonExpandVisible(!isTopTask);
+            mHeader.setButtonExpandVisible(!isTopTask || screenPinningEnabled());
             mHeader.setOtherButtonDrawable(R.drawable.recents_lock_to_app_pin);
             mHeader.setOtherButtonClickListener(new CardHeader.OnClickCardHeaderOtherButtonListener() {
                 @Override
