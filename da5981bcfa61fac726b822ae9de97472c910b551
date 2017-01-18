@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_f43606e7",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentCard.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000053
+      },
+      "writtenOn": "2017-01-18T22:11:59Z",
+      "side": 1,
+      "message": "this shouldnt be here. causing expand icon on topmost task",
+      "revId": "da5981bcfa61fac726b822ae9de97472c910b551",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
