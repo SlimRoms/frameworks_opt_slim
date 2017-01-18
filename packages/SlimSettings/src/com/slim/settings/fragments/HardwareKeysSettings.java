@@ -74,8 +74,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class HardwareKeysSettings extends SettingsPreferenceFragment implements
-        OnPreferenceChangeListener, OnPreferenceClickListener,
-        ShortcutPickerHelper.OnPickListener {
+        OnPreferenceChangeListener {
 
     private static final String TAG = "HardwareKeys";
 
@@ -86,26 +85,6 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     private static final String CATEGORY_MENU = "button_keys_menu";
     private static final String CATEGORY_ASSIST = "button_keys_assist";
     private static final String CATEGORY_APPSWITCH = "button_keys_appSwitch";
-
-    private static final String KEYS_CATEGORY_BINDINGS = "keys_bindings";
-    private static final String KEYS_BACK_PRESS = "keys_back_press";
-    private static final String KEYS_BACK_LONG_PRESS = "keys_back_long_press";
-    private static final String KEYS_BACK_DOUBLE_TAP = "keys_back_double_tap";
-    private static final String KEYS_CAMERA_PRESS = "keys_camera_press";
-    private static final String KEYS_CAMERA_LONG_PRESS = "keys_camera_long_press";
-    private static final String KEYS_CAMERA_DOUBLE_TAP = "keys_camera_double_tap";
-    private static final String KEYS_HOME_PRESS = "keys_home_press";
-    private static final String KEYS_HOME_LONG_PRESS = "keys_home_long_press";
-    private static final String KEYS_HOME_DOUBLE_TAP = "keys_home_double_tap";
-    private static final String KEYS_MENU_PRESS = "keys_menu_press";
-    private static final String KEYS_MENU_LONG_PRESS = "keys_menu_long_press";
-    private static final String KEYS_MENU_DOUBLE_TAP = "keys_menu_double_tap";
-    private static final String KEYS_ASSIST_PRESS = "keys_assist_press";
-    private static final String KEYS_ASSIST_LONG_PRESS = "keys_assist_long_press";
-    private static final String KEYS_ASSIST_DOUBLE_TAP = "keys_assist_double_tap";
-    private static final String KEYS_APP_SWITCH_PRESS = "keys_app_switch_press";
-    private static final String KEYS_APP_SWITCH_LONG_PRESS = "keys_app_switch_long_press";
-    private static final String KEYS_APP_SWITCH_DOUBLE_TAP = "keys_app_switch_double_tap";
 
     private static final String KEY_ENABLE_HWKEYS = "enable_hw_keys";
     private static final String KEY_BUTTON_BACKLIGHT = "button_backlight";
@@ -126,41 +105,15 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
     public static final int KEY_MASK_CAMERA     = 0x20;
 
     private SwitchPreference mEnableHwKeys;
-    private Preference mBackPressAction;
-    private Preference mBackLongPressAction;
-    private Preference mBackDoubleTapAction;
-    private Preference mCameraPressAction;
-    private Preference mCameraLongPressAction;
-    private Preference mCameraDoubleTapAction;
-    private Preference mHomePressAction;
-    private Preference mHomeLongPressAction;
-    private Preference mHomeDoubleTapAction;
-    private Preference mMenuPressAction;
-    private Preference mMenuLongPressAction;
-    private Preference mMenuDoubleTapAction;
-    private Preference mAssistPressAction;
-    private Preference mAssistLongPressAction;
-    private Preference mAssistDoubleTapAction;
-    private Preference mAppSwitchPressAction;
-    private Preference mAppSwitchLongPressAction;
-    private Preference mAppSwitchDoubleTapAction;
 
     private boolean mCheckPreferences;
     private Map<String, String> mKeySettings = new HashMap<String, String>();
 
-    private ShortcutPickerHelper mPicker;
     private String mPendingSettingsKey;
-    private ActionsArray mActionsArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        mPicker = new ShortcutPickerHelper(getActivity(), this);
-
-        // Before we start filter out unsupported options on the
-        // ListPreference values and entries
-        mActionsArray = new ActionsArray(getActivity());
 
         // Attach final settings screen.
         reloadSettings();
@@ -211,61 +164,21 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                 KEY_ENABLE_HWKEYS);
         mEnableHwKeys.setOnPreferenceChangeListener(this);
 
-        mBackPressAction = (Preference) prefs.findPreference(
-                KEYS_BACK_PRESS);
-        mBackLongPressAction = (Preference) prefs.findPreference(
-                KEYS_BACK_LONG_PRESS);
-        mBackDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_BACK_DOUBLE_TAP);
-        mCameraPressAction = (Preference) prefs.findPreference(
-                KEYS_CAMERA_PRESS);
-        mCameraLongPressAction = (Preference) prefs.findPreference(
-                KEYS_CAMERA_LONG_PRESS);
-        mCameraDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_CAMERA_DOUBLE_TAP);
-        mHomePressAction = (Preference) prefs.findPreference(
-                KEYS_HOME_PRESS);
-        mHomeLongPressAction = (Preference) prefs.findPreference(
-                KEYS_HOME_LONG_PRESS);
-        mHomeDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_HOME_DOUBLE_TAP);
-        mMenuPressAction = (Preference) prefs.findPreference(
-                KEYS_MENU_PRESS);
-        mMenuLongPressAction = (Preference) prefs.findPreference(
-                KEYS_MENU_LONG_PRESS);
-        mMenuDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_MENU_DOUBLE_TAP);
-        mAssistPressAction = (Preference) prefs.findPreference(
-                KEYS_ASSIST_PRESS);
-        mAssistLongPressAction = (Preference) prefs.findPreference(
-                KEYS_ASSIST_LONG_PRESS);
-        mAssistDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_ASSIST_DOUBLE_TAP);
-        mAppSwitchPressAction = (Preference) prefs.findPreference(
-                KEYS_APP_SWITCH_PRESS);
-        mAppSwitchLongPressAction = (Preference) prefs.findPreference(
-                KEYS_APP_SWITCH_LONG_PRESS);
-        mAppSwitchDoubleTapAction = (Preference) prefs.findPreference(
-                KEYS_APP_SWITCH_DOUBLE_TAP);
-
         if (!backlight.isButtonSupported() && !backlight.isKeyboardSupported()) {
                 prefs.removePreference(backlight);
         }
 
         if (hasBackKey) {
             // Back key
-            setupOrUpdatePreference(mBackPressAction,
-                    HwKeyHelper.getPressOnBackBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnBackBehavior(getActivity(), false),
                     SlimSettings.System.KEY_BACK_ACTION);
 
             // Back key longpress
-            setupOrUpdatePreference(mBackLongPressAction,
-                    HwKeyHelper.getLongPressOnBackBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnBackBehavior(getActivity(), false),
                     SlimSettings.System.KEY_BACK_LONG_PRESS_ACTION);
 
             // Back key double tap
-            setupOrUpdatePreference(mBackDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnBackBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnBackBehavior(getActivity(), false),
                     SlimSettings.System.KEY_BACK_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysBackCategory);
@@ -273,18 +186,15 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         if (hasCameraKey) {
             // Camera key
-            setupOrUpdatePreference(mCameraPressAction,
-                    HwKeyHelper.getPressOnCameraBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnCameraBehavior(getActivity(), false),
                     SlimSettings.System.KEY_CAMERA_ACTION);
 
             // Camera key longpress
-            setupOrUpdatePreference(mCameraLongPressAction,
-                    HwKeyHelper.getLongPressOnCameraBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnCameraBehavior(getActivity(), false),
                     SlimSettings.System.KEY_CAMERA_LONG_PRESS_ACTION);
 
             // Camera key double tap
-            setupOrUpdatePreference(mCameraDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnCameraBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnCameraBehavior(getActivity(), false),
                     SlimSettings.System.KEY_CAMERA_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysCameraCategory);
@@ -292,18 +202,15 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         if (hasHomeKey) {
             // Home key
-            setupOrUpdatePreference(mHomePressAction,
-                    HwKeyHelper.getPressOnHomeBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnHomeBehavior(getActivity(), false),
                     SlimSettings.System.KEY_HOME_ACTION);
 
             // Home key long press
-            setupOrUpdatePreference(mHomeLongPressAction,
-                    HwKeyHelper.getLongPressOnHomeBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnHomeBehavior(getActivity(), false),
                     SlimSettings.System.KEY_HOME_LONG_PRESS_ACTION);
 
             // Home key double tap
-            setupOrUpdatePreference(mHomeDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnHomeBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnHomeBehavior(getActivity(), false),
                     SlimSettings.System.KEY_HOME_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysHomeCategory);
@@ -311,18 +218,15 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         if (hasMenuKey) {
             // Menu key
-            setupOrUpdatePreference(mMenuPressAction,
-                    HwKeyHelper.getPressOnMenuBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnMenuBehavior(getActivity(), false),
                     SlimSettings.System.KEY_MENU_ACTION);
 
             // Menu key longpress
-            setupOrUpdatePreference(mMenuLongPressAction,
-                    HwKeyHelper.getLongPressOnMenuBehavior(getActivity(), false, hasAssistKey),
-                    SlimSettings.System.KEY_MENU_LONG_PRESS_ACTION);
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnMenuBehavior(getActivity(),
+                    false), SlimSettings.System.KEY_MENU_LONG_PRESS_ACTION);
 
             // Menu key double tap
-            setupOrUpdatePreference(mMenuDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnMenuBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnMenuBehavior(getActivity(), false),
                     SlimSettings.System.KEY_MENU_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysMenuCategory);
@@ -330,18 +234,15 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         if (hasAssistKey) {
             // Assistant key
-            setupOrUpdatePreference(mAssistPressAction,
-                    HwKeyHelper.getPressOnAssistBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnAssistBehavior(getActivity(), false),
                     SlimSettings.System.KEY_ASSIST_ACTION);
 
             // Assistant key longpress
-            setupOrUpdatePreference(mAssistLongPressAction,
-                    HwKeyHelper.getLongPressOnAssistBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnAssistBehavior(getActivity(), false),
                     SlimSettings.System.KEY_ASSIST_LONG_PRESS_ACTION);
 
             // Assistant key double tap
-            setupOrUpdatePreference(mAssistDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnAssistBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnAssistBehavior(getActivity(), false),
                     SlimSettings.System.KEY_ASSIST_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysAssistCategory);
@@ -349,19 +250,16 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
 
         if (hasAppSwitchKey) {
             // App switch key
-            setupOrUpdatePreference(mAppSwitchPressAction,
-                    HwKeyHelper.getPressOnAppSwitchBehavior(getActivity(), false),
+            setupOrUpdatePreference(HwKeyHelper.getPressOnAppSwitchBehavior(getActivity(), false),
                     SlimSettings.System.KEY_APP_SWITCH_ACTION);
 
             // App switch key longpress
-            setupOrUpdatePreference(mAppSwitchLongPressAction,
-                    HwKeyHelper.getLongPressOnAppSwitchBehavior(getActivity(), false),
-                    SlimSettings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION);
+            setupOrUpdatePreference(HwKeyHelper.getLongPressOnAppSwitchBehavior(getActivity(),
+                    false), SlimSettings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION);
 
             // App switch key double tap
-            setupOrUpdatePreference(mAppSwitchDoubleTapAction,
-                    HwKeyHelper.getDoubleTapOnAppSwitchBehavior(getActivity(), false),
-                    SlimSettings.System.KEY_APP_SWITCH_DOUBLE_TAP_ACTION);
+            setupOrUpdatePreference(HwKeyHelper.getDoubleTapOnAppSwitchBehavior(getActivity(),
+                    false), SlimSettings.System.KEY_APP_SWITCH_DOUBLE_TAP_ACTION);
         } else {
             prefs.removePreference(keysAppSwitchCategory);
         }
@@ -382,88 +280,12 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         return prefs;
     }
 
-    private void setupOrUpdatePreference(
-            Preference preference, String action, String settingsKey) {
+    private void setupOrUpdatePreference(String action, String settingsKey) {
+        Preference preference = findPreference(settingsKey);
         if (preference == null || action == null) {
             return;
         }
-
-        if (action.startsWith("**")) {
-            preference.setSummary(ActionHelper.getActionDescription(getActivity(), action));
-        } else {
-            preference.setSummary(AppHelper.getFriendlyNameForUri(
-                    getActivity(), getActivity().getPackageManager(), action));
-        }
-
-        preference.setOnPreferenceClickListener(this);
         mKeySettings.put(settingsKey, action);
-    }
-
-    @Override
-    public boolean onPreferenceClick(Preference preference) {
-        String settingsKey = null;
-        int dialogTitle = 0;
-        if (preference == mBackPressAction) {
-            settingsKey = SlimSettings.System.KEY_BACK_ACTION;
-            dialogTitle = R.string.keys_back_press_title;
-        } else if (preference == mBackLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_BACK_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_back_long_press_title;
-        } else if (preference == mBackDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_BACK_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_back_double_tap_title;
-        } else if (preference == mCameraPressAction) {
-            settingsKey = SlimSettings.System.KEY_CAMERA_ACTION;
-            dialogTitle = R.string.keys_camera_press_title;
-        } else if (preference == mCameraLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_CAMERA_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_camera_long_press_title;
-        } else if (preference == mCameraDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_CAMERA_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_camera_double_tap_title;
-        } else if (preference == mHomePressAction) {
-            settingsKey = SlimSettings.System.KEY_HOME_ACTION;
-            dialogTitle = R.string.keys_home_press_title;
-        } else if (preference == mHomeLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_HOME_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_home_long_press_title;
-        } else if (preference == mHomeDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_HOME_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_home_double_tap_title;
-        } else if (preference == mMenuPressAction) {
-            settingsKey = SlimSettings.System.KEY_MENU_ACTION;
-            dialogTitle = R.string.keys_menu_press_title;
-        } else if (preference == mMenuLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_MENU_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_menu_long_press_title;
-        } else if (preference == mMenuDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_MENU_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_menu_double_tap_title;
-        } else if (preference == mAssistPressAction) {
-            settingsKey = SlimSettings.System.KEY_ASSIST_ACTION;
-            dialogTitle = R.string.keys_assist_press_title;
-        } else if (preference == mAssistLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_ASSIST_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_assist_long_press_title;
-        } else if (preference == mAssistDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_ASSIST_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_assist_double_tap_title;
-        } else if (preference == mAppSwitchPressAction) {
-            settingsKey = SlimSettings.System.KEY_APP_SWITCH_ACTION;
-            dialogTitle = R.string.keys_app_switch_press_title;
-        } else if (preference == mAppSwitchLongPressAction) {
-            settingsKey = SlimSettings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION;
-            dialogTitle = R.string.keys_app_switch_long_press_title;
-        } else if (preference == mAppSwitchDoubleTapAction) {
-            settingsKey = SlimSettings.System.KEY_APP_SWITCH_DOUBLE_TAP_ACTION;
-            dialogTitle = R.string.keys_app_switch_double_tap_title;
-        }
-
-        if (settingsKey != null) {
-            showDialogInner(DLG_SHOW_ACTION_DIALOG, settingsKey, dialogTitle);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -513,36 +335,6 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
         SlimSettings.System.putInt(getContentResolver(),
                 SlimSettings.System.DISABLE_HW_KEYS, 0);
         reloadSettings();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void shortcutPicked(String action,
-                String description, Bitmap b, boolean isApplication) {
-        if (mPendingSettingsKey == null || action == null) {
-            return;
-        }
-        SlimSettings.System.putString(getContentResolver(), mPendingSettingsKey, action);
-        reloadSettings();
-        mPendingSettingsKey = null;
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == ShortcutPickerHelper.REQUEST_PICK_SHORTCUT
-                    || requestCode == ShortcutPickerHelper.REQUEST_PICK_APPLICATION
-                    || requestCode == ShortcutPickerHelper.REQUEST_CREATE_SHORTCUT) {
-                mPicker.onActivityResult(requestCode, resultCode, data);
-
-            }
-        } else {
-            mPendingSettingsKey = null;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -600,30 +392,6 @@ public class HardwareKeysSettings extends SettingsPreferenceFragment implements
                     .setPositiveButton(android.R.string.ok, null)
                     .create();
                 case DLG_SHOW_ACTION_DIALOG:
-                    if (getOwner().mActionsArray == null) {
-                        return null;
-                    }
-                    return new AlertDialog.Builder(getActivity())
-                    .setTitle(dialogTitle)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .setItems(getOwner().mActionsArray.getEntries(),
-                        new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int item) {
-                            if (getOwner().mActionsArray.getValue(item)
-                                    .equals(ActionConstants.ACTION_APP)) {
-                                if (getOwner().mPicker != null) {
-                                    getOwner().mPendingSettingsKey = settingsKey;
-                                    getOwner().mPicker.pickShortcut(getOwner().getId());
-                                }
-                            } else {
-                                SlimSettings.System.putString(getActivity().getContentResolver(),
-                                        settingsKey,
-                                        getOwner().mActionsArray.getValue(item));
-                                getOwner().reloadSettings();
-                            }
-                        }
-                    })
-                    .create();
                 case DLG_RESET_TO_DEFAULT:
                     return new AlertDialog.Builder(getActivity())
                     .setTitle(org.slim.framework.internal.R.string.shortcut_action_reset)

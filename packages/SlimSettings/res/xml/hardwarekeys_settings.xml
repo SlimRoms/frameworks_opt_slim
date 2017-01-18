@@ -15,7 +15,8 @@
 -->
 
 <PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slim="http://schemas.android.com/apk/res/slim">
 
         <PreferenceCategory
                 android:key="button_keys"
@@ -38,19 +39,22 @@
             android:key="button_keys_back"
             android:title="@string/keys_back_press_title" >
 
-            <Preference
-                android:key="keys_back_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_back_action"
                 android:title="@string/keys_action_normal"
+                slim:defaultAction="@slim:string/key_back_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_back_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_back_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_back_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_back_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_back_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_back_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 
@@ -58,19 +62,22 @@
             android:key="button_keys_camera"
             android:title="@string/keys_camera_press_title" >
 
-            <Preference
-                android:key="keys_camera_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_camera_press_action"
+                slim:defaultAction="@slim:string/key_camera_action_default"
                 android:title="@string/keys_action_normal"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_camera_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_camera_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_camera_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_camera_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_camera_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_camera_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 
@@ -78,19 +85,22 @@
             android:key="button_keys_home"
             android:title="@string/keys_home_press_title">
 
-            <Preference
-                android:key="keys_home_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_home_action"
                 android:title="@string/keys_action_normal"
+                slim:defaultAction="@slim:string/key_home_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_home_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_home_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_home_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_home_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_home_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_home_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 
@@ -98,19 +108,22 @@
             android:key="button_keys_menu"
             android:title="@string/keys_menu_press_title">
 
-            <Preference
-                android:key="keys_menu_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_menu_action"
                 android:title="@string/keys_action_normal"
+                slim:defaultAction="@slim:string/key_menu_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_menu_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_menu_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_menu_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_menu_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_menu_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_menu_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 
@@ -118,19 +131,22 @@
             android:key="button_keys_assist"
             android:title="@string/keys_assist_press_title">
 
-            <Preference
-                android:key="keys_assist_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_assist_action"
                 android:title="@string/keys_action_normal"
+                slim:defaultAction="@slim:string/key_assist_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_assist_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_assist_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_assist_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_assist_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_assist_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_assist_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 
@@ -138,19 +154,22 @@
             android:key="button_keys_appSwitch"
             android:title="@string/keys_app_switch_press_title">
 
-            <Preference
-                android:key="keys_app_switch_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_app_switch_action"
                 android:title="@string/keys_action_normal"
+                slim:defaultAction="@slim:string/key_app_switch_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_app_switch_long_press"
+            <slim.preference.SlimActionsPreference
+                android:key="key_app_switch_long_press_action"
                 android:title="@string/keys_action_long"
+                slim:defaultAction="@slim:string/key_app_switch_long_press_action_default"
                 android:dependency="enable_hw_keys" />
 
-            <Preference
-                android:key="keys_app_switch_double_tap"
+            <slim.preference.SlimActionsPreference
+                android:key="key_app_switch_double_tap_action"
                 android:title="@string/keys_action_double"
+                slim:defaultAction="@slim:string/key_app_switch_double_tap_action_default"
                 android:dependency="enable_hw_keys" />
         </PreferenceCategory>
 

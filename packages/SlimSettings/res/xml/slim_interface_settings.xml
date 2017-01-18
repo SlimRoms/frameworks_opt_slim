@@ -36,6 +36,7 @@
     <slim.preference.SlimActionsPreference
         android:key="key_wake_action"
         android:title="action_wake_device"
-        slim:showWake="true" />
+        slim:showWake="true"
+        slim:defaultAction="**wake_device**" />
 
 </PreferenceScreen>
