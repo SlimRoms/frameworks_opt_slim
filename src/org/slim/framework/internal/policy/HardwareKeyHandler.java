@@ -317,7 +317,7 @@ public class HardwareKeyHandler {
                         mContext, noMenu);
         mLongPressOnMenuBehavior =
                 HwKeyHelper.getLongPressOnMenuBehavior(mContext,
-                        noMenu, noMenu || !noAssist);
+                        noMenu);
         mDoubleTapOnMenuBehavior =
                 HwKeyHelper.getDoubleTapOnMenuBehavior(
                         mContext, noMenu);

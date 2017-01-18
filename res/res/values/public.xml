@@ -43,6 +43,7 @@
   <public type="attr" name="showWake" id="0x02010014" />
   <public type="attr" name="showNone" id="0x02010015" />
   <public type="attr" name="removeActions" id="0x02010016" />
+  <public type="attr" name="defaultAction" id="0x02010017" />
 
   <!-- id (start with 0x02020000)-->
   <!--SlimSeekBar ids -->
@@ -91,6 +92,26 @@
   <public type="string" name="prox_auto_speaker_incall_only_summary_off" id="0x02040015" />
 
   <public type="string" name="hex" id="0x02040016" />
+
+  <!-- hw keys defaults -->
+  <public type="string" name="key_home_action_default" id="0x02040017" />
+  <public type="string" name="key_home_long_press_action_default" id="0x02040018" />
+  <public type="string" name="key_home_double_tap_action_default" id="0x02040019" />
+  <public type="string" name="key_back_action_default" id="0x02040020" />
+  <public type="string" name="key_back_long_press_action_default" id="0x02040021" />
+  <public type="string" name="key_back_double_tap_action_default" id="0x02040022" />
+  <public type="string" name="key_app_switch_action_default" id="0x02040023" />
+  <public type="string" name="key_app_switch_long_press_action_default" id="0x02040024" />
+  <public type="string" name="key_app_switch_double_tap_action_default" id="0x02040025" />
+  <public type="string" name="key_menu_action_default" id="0x02040026" />
+  <public type="string" name="key_menu_long_press_action_default" id="0x02040027" />
+  <public type="string" name="key_menu_double_tap_action_default" id="0x02040028" />
+  <public type="string" name="key_camera_action_default" id="0x02040029" />
+  <public type="string" name="key_camera_long_press_action_default" id="0x02040030" />
+  <public type="string" name="key_camera_double_tap_action_default" id="0x02040031" />
+  <public type="string" name="key_assist_action_default" id="0x02040032" />
+  <public type="string" name="key_assist_long_press_action_default" id="0x02040033" />
+  <public type="string" name="key_assist_double_tap_action_default" id="0x02040034" />
 
   <!-- dimen (start with 0x02050000) -->
 
