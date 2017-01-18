@@ -22,6 +22,7 @@ import android.provider.Settings;
 
 import slim.action.ActionConstants;
 import slim.provider.SlimSettings;
+import slim.R;
 
 public class HwKeyHelper {
 
@@ -35,7 +36,7 @@ public class HwKeyHelper {
     static final int DOUBLE_TAP_HOME_RECENT_SYSTEM_UI = 1;
 
     public static String getPressOnHomeBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_HOME;
+        String defaultValue = getDefaultAction(context, R.string.key_home_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -47,16 +48,8 @@ public class HwKeyHelper {
     }
 
     public static String getLongPressOnHomeBehavior(Context context, boolean getDefault) {
-        String defaultValue;
-        int longPressOnHome = context.getResources().getInteger(
-                com.android.internal.R.integer.config_longPressOnHomeBehavior);
-        if (longPressOnHome == LONG_PRESS_HOME_RECENT_SYSTEM_UI) {
-            defaultValue = ActionConstants.ACTION_RECENTS;
-        } else if (longPressOnHome == LONG_PRESS_HOME_ASSIST) {
-            defaultValue = ActionConstants.ACTION_SEARCH;
-        } else {
-            defaultValue = ActionConstants.ACTION_NULL;
-        }
+        String defaultValue = getDefaultAction(context,
+                R.string.key_home_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -68,14 +61,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnHomeBehavior(Context context, boolean getDefault) {
-        String defaultValue;
-        int doubleTapOnHome = context.getResources().getInteger(
-                com.android.internal.R.integer.config_doubleTapOnHomeBehavior);
-        if (doubleTapOnHome == DOUBLE_TAP_HOME_RECENT_SYSTEM_UI) {
-            defaultValue = ActionConstants.ACTION_RECENTS;
-        } else {
-            defaultValue = ActionConstants.ACTION_NULL;
-        }
+        String defaultValue = getDefaultAction(context,
+                R.string.key_home_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -87,7 +74,7 @@ public class HwKeyHelper {
     }
 
     public static String getPressOnMenuBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_MENU;
+        String defaultValue = getDefaultAction(context, R.string.key_menu_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -98,14 +85,9 @@ public class HwKeyHelper {
         return value == null ? defaultValue : value;
     }
 
-    public static String getLongPressOnMenuBehavior(Context context,
-                boolean getDefault, boolean hasAssistOrNoMenu) {
-        String defaultValue;
-        if (hasAssistOrNoMenu) {
-            defaultValue = ActionConstants.ACTION_NULL;
-        } else {
-            defaultValue = ActionConstants.ACTION_SEARCH;
-        }
+    public static String getLongPressOnMenuBehavior(Context context, boolean getDefault) {
+        String defaultValue = getDefaultAction(context,
+                R.string.key_menu_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -117,7 +99,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnMenuBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_menu_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -129,7 +112,7 @@ public class HwKeyHelper {
     }
 
     public static String getPressOnBackBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_BACK;
+        String defaultValue = getDefaultAction(context, R.string.key_back_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -141,7 +124,8 @@ public class HwKeyHelper {
     }
 
     public static String getLongPressOnBackBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_back_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -153,7 +137,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnBackBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_back_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -165,7 +150,7 @@ public class HwKeyHelper {
     }
 
     public static String getPressOnAssistBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_SEARCH;
+        String defaultValue = getDefaultAction(context, R.string.key_assist_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -177,7 +162,8 @@ public class HwKeyHelper {
     }
 
     public static String getLongPressOnAssistBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_VOICE_SEARCH;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_assist_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -189,7 +175,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnAssistBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_assist_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -201,7 +188,7 @@ public class HwKeyHelper {
     }
 
     public static String getPressOnAppSwitchBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_RECENTS;
+        String defaultValue = getDefaultAction(context, R.string.key_app_switch_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -213,7 +200,8 @@ public class HwKeyHelper {
     }
 
     public static String getLongPressOnAppSwitchBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_app_switch_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -225,7 +213,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnAppSwitchBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_app_switch_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -237,7 +226,7 @@ public class HwKeyHelper {
     }
 
     public static String getPressOnCameraBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_CAMERA;
+        String defaultValue = getDefaultAction(context, R.string.key_camera_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -249,7 +238,8 @@ public class HwKeyHelper {
     }
 
     public static String getLongPressOnCameraBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_camera_long_press_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -261,7 +251,8 @@ public class HwKeyHelper {
     }
 
     public static String getDoubleTapOnCameraBehavior(Context context, boolean getDefault) {
-        String defaultValue = ActionConstants.ACTION_NULL;
+        String defaultValue = getDefaultAction(context,
+                R.string.key_camera_double_tap_action_default);
         if (getDefault) {
             return defaultValue;
         }
@@ -270,6 +261,10 @@ public class HwKeyHelper {
                 SlimSettings.System.KEY_CAMERA_DOUBLE_TAP_ACTION,
                 UserHandle.USER_CURRENT);
         return value == null ? defaultValue : value;
+    }
+
+    private static String getDefaultAction(Context context, int resId) {
+        return context.getResources().getString(resId);
     }
 }
 

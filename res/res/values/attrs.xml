@@ -75,6 +75,7 @@
         <attr name="showWake" format="boolean" />
         <attr name="showNone" format="boolean" />
         <attr name="removeActions" format="string" />
+        <attr name="defaultAction" format="string" />
     </declare-styleable>
 
 

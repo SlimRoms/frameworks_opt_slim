@@ -30,7 +30,7 @@ public class ActionsArray {
     private String[] entries;
 
     public ActionsArray(Context context) {
-        this(context, true, false, null);
+        this(context, true, true, null);
     }
 
     public ActionsArray(Context context, boolean showWake) {
