@@ -12,7 +12,9 @@ import android.util.AttributeSet;
 
 import slim.action.ActionsArray;
 import slim.action.ActionConstants;
+import slim.action.ActionHelper;
 import slim.utils.AttributeHelper;
+import slim.utils.AppHelper;
 import slim.utils.ShortcutPickerHelper;
 
 import java.util.Arrays;
@@ -25,6 +27,7 @@ public class SlimActionsPreference extends ListPreference implements
     private int mSettingType;
     private String mListDependency;
     private String[] mListDependencyValues;
+    private String mDefaultAction;
 
     private ShortcutPickerHelper mPicker;
     private ActionsArray mActionsArray;
@@ -48,7 +51,11 @@ public class SlimActionsPreference extends ListPreference implements
         String[] removeActions = a.getString(slim.R.styleable.SlimActionsPreference_removeActions,
             "").split("\\|");
 
-        mActionsArray = new ActionsArray(context, allowNone, allowWake, Arrays.asList(removeActions));
+        mDefaultAction = a.getString(slim.R.styleable.SlimActionsPreference_defaultAction,
+                ActionConstants.ACTION_NULL);
+
+        mActionsArray = new ActionsArray(context, allowNone, allowWake,
+                Arrays.asList(removeActions));
 
         a = new AttributeHelper(context, attrs, slim.R.styleable.SlimPreference);
 
@@ -79,6 +86,8 @@ public class SlimActionsPreference extends ListPreference implements
         }
         setEntries(mActionsArray.getEntries());
         setEntryValues(mActionsArray.getValues());
+
+        updateSummary();
     }
 
     @Override
@@ -105,6 +114,7 @@ public class SlimActionsPreference extends ListPreference implements
 
         SlimPreferenceManager.putStringInSlimSettings(getContext(),
                 mSettingType, getKey(), action);
+        updateSummary();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,6 +127,16 @@ public class SlimActionsPreference extends ListPreference implements
             }
         } else {
             mPending = false;
+        }
+    }
+
+    private void updateSummary() {
+        String action = getPersistedString(mDefaultAction);
+        if (action.startsWith("**")) {
+            setSummary(ActionHelper.getActionDescription(getContext(), action));
+        } else {
+            setSummary(AppHelper.getFriendlyNameForUri(
+                    getContext(), getContext().getPackageManager(), action));
         }
     }
 
@@ -134,6 +154,7 @@ public class SlimActionsPreference extends ListPreference implements
             } else {
                 SlimPreferenceManager.putStringInSlimSettings(getContext(),
                         mSettingType, getKey(), value);
+                updateSummary();
             }
             return true;
         }

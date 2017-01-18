@@ -150,6 +150,14 @@ public class AttributeHelper {
 
     public String getString(int index) {
         AttributeInfo info = mMap.get(getIdForIndex(index));
+        if (info != null && info.value.startsWith("@")) {
+            int id = getResourceId(index, -1);
+            try {
+                return mResources.getString(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         try {
             return info.value;
         } catch (Exception e) {
