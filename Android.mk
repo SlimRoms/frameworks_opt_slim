@@ -27,6 +27,8 @@ LOCAL_JAVA_LIBRARIES := \
     android-support-v7-recyclerview \
     android-support-annotations
 
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-v7-palette
+
 slim_platform_res := APPS/org.slim.framework-res_intermediates/src
 
 LOCAL_INTERMEDIATE_SOURCES := \
