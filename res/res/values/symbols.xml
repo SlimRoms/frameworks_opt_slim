@@ -20,9 +20,6 @@
     <java-symbol type="color" name="dslv_icon_dark" />
     <java-symbol type="color" name="dslv_float_background_color" />
 
-    <java-symbol type="layout" name="action_list_view_main" />
-    <java-symbol type="layout" name="action_list_view_item" />
-
     <!-- General Strings -->
     <java-symbol type="string" name="help" />
     <java-symbol type="string" name="attention" />
