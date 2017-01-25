@@ -255,6 +255,57 @@
       "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
       "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_ae80368c",
+        "filename": "packages/SlimSettingsProvider/test/src/org/slim/providers/settings/SettingsProviderPerformanceTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T16:50:01Z",
+      "side": 1,
+      "message": "add slim",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_ce7d72b3",
+        "filename": "packages/SlimSettingsProvider/test/src/org/slim/providers/settings/SettingsProviderTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T16:50:01Z",
+      "side": 1,
+      "message": "add slim",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_6e4a3e85",
+        "filename": "packages/SlimSettingsProvider/test/src/org/slim/providers/settings/SettingsStateTest.java",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T16:50:01Z",
+      "side": 1,
+      "message": "add slim",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
     }
   ]
 }
