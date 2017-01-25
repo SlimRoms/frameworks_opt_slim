@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_6e955ee3",
+        "filename": "packages/SlimSettingsProvider/Android.mk",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "licensing",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_cef8124c",
+        "filename": "packages/SlimSettingsProvider/Android.mk",
+        "patchSetId": 9
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "why not leave this as it was before?",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_8e9a1a13",
+        "filename": "packages/SlimSettingsProvider/AndroidManifest.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "licensing",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_2e9f6605",
+        "filename": "packages/SlimSettingsProvider/res/values-af/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_4ea42257",
+        "filename": "packages/SlimSettingsProvider/res/values-af/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "add Slim\u0027s",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_0e862aba",
+        "filename": "packages/SlimSettingsProvider/res/values-af/strings.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "trailing spaces",
+      "parentUuid": "",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_ae9276f4",
+        "filename": "packages/SlimSettingsProvider/res/values-am/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "trailing space",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_ce8fb2cb",
+        "filename": "packages/SlimSettingsProvider/res/values-am/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "add slim",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_8ec1bae6",
+        "filename": "packages/SlimSettingsProvider/res/values-ar/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "add slim\u0027s and clean up trailing spacea",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_4ebbc272",
+        "filename": "packages/SlimSettingsProvider/res/values-az-rAZ/defaults.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-25T15:59:09Z",
+      "side": 1,
+      "message": "cleanup trailing spaces and add slim\u0027s",
+      "revId": "5b4f6093e6cf85878fd69447d691f4ddb5fec004",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
