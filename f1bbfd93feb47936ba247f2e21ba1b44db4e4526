@@ -16,6 +16,24 @@
       "revId": "f1bbfd93feb47936ba247f2e21ba1b44db4e4526",
       "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_115baf55",
+        "filename": "res/res/values/symbols.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-26T17:54:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aaae553_f17613d8",
+      "revId": "f1bbfd93feb47936ba247f2e21ba1b44db4e4526",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
     }
   ]
 }
