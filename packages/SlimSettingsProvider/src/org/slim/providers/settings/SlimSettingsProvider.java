@@ -1060,12 +1060,12 @@ public class SlimSettingsProvider extends ContentProvider {
     }
 
     private static int resolveCallingUserIdEnforcingPermissionsLocked(int requestingUserId) {
-        if (requestingUserId == UserHandle.getCallingUserId()) {
+ //       if (requestingUserId == UserHandle.getCallingUserId()) {
             return requestingUserId;
-        }
-        return ActivityManager.handleIncomingUser(Binder.getCallingPid(),
-                Binder.getCallingUid(), requestingUserId, false, true,
-                "get/set setting for user", null);
+ //       }
+ //       return ActivityManager.handleIncomingUser(Binder.getCallingPid(),
+ //               Binder.getCallingUid(), requestingUserId, false, true,
+ //               "get/set setting for user", null);
     }
 
     private Bundle packageValueForCallResult(Setting setting,
