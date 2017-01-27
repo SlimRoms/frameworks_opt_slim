@@ -20,6 +20,7 @@ import android.annotation.NonNull;
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
 import android.annotation.SystemApi;
+import android.app.ActivityManager;
 import android.app.ActivityThread;
 import android.app.AppOpsManager;
 import android.app.Application;
@@ -400,8 +401,12 @@ public final class SlimSettings {
             return true;
         }
 
-        public String getStringForUser(ContentResolver cr, String name, final int userHandle) {
-            final boolean isSelf = (userHandle == UserHandle.myUserId());
+        public String getStringForUser(ContentResolver cr, String name, int userHandle) {
+            final boolean isSelf = (userHandle == UserHandle.myUserId()
+                    || userHandle == UserHandle.USER_CURRENT);
+            if (userHandle == UserHandle.USER_CURRENT) {
+                userHandle = ActivityManager.getCurrentUser();
+            }
             if (isSelf) {
                 synchronized (this) {
                     if (mGenerationTracker != null) {
@@ -431,7 +436,7 @@ public final class SlimSettings {
             if (mCallGetCommand != null) {
                 try {
                     Bundle args = null;
-                    if (!isSelf) {
+                    if (!isSelf || userHandle == UserHandle.USER_CURRENT) {
                         args = new Bundle();
                         args.putInt(CALL_METHOD_USER_KEY, userHandle);
                     }
