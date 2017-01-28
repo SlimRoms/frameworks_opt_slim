@@ -33,11 +33,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
-<<<<<<< HEAD
 import android.content.res.Configuration;
-import android.database.ContentObserver;
-=======
->>>>>>> 6e91229... Fix Multi User for SlimSettings
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
