@@ -16,6 +16,7 @@
 
 package slim.provider;
 
+import android.annotation.NonNull;
 import android.annotation.SdkConstant;
 import android.annotation.SdkConstant.SdkConstantType;
 import android.annotation.SystemApi;
@@ -59,10 +60,13 @@ import android.util.AndroidException;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Log;
+import android.util.MemoryIntArray;
 
+import com.android.internal.annotations.GuardedBy;
 import com.android.internal.util.ArrayUtils;
 import com.android.internal.widget.ILockSettings;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
@@ -79,6 +83,7 @@ import java.util.regex.Pattern;
 public final class SlimSettings {
     private static final String TAG = "SlimSettings";
     private static final boolean LOCAL_LOGV = false;
+    private static final boolean DEBUG = false;
 
     public static final String AUTHORITY = "slimsettings";
 
@@ -111,6 +116,36 @@ public final class SlimSettings {
     public static final String CALL_METHOD_GET_GLOBAL = "GET_global";
 
     /**
+     * @hide - Specifies that the caller of the fast-path call()-based flow tracks
+     * the settings generation in order to cache values locally. If this key is
+     * mapped to a <code>null</code> string extra in the request bundle, the response
+     * bundle will contain the same key mapped to a parcelable extra which would be
+     * an {@link android.util.MemoryIntArray}. The response will also contain an
+     * integer mapped to the {@link #CALL_METHOD_GENERATION_INDEX_KEY} which is the
+     * index in the array clients should use to lookup the generation. For efficiency
+     * the caller should request the generation tracking memory array only if it
+     * doesn't already have it.
+     *
+     * @see #CALL_METHOD_GENERATION_INDEX_KEY
+     */
+    public static final String CALL_METHOD_TRACK_GENERATION_KEY = "_track_generation";
+
+    /**
+     * @hide Key with the location in the {@link android.util.MemoryIntArray} where
+     * to look up the generation id of the backing table. The value is an integer.
+     *
+     * @see #CALL_METHOD_TRACK_GENERATION_KEY
+     */
+    public static final String CALL_METHOD_GENERATION_INDEX_KEY = "_generation_index";
+
+    /**
+     * @hide Key with the settings table generation. The value is an integer.
+     *
+     * @see #CALL_METHOD_TRACK_GENERATION_KEY
+     */
+    public static final String CALL_METHOD_GENERATION_KEY = "_generation";
+
+    /**
      * @hide - Private call() method to write to 'system' table
      */
     public static final String CALL_METHOD_PUT_SYSTEM = "PUT_system";
@@ -126,6 +161,28 @@ public final class SlimSettings {
     public static final String CALL_METHOD_PUT_GLOBAL= "PUT_global";
 
     // endregion
+
+    private static final String[] PM_WRITE_SETTINGS = {
+        slim.Manifest.permission.WRITE_SETTINGS
+    };
+
+    /**
+     * Performs a strict and comprehensive check of whether a calling package is allowed to
+     * write/modify system settings, as the condition differs for pre-M, M+, and
+     * privileged/preinstalled apps. If the provided uid does not match the
+     * callingPackage, a negative result will be returned. The caller is expected to have
+     * the WRITE_SETTINGS permission declared.
+     *
+     * Note: if the check is successful, the operation of this app will be updated to the
+     * current time.
+     * @hide
+     */
+    public static boolean checkAndNoteWriteSettingsOperation(Context context, int uid,
+            String callingPackage, boolean throwException) {
+        return Settings.isCallingPackageAllowedToPerformAppOpsProtectedOperation(context, uid,
+                callingPackage, throwException, AppOpsManager.OP_WRITE_SETTINGS,
+                PM_WRITE_SETTINGS, true);
+    }
 
     /** @hide */
     public static interface Validator {
@@ -261,9 +318,57 @@ public final class SlimSettings {
         }
     }
 
+    private static final class GenerationTracker {
+        private final MemoryIntArray mArray;
+        private final Runnable mErrorHandler;
+        private final int mIndex;
+        private int mCurrentGeneration;
+
+        public GenerationTracker(@NonNull MemoryIntArray array, int index,
+                int generation, Runnable errorHandler) {
+            mArray = array;
+            mIndex = index;
+            mErrorHandler = errorHandler;
+            mCurrentGeneration = generation;
+        }
+
+        public boolean isGenerationChanged() {
+            final int currentGeneration = readCurrentGeneration();
+            if (currentGeneration >= 0) {
+                if (currentGeneration == mCurrentGeneration) {
+                    return false;
+                }
+                mCurrentGeneration = currentGeneration;
+            }
+            return true;
+        }
+
+        private int readCurrentGeneration() {
+            try {
+                return mArray.get(mIndex);
+            } catch (IOException e) {
+                Log.e(TAG, "Error getting current generation", e);
+                if (mErrorHandler != null) {
+                    mErrorHandler.run();
+                }
+            }
+            return -1;
+        }
+
+        public void destroy() {
+            try {
+                mArray.close();
+            } catch (IOException e) {
+                Log.e(TAG, "Error closing backing array", e);
+                if (mErrorHandler != null) {
+                    mErrorHandler.run();
+                }
+            }
+        }
+    }
+
     // Thread-safe.
     private static class NameValueCache {
-        private final String mVersionSystemProperty;
         private final Uri mUri;
 
         private static final String[] SELECT_VALUE =
@@ -272,7 +377,6 @@ public final class SlimSettings {
 
         // Must synchronize on 'this' to access mValues and mValuesVersion.
         private final HashMap<String, String> mValues = new HashMap<String, String>();
-        private long mValuesVersion = 0;
 
         // Initially null; set lazily and held forever.  Synchronized on 'this'.
         private IContentProvider mContentProvider = null;
@@ -282,9 +386,11 @@ public final class SlimSettings {
         private final String mCallGetCommand;
         private final String mCallSetCommand;
 
+        @GuardedBy("this")
+        private GenerationTracker mGenerationTracker;
+
         public NameValueCache(String versionSystemProperty, Uri uri,
                 String getCommand, String setCommand) {
-            mVersionSystemProperty = versionSystemProperty;
             mUri = uri;
             mCallGetCommand = getCommand;
             mCallSetCommand = setCommand;
@@ -317,23 +423,20 @@ public final class SlimSettings {
         }
 
         public String getStringForUser(ContentResolver cr, String name, final int userHandle) {
-            final boolean isSelf = (userHandle == UserHandle.myUserId()) ||
-                    (userHandle == UserHandle.USER_CURRENT);
-            if (isSelf) {
-                long newValuesVersion = SystemProperties.getLong(mVersionSystemProperty, 0);
-
-                // Our own user's settings data uses a client-side cache
+            final boolean isSelf = (userHandle == UserHandle.myUserId());
+            if (isSelf || userHandle == UserHandle.getCallingUserId()) {
                 synchronized (this) {
-                    if (mValuesVersion != newValuesVersion) {
-                        if (LOCAL_LOGV) {
-                            Log.v(TAG, "invalidate [" + mUri.getLastPathSegment() + "]: current "
-                                    + newValuesVersion + " != cached " + mValuesVersion);
+                    if (mGenerationTracker != null) {
+                        if (mGenerationTracker.isGenerationChanged()) {
+                            if (LOCAL_LOGV || false) {
+                                Log.v(TAG, "Generation changed for type:"
+                                        + mUri.getPath() + " in package:"
+                                        + cr.getPackageName() + " and user:" + userHandle);
+                            }
+                            mValues.clear();
+                        } else if (mValues.containsKey(name)) {
+                            return mValues.get(name);
                         }
-
-                        mValues.clear();
-                        mValuesVersion = newValuesVersion;
-                    } else if (mValues.containsKey(name)) {
-                        return mValues.get(name);  // Could be null, that's OK -- negative caching
                     }
                 }
             } else {
@@ -350,16 +453,62 @@ public final class SlimSettings {
             if (mCallGetCommand != null) {
                 try {
                     Bundle args = null;
-                    if (!isSelf || userHandle == UserHandle.USER_CURRENT) {
+                    if (!isSelf) {
                         args = new Bundle();
                         args.putInt(CALL_METHOD_USER_KEY, userHandle);
                     }
+                    boolean needsGenerationTracker = false;
+                    synchronized (this) {
+                        if (isSelf && mGenerationTracker == null) {
+                            needsGenerationTracker = true;
+                            if (args == null) {
+                                args = new Bundle();
+                            }
+                            args.putString(CALL_METHOD_TRACK_GENERATION_KEY, null);
+                            if (DEBUG) {
+                                Log.i(TAG, "Requested generation tracker for type: "+ mUri.getPath()
+                                        + " in package:" + cr.getPackageName() +" and user:"
+                                        + userHandle);
+                            }
+                        }
+                    }
                     Bundle b = cp.call(cr.getPackageName(), mCallGetCommand, name, args);
                     if (b != null) {
-                        String value = b.getPairValue();
+                        String value = b.getString(Settings.NameValueTable.VALUE);
+
                         // Don't update our cache for reads of other users' data
                         if (isSelf) {
                             synchronized (this) {
+                                if (needsGenerationTracker) {
+                                    MemoryIntArray array = b.getParcelable(
+                                            CALL_METHOD_TRACK_GENERATION_KEY);
+                                    final int index = b.getInt(
+                                            CALL_METHOD_GENERATION_INDEX_KEY, -1);
+                                    if (array != null && index >= 0) {
+                                        final int generation = b.getInt(
+                                                CALL_METHOD_GENERATION_KEY, 0);
+                                        if (DEBUG) {
+                                            Log.i(TAG, "Received generation tracker for type:"
+                                                    + mUri.getPath() + " in package:"
+                                                    + cr.getPackageName() + " and user:"
+                                                    + userHandle + " with index:" + index);
+                                        }
+                                        mGenerationTracker = new GenerationTracker(array, index,
+                                                generation, () -> {
+                                            synchronized (NameValueCache.this) {
+                                                Log.e(TAG, "Error accessing generation"
+                                                        + " tracker - removing");
+                                                if (mGenerationTracker != null) {
+                                                    GenerationTracker generationTracker =
+                                                            mGenerationTracker;
+                                                    mGenerationTracker = null;
+                                                    generationTracker.destroy();
+                                                    mValues.clear();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
                                 mValues.put(name, value);
                             }
                         } else {
@@ -461,7 +610,7 @@ public final class SlimSettings {
          * @return the corresponding value, or null if not present
          */
         public static String getString(ContentResolver resolver, String name) {
-            return getStringForUser(resolver, name, UserHandle.USER_CURRENT);
+            return getStringForUser(resolver, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -489,7 +638,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putString(ContentResolver resolver, String name, String value) {
-            return putStringForUser(resolver, name, value, UserHandle.USER_CURRENT);
+            return putStringForUser(resolver, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -544,7 +693,7 @@ public final class SlimSettings {
          * or not a valid integer.
          */
         public static int getInt(ContentResolver cr, String name, int def) {
-            return getIntForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getIntForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -577,7 +726,7 @@ public final class SlimSettings {
          */
         public static int getInt(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getIntForUser(cr, name, UserHandle.USER_CURRENT);
+            return getIntForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -605,7 +754,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putInt(ContentResolver cr, String name, int value) {
-            return putIntForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putIntForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -629,7 +778,7 @@ public final class SlimSettings {
          * or not a valid {@code long}.
          */
         public static long getLong(ContentResolver cr, String name, long def) {
-            return getLongForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getLongForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -664,7 +813,7 @@ public final class SlimSettings {
          */
         public static long getLong(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getLongForUser(cr, name, UserHandle.USER_CURRENT);
+            return getLongForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -692,7 +841,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putLong(ContentResolver cr, String name, long value) {
-            return putLongForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putLongForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -716,7 +865,7 @@ public final class SlimSettings {
          * or not a valid float.
          */
         public static float getFloat(ContentResolver cr, String name, float def) {
-            return getFloatForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getFloatForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -750,7 +899,7 @@ public final class SlimSettings {
          */
         public static float getFloat(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getFloatForUser(cr, name, UserHandle.USER_CURRENT);
+            return getFloatForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -781,7 +930,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putFloat(ContentResolver cr, String name, float value) {
-            return putFloatForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putFloatForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -943,7 +1092,7 @@ public final class SlimSettings {
          * @return the corresponding value, or null if not present
          */
         public static String getString(ContentResolver resolver, String name) {
-            return getStringForUser(resolver, name, UserHandle.USER_CURRENT);
+            return getStringForUser(resolver, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -997,7 +1146,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putString(ContentResolver resolver, String name, String value) {
-            return putStringForUser(resolver, name, value, UserHandle.USER_CURRENT);
+            return putStringForUser(resolver, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1041,7 +1190,7 @@ public final class SlimSettings {
          * or not a valid integer.
          */
         public static int getInt(ContentResolver cr, String name, int def) {
-            return getIntForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getIntForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1074,7 +1223,7 @@ public final class SlimSettings {
          */
         public static int getInt(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getIntForUser(cr, name, UserHandle.USER_CURRENT);
+            return getIntForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1102,7 +1251,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putInt(ContentResolver cr, String name, int value) {
-            return putIntForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putIntForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1126,7 +1275,7 @@ public final class SlimSettings {
          * or not a valid {@code long}.
          */
         public static long getLong(ContentResolver cr, String name, long def) {
-            return getLongForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getLongForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1161,7 +1310,7 @@ public final class SlimSettings {
          */
         public static long getLong(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getLongForUser(cr, name, UserHandle.USER_CURRENT);
+            return getLongForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1189,7 +1338,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putLong(ContentResolver cr, String name, long value) {
-            return putLongForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putLongForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1213,7 +1362,7 @@ public final class SlimSettings {
          * or not a valid float.
          */
         public static float getFloat(ContentResolver cr, String name, float def) {
-            return getFloatForUser(cr, name, def, UserHandle.USER_CURRENT);
+            return getFloatForUser(cr, name, def, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1247,7 +1396,7 @@ public final class SlimSettings {
          */
         public static float getFloat(ContentResolver cr, String name)
                 throws SlimSettingNotFoundException {
-            return getFloatForUser(cr, name, UserHandle.USER_CURRENT);
+            return getFloatForUser(cr, name, UserHandle.getCallingUserId());
         }
 
         /** @hide */
@@ -1278,7 +1427,7 @@ public final class SlimSettings {
          * @return true if the value was set, false on database errors
          */
         public static boolean putFloat(ContentResolver cr, String name, float value) {
-            return putFloatForUser(cr, name, value, UserHandle.USER_CURRENT);
+            return putFloatForUser(cr, name, value, UserHandle.getCallingUserId());
         }
 
         /** @hide */
