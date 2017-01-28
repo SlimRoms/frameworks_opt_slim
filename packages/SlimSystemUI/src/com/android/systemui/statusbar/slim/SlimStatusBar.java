@@ -34,7 +34,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
-import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -82,6 +81,7 @@ import java.util.List;
 
 import slim.action.SlimActionsManager;
 import slim.provider.SlimSettings;
+import slim.utils.UserContentObserver;
 
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_LIGHTS_OUT;
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_LIGHTS_OUT_TRANSPARENT;
@@ -118,12 +118,15 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     private int mDensity;
 
-    class SettingsObserver extends ContentObserver {
+    class SettingsObserver extends UserContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
         }
 
-        void observe() {
+        @Override
+        protected void observe() {
+            super.observe();
+
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.USE_SLIM_RECENTS), false, this,
@@ -179,9 +182,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
         }
 
         @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            super.onChange(selfChange, uri);
-
+        protected void update(Uri uri) {
             if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.USE_SLIM_RECENTS))) {
                 updateRecents();
@@ -227,6 +228,22 @@ public class SlimStatusBar extends PhoneStatusBar implements
                 }
             } else if (uri.equals(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_SHOW))) {
+                updateNavigationBarVisibility();
+            }
+        }
+
+        @Override
+        protected void update() {
+            // update recents
+            updateRecents();
+            rebuildRecentsScreen();
+
+            // update nav bar
+            if (mSlimNavigationBarView != null) {
+                mSlimNavigationBarView.recreateNavigationBar();
+                prepareNavigationBarView();
+                mSlimNavigationBarView.updateNavigationBarSettings();
+                mSlimNavigationBarView.onNavButtonTouched();
                 updateNavigationBarVisibility();
             }
         }
