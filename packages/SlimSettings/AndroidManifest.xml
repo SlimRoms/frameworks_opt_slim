@@ -125,6 +125,17 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.slim.settings.activities.IncreasingRingSettingsActivity"
+            android:label="@org.slim.framework:string/increasing_ring_volume_title"
+            android:theme="@style/Theme.Settings" >
+
+            <intent-filter>
+                <action android:name="com.slim.settings.action.INCREASING_RING_VOLUME_SETTINGS" />
+            </intent-filter>
+
+        </activity>
+
         <receiver android:name="com.slim.settings.SlimReceiver" android:enabled="true"
                     android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
             <intent-filter android:priority="2147483647">

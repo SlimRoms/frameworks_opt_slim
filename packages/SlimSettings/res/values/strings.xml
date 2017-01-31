@@ -505,4 +505,14 @@
     <string name="doze_brightness_title">Doze brightness level</string>
     <string name="doze_brightness_summary">Brightness level of doze pulse screen (% of max allowed brightness)</string>
 
+    <!-- Increasing ring tone volume -->
+    <string name="sound_cagtegory_increasing_ring_volume_title">Increasing ring volume</string>
+    <string name="increasing_ring_volume_enable">Enable Increasing ring volume</string>
+    <string name="increasing_ring_volume_options">Increasing ring options</string>
+    <string name="increasing_ring_volume_title">Increasing ring volume settings</string>
+    <string name="increasing_ring_volume_summary">Gradually increasing ringtone volume</string>
+    <string name="increasing_ring_min_volume_title">Start volume</string>
+    <string name="increasing_ring_min_volume_summary">Minimum ringtone volumee</string>
+    <string name="increasing_ring_ramp_up_time_title">Ramp-up time</string>
+    <string name="increasing_ring_ramp_up_time_summary">Interval by which the volume increases</string>
 </resources>

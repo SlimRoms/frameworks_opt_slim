@@ -185,4 +185,19 @@
 
     <!-- Proximity auto speaker -->
     <java-symbol type="bool" name="config_enabled_speakerprox" />
+
+    <!-- Increasing ringtone volume ids -->
+    <java-symbol type="id" name="start_volume" />
+    <java-symbol type="id" name="ramp_up_time_value" />
+
+    <!-- Increasing ring tone volume -->
+    <java-symbol type="string" name="sound_cagtegory_increasing_ring_volume_title" />
+    <java-symbol type="string" name="increasing_ring_volume_enable" />
+    <java-symbol type="string" name="increasing_ring_volume_options" />
+    <java-symbol type="string" name="increasing_ring_volume_title" />
+    <java-symbol type="string" name="increasing_ring_volume_summary" />
+    <java-symbol type="string" name="increasing_ring_min_volume_title" />
+    <java-symbol type="string" name="increasing_ring_min_volume_summary" />
+    <java-symbol type="string" name="increasing_ring_ramp_up_time_title" />
+    <java-symbol type="string" name="increasing_ring_ramp_up_time_summary" />
 </resources>

@@ -75,10 +75,14 @@
   <public type="id" name="yellow_panel" id="0x02020010" />
   <public type="id" name="hex" id="0x02020011" />
   <public type="id" name="enter" id="0x02020012" />
-
+  
   <!--SlimSeekBar v2 ids -->
   <public type="id" name="seekBarPrefBarContainer" id="0x02020013" />
   <public type="id" name="seekBarPrefValue" id="0x02020014" />
+
+  <!-- Increasing ringtone volume ids -->
+  <public type="id" name="start_volume" id="0x02020015" />
+  <public type="id" name="ramp_up_time_value" id="0x02020016" />
 
   <!-- style (start with 0x02030000) -->
 
@@ -110,6 +114,17 @@
 
   <public type="string" name="hex" id="0x02040016" />
 
+  <!-- Increasing ring tone volume -->
+  <public type="string" name="sound_cagtegory_increasing_ring_volume_title" id="0x02040017" />
+  <public type="string" name="increasing_ring_volume_enable" id="0x02040018" />
+  <public type="string" name="increasing_ring_volume_options" id="0x02040019" />
+  <public type="string" name="increasing_ring_volume_title" id="0x02040020" />
+  <public type="string" name="increasing_ring_volume_summary" id="0x02040021" />
+  <public type="string" name="increasing_ring_min_volume_title" id="0x02040022" />
+  <public type="string" name="increasing_ring_min_volume_summary" id="0x02040023" />
+  <public type="string" name="increasing_ring_ramp_up_time_title" id="0x02040024" />
+  <public type="string" name="increasing_ring_ramp_up_time_summary" id="0x02040025" />
+  
   <!-- dimen (start with 0x02050000) -->
 
   <!-- color (start with 0x02060000) -->

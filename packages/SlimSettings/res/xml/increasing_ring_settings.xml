@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2017 SlimRoms
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:settings="http://schemas.android.com/apk/res/com.android.settings"
+        xmlns:slim="http://schemas.android.com/apk/res/org.slim.framework"
+            android:key="increasing_ring_volume_options"
+            android:title="@org.slim.framework:string/sound_category_increasing_ring_volume_title" >
+
+        <org.slim.preference.SlimSwitchPreference
+            android:key="increasing_ring"
+            android:title="@org.slim.framework:string/increasing_ring_volume_enable"
+            android:summary="@org.slim.framework:string/increasing_ring_volume_summary"
+            android:defaultValue="false" />
+
+        <org.slim.preference.SlimSeekBarPreference
+            android:key="increasing_ring_min_volume"
+            android:id="@+id/start_volume"
+            android:title="@org.slim.framework:string/increasing_ring_min_volume_title"
+            android:summary="@org.slim.framework:string/increasing_ring_min_volume_summary"
+            android:dependency="increasing_ring"
+            slim:defaultValue="100"
+            slim:useMilliSeconds="true"
+            slim:interval="1"
+            slim:minValue="100"
+            slim:multiplyValue="100" />
+
+        <org.slim.preference.SlimSeekBarPreference
+            android:key="increasing_ring_ramp_up_time"
+            android:id="@+id/ramp_up_time_value"
+            android:title="@org.slim.framework:string/increasing_ring_ramp_up_time_title"
+            android:summary="@org.slim.framework:string/increasing_ring_ramp_up_time_summary"
+            android:dependency="increasing_ring"
+            slim:defaultValue="100"
+            slim:useMilliSeconds="true"
+            slim:interval="1"
+            slim:minValue="100"
+            slim:multiplyValue="100" />
+
+</PreferenceScreen>
