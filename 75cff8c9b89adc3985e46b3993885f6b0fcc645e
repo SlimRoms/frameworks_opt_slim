@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_c7723549",
+        "filename": "src/slim/provider/SlimSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 810,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 0,
+      "message": "Should this not be in the first commit? Avoid bleeding between commits where possible",
+      "range": {
+        "startLine": 796,
+        "startChar": 8,
+        "endLine": 810,
+        "endChar": 20
+      },
+      "revId": "75cff8c9b89adc3985e46b3993885f6b0fcc645e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}

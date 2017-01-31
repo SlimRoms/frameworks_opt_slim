@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_87943d38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "Add signed-off-by: dankoman line please. I know you did all the work but technically his original code, so it doesn\u0027t get lost",
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_47872510",
+        "filename": "packages/SlimSettings/res/xml/doze_settings.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "Also add Slim\u0027s lincensing",
+      "range": {
+        "startLine": 2,
+        "startChar": 5,
+        "endLine": 2,
+        "endChar": 55
+      },
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_e77bb127",
+        "filename": "packages/SlimSettings/src/com/slim/settings/activities/DozeSettingsActivity.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "2016-2017",
+      "range": {
+        "startLine": 2,
+        "startChar": 17,
+        "endLine": 2,
+        "endChar": 21
+      },
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_07792d2f",
+        "filename": "packages/SlimSettings/src/com/slim/settings/fragments/DozeSettingsFragment.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "2013-2017 SlimRoms Project",
+      "range": {
+        "startLine": 2,
+        "startChar": 17,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_a775b933",
+        "filename": "packages/SlimSettings/src/com/slim/settings/fragments/DozeSettingsFragment.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "trailing spaces",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 21
+      },
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_678fc124",
+        "filename": "src/slim/provider/SlimSettings.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:06:09Z",
+      "side": 1,
+      "message": "to long",
+      "range": {
+        "startLine": 824,
+        "startChar": 73,
+        "endLine": 824,
+        "endChar": 102
+      },
+      "revId": "46b2d04cbeec182661e0db484bbd26478b7d27e9",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
