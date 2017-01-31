@@ -918,21 +918,6 @@ public final class SlimSettings {
         }
 
         /** @hide */
-        public static final Validator DOZE_TIMEOUT_VALIDATOR = sNonNegativeIntegerValidator;
-        /** @hide */
-        public static final Validator DOZE_TRIGGER_PICKUP_VALIDATOR = sBooleanValidator;
-        /** @hide */
-        public static final Validator DOZE_TRIGGER_SIGMOTION_VALIDATOR = sBooleanValidator;
-        /** @hide */
-        public static final Validator DOZE_TRIGGER_NOTIFICATION_VALIDATOR = sBooleanValidator;
-        /** @hide */
-        public static final Validator DOZE_SCHEDULE_VALIDATOR = sBooleanValidator;
-        /** @hide */
-        public static final Validator DOZE_BRIGHTNESS_VALIDATOR =
-                new InclusiveFloatRangeValidator(0, 1);
-        /** @hide */
-        public static final Validator DOZE_WAKEUP_DOUBLETAP_VALIDATOR = sBooleanValidator;
-        /** @hide */
         public static final Validator PROXIMITY_ON_WAKE_VALIDATOR = sBooleanValidator;
         /** @hide */
         public static final Validator WAKEUP_WHEN_PLUGGED_UNPLUGGED_VALIDATOR = sBooleanValidator;
@@ -989,13 +974,6 @@ public final class SlimSettings {
         public static final Map<String, Validator> VALIDATORS =
                 new ArrayMap<String, Validator>();
         static {
-            VALIDATORS.put(DOZE_TIMEOUT, DOZE_TIMEOUT_VALIDATOR);
-            VALIDATORS.put(DOZE_TRIGGER_PICKUP, DOZE_TRIGGER_PICKUP_VALIDATOR);
-            VALIDATORS.put(DOZE_TRIGGER_SIGMOTION, DOZE_TRIGGER_SIGMOTION_VALIDATOR);
-            VALIDATORS.put(DOZE_TRIGGER_NOTIFICATION, DOZE_TRIGGER_NOTIFICATION_VALIDATOR);
-            VALIDATORS.put(DOZE_SCHEDULE, DOZE_SCHEDULE_VALIDATOR);
-            VALIDATORS.put(DOZE_BRIGHTNESS, DOZE_BRIGHTNESS_VALIDATOR);
-            VALIDATORS.put(DOZE_WAKEUP_DOUBLETAP, DOZE_WAKEUP_DOUBLETAP_VALIDATOR);
             VALIDATORS.put(PROXIMITY_ON_WAKE, PROXIMITY_ON_WAKE_VALIDATOR);
             VALIDATORS.put(WAKEUP_WHEN_PLUGGED_UNPLUGGED, WAKEUP_WHEN_PLUGGED_UNPLUGGED_VALIDATOR);
             VALIDATORS.put(PROXIMITY_AUTO_SPEAKER, PROXIMITY_AUTO_SPEAKER_VALIDATOR);
