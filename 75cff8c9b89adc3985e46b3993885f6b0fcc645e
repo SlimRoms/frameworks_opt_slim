@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_67882123",
+        "filename": "preference/src/slim/preference/SlimSeekBarPreferencev2.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:01:08Z",
+      "side": 1,
+      "message": "SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 27,
+        "endLine": 3,
+        "endChar": 35
+      },
+      "revId": "75cff8c9b89adc3985e46b3993885f6b0fcc645e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_878d1d34",
+        "filename": "res/res/layout/slim_seek_bar_preference_v2.xml",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-01-31T05:01:08Z",
+      "side": 1,
+      "message": "SlimRoms Project",
+      "range": {
+        "startLine": 3,
+        "startChar": 29,
+        "endLine": 3,
+        "endChar": 37
+      },
+      "revId": "75cff8c9b89adc3985e46b3993885f6b0fcc645e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
