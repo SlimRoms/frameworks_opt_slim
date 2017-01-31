@@ -943,6 +943,27 @@ public final class SlimSettings {
         public static final Validator STATUSBAR_CLOCK_DATE_STYLE_VALIDATOR = sThreewayValidator;
         /** @hide */
         public static final Validator STATUSBAR_CLOCK_DATE_POSITION_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator DOZE_FADE_IN_PICKUP_VALIDATOR = sNonNegativeIntegerValidator;
+        /** @hide */
+        public static final Validator DOZE_FADE_IN_DOUBLETAP_VALIDATOR = sNonNegativeIntegerValidator;
+        /** @hide */
+        public static final Validator DOZE_TIMEOUT_VALIDATOR = sNonNegativeIntegerValidator;
+        /** @hide */
+        public static final Validator DOZE_FADE_OUT_VALIDATOR = sNonNegativeIntegerValidator;
+        /** @hide */
+        public static final Validator DOZE_BRIGHTNESS_VALIDATOR =
+                new InclusiveFloatRangeValidator(0, 1);
+        /** @hide */
+        public static final Validator DOZE_WAKEUP_DOUBLETAP_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_PICKUP_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_SIGMOTION_VALIDATOR = sBooleanValidator;
+        /** @hide */
+        public static final Validator DOZE_TRIGGER_NOTIFICATION_VALIDATOR = sBooleanValidator;
+        /** @hide */
+//        public static final Validator DOZE_TRIGGER_DOUBLETAP_VALIDATOR = sBooleanValidator;
 
         /**
          * These are all public system settings
@@ -988,6 +1009,16 @@ public final class SlimSettings {
             VALIDATORS.put(STATUSBAR_CLOCK_DATE_DISPLAY, STATUSBAR_CLOCK_DATE_DISPLAY_VALIDATOR);
             VALIDATORS.put(STATUSBAR_CLOCK_DATE_STYLE, STATUSBAR_CLOCK_DATE_STYLE_VALIDATOR);
             VALIDATORS.put(STATUSBAR_CLOCK_DATE_POSITION, STATUSBAR_CLOCK_DATE_POSITION_VALIDATOR);
+            VALIDATORS.put(DOZE_FADE_IN_PICKUP, DOZE_FADE_IN_PICKUP_VALIDATOR);
+            VALIDATORS.put(DOZE_FADE_IN_DOUBLETAP, DOZE_FADE_IN_DOUBLETAP_VALIDATOR);
+            VALIDATORS.put(DOZE_TIMEOUT, DOZE_TIMEOUT_VALIDATOR);
+            VALIDATORS.put(DOZE_FADE_OUT, DOZE_FADE_OUT_VALIDATOR);
+            VALIDATORS.put(DOZE_BRIGHTNESS, DOZE_BRIGHTNESS_VALIDATOR);
+            VALIDATORS.put(DOZE_WAKEUP_DOUBLETAP, DOZE_WAKEUP_DOUBLETAP_VALIDATOR);
+            VALIDATORS.put(DOZE_TRIGGER_PICKUP, DOZE_TRIGGER_PICKUP_VALIDATOR);
+            VALIDATORS.put(DOZE_TRIGGER_SIGMOTION, DOZE_TRIGGER_SIGMOTION_VALIDATOR);
+            VALIDATORS.put(DOZE_TRIGGER_NOTIFICATION, DOZE_TRIGGER_NOTIFICATION_VALIDATOR);
+//            VALIDATORS.put(DOZE_TRIGGER_DOUBLETAP, DOZE_TRIGGER_DOUBLETAP_VALIDATOR);
         };
     }
 
