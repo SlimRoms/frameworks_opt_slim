@@ -110,6 +110,10 @@
 
   <public type="string" name="hex" id="0x02040016" />
 
+  <!-- Slim Doze -->
+  <public type="string" name="display_category_doze_options_title" id="0x02040017" />
+  <public type="string" name="doze_settings_title" id="0x02040018" />
+
   <!-- dimen (start with 0x02050000) -->
 
   <!-- color (start with 0x02060000) -->
