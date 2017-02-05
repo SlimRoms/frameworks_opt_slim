@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_9d1d6e76",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/SlimSystemUIFactory.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-02-05T13:44:18Z",
+      "side": 1,
+      "message": "lincensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 29
+      },
+      "revId": "7e57618306ab6446f006f2f14996fce1f02002ef",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_3d123a63",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/slim/SlimQSTileHost.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-02-05T13:44:18Z",
+      "side": 1,
+      "message": "Lincensing",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 44
+      },
+      "revId": "7e57618306ab6446f006f2f14996fce1f02002ef",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
