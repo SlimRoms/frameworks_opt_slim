@@ -25,4 +25,8 @@
     <uses-permission android:name="slim.permission.SLIM_ACTIONS_SERVICE" />
     <uses-permission android:name="slim.permission.WRITE_SETTINGS" />
 
+    <!-- Reboot -->
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.RECOVERY" />
+
 </manifest>
