@@ -24,6 +24,7 @@ import com.android.systemui.statusbar.policy.UserSwitcherController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 
 import com.android.systemui.qs.tiles.CaffeineTile;
+import com.android.systemui.qs.tiles.RebootTile;
 import com.android.systemui.qs.tiles.SyncTile;
 
 public class SlimQSTileHost extends QSTileHost {
@@ -49,6 +50,8 @@ public class SlimQSTileHost extends QSTileHost {
         switch(tileSpec) {
             case "caffeine":
                 return new CaffeineTile(this);
+            case "reboot":
+                return new RebootTile(this);
             case "sync":
                 return new SyncTile(this);
             default:
