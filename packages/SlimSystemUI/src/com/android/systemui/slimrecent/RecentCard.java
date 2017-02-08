@@ -77,12 +77,6 @@ public class RecentCard extends Card {
 
     private TaskDescription mTaskDescription;
 
-    private int defaultCardBg = mContext.getResources().getColor(
-                R.color.recents_task_bar_default_background_color);
-    private int cardColor = SlimSettings.System.getIntForUser(
-                mContext.getContentResolver(), SlimSettings.System.RECENT_CARD_BG_COLOR,
-                0x00ffffff, UserHandle.USER_CURRENT);
-
     public RecentCard(Context context, TaskDescription td, float scaleFactor) {
         this(context, R.layout.inner_base_main, td, scaleFactor);
     }
@@ -112,6 +106,9 @@ public class RecentCard extends Card {
         initExpandedState(td);
 
         // set custom background
+        int cardColor = SlimSettings.System.getIntForUser(
+                mContext.getContentResolver(), SlimSettings.System.RECENT_CARD_BG_COLOR,
+                0x00ffffff, UserHandle.USER_CURRENT);
         if (cardColor != 0x00ffffff) {
             mCardColor = cardColor;
         } else {
@@ -132,7 +129,7 @@ public class RecentCard extends Card {
         if (td != null && td.cardColor != 0) {
             return td.cardColor;
         }
-        return defaultCardBg;
+        return mContext.getResources().getColor(R.color.recents_task_bar_default_background_color);
     }
 
     // Update content of our card.
@@ -156,6 +153,9 @@ public class RecentCard extends Card {
         mPersistentTaskId = td.persistentTaskId;
 
         // set custom background
+        int cardColor = SlimSettings.System.getIntForUser(
+                mContext.getContentResolver(), SlimSettings.System.RECENT_CARD_BG_COLOR,
+                0x00ffffff, UserHandle.USER_CURRENT);
         if (cardColor != 0x00ffffff) {
             mCardColor = cardColor;
         } else {
