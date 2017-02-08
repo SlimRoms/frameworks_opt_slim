@@ -33,6 +33,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.database.ContentObserver;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
@@ -112,6 +113,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
     private boolean mDisableHomeLongpress = false;
 
     private SlimQuickStatusBarHeader mSlimQuickStatusBarHeader;
+
+    private int mDensity;
 
     class SettingsObserver extends ContentObserver {
         SettingsObserver(Handler handler) {
@@ -231,6 +234,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
     public void start() {
         super.start();
 
+        mDensity = mContext.getResources().getConfiguration().densityDpi;
+
         mDisplay = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay();
 
@@ -250,10 +255,19 @@ public class SlimStatusBar extends PhoneStatusBar implements
     protected PhoneStatusBarView makeStatusBarView() {
         mStatusBarView = super.makeStatusBarView();
 
-        SlimBatteryContainer container =(SlimBatteryContainer) mStatusBarView.findViewById(
-                R.id.slim_battery_container);
-        if (mBatteryController != null && container != null) {
-            container.setBatteryController(mBatteryController);
+        AutoReinflateContainer batteryContainer = (AutoReinflateContainer)
+                mStatusBarView.findViewById(R.id.slim_reinflate_battery_container);
+        if (container != null) {
+            container.addInflateListener(new InlflateListener() {
+                @Override
+                public void onInflated(View v) {
+                    SlimBatteryContainer container = (SlimBatteryContainer)
+                            v.findViewById(R.id.slim_battery_container);
+                    if (container != null && mBatteryController != null) {
+                        container.setBatteryController(mBatteryController);
+                    }
+                }
+            });
         }
 
         mSlimIconController = new SlimStatusBarIconController(mContext, mStatusBarView, this);
@@ -432,6 +446,17 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
         super.setSystemUiVisibility(vis, fullscreenStackVis, dockedStackVis, mask,
                 fullscreenStackBounds, dockedStackBounds);
+    }
+
+    @Override
+    protected void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        final int density = newConfig.densityDpi;
+        if (density != mDensity) {
+            mDensity = density;
+            mSlimNavigationBarView.recreateNavigationBar();
+        }
     }
 
     private long mLastLockToAppLongPress;
