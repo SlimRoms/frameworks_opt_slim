@@ -63,6 +63,8 @@ import android.widget.Toast;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
 import com.android.keyguard.KeyguardHostView.OnDismissAction;
+import com.android.systemui.AutoReinflateContainer;
+import com.android.systemui.AutoReinflateContainer.InflateListener;
 import com.android.systemui.R;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.slimrecent.SlimScreenPinningRequest;
@@ -257,8 +259,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
         AutoReinflateContainer batteryContainer = (AutoReinflateContainer)
                 mStatusBarView.findViewById(R.id.slim_reinflate_battery_container);
-        if (container != null) {
-            container.addInflateListener(new InlflateListener() {
+        if (batteryContainer != null) {
+            batteryContainer.addInflateListener(new InflateListener() {
                 @Override
                 public void onInflated(View v) {
                     SlimBatteryContainer container = (SlimBatteryContainer)
@@ -456,6 +458,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
         if (density != mDensity) {
             mDensity = density;
             mSlimNavigationBarView.recreateNavigationBar();
+            rebuildRecentsScreen();
         }
     }
 
