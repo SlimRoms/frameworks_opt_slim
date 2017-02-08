@@ -598,6 +598,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
             float scaleFactor = SlimSettings.System.getIntForUser(
                     resolver, SlimSettings.System.RECENT_PANEL_SCALE_FACTOR, 100,
                     UserHandle.USER_CURRENT) / 100.0f;
+            Log.d("TEST", "scaleFactor=" + scaleFactor);
 
             // If changed set new scalefactor, rebuild the recent panel
             // and notify RecentPanelView about new value.
