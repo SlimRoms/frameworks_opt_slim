@@ -20,4 +20,6 @@ public final class SlimServiceConstants {
 
     public static final String SLIM_ACTIONS_SERVICE = "slimactions";
 
+    public static final String SLIM_SETTINGS_SERVICE = "slimsettings";
+
 }
