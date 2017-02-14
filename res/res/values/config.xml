@@ -33,6 +33,7 @@
 
     <string-array name="config_externalSlimServices">
         <item>org.slim.service.SlimActionsService</item>
+        <item>org.slim.service.SlimSettingsService</item>
     </string-array>
 
     <!-- The duration (in milliseconds) of recent app screen animation. -->
