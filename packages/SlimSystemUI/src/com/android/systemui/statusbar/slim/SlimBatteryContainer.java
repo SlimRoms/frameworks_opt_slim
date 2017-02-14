@@ -32,6 +32,8 @@ import com.android.systemui.R;
 import com.android.systemui.statusbar.policy.BatteryController;
 
 import slim.provider.SlimSettings;
+import slim.provider.SlimSettingsManager;
+import slim.provider.SlimSettingsManager.OnSettingsChangedListener;
 import slim.utils.UserContentObserver;
 
 public class SlimBatteryContainer extends LinearLayout implements
@@ -53,7 +55,7 @@ public class SlimBatteryContainer extends LinearLayout implements
     public SlimBatteryContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        mBatteryObserver = new BatterySettingsObserver(new Handler());
+        mBatteryObserver = new BatterySettingsObserver();
     }
 
     @Override
@@ -63,8 +65,6 @@ public class SlimBatteryContainer extends LinearLayout implements
         mBattery = (SlimBatteryMeterView) findViewById(R.id.slim_battery);
         mSpacer = findViewById(R.id.battery_batterytext_spacer);
         mBatteryLevel = (TextView) findViewById(R.id.battery_level_text);
-
-        updateSettings();
     }
 
     @Override
@@ -73,7 +73,7 @@ public class SlimBatteryContainer extends LinearLayout implements
         if (mBatteryController != null) {
             mBatteryController.removeStateChangedCallback(this);
         }
-        mBatteryObserver.unobserve();
+        //mBatteryObserver.unobserve();
 
         mAttached = false;
     }
@@ -92,7 +92,7 @@ public class SlimBatteryContainer extends LinearLayout implements
     public void onBatteryLevelChanged(int level, boolean pluggedIn, boolean charging) {
         mBatteryIsCharging = charging;
         mBatteryChargeLevel = level;
-        updateSettings();
+        updateBatteryLevelText();
     }
 
     @Override
@@ -106,43 +106,6 @@ public class SlimBatteryContainer extends LinearLayout implements
         mBatteryController.addStateChangedCallback(this);
     }
 
-    public void updateSettings() {
-        ContentResolver resolver = mContext.getContentResolver();
-        mShowBatteryText = SlimSettings.Secure.getInt(resolver,
-                SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT, 0) == 2;
-
-        int batteryStyle = SlimSettings.Secure.getInt(resolver,
-                SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE, 0);
-
-        switch(batteryStyle) {
-            case 4:
-                //meterMode = BatteryMeterMode.BATTERY_METER_GONE;
-                mShowBatteryText = false;
-                mShowBatteryTextCharging = false;
-                mShowBatteryTextSpacer = false;
-                break;
-
-            case 6:
-                //meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
-                mShowBatteryText = true;
-                mShowBatteryTextCharging = true;
-                mShowBatteryTextSpacer = false;
-                break;
-
-            default:
-                mShowBatteryTextCharging = false;
-                mShowBatteryTextSpacer = mShowBatteryText;
-                break;
-        }
-
-        // update visibilities
-        mBatteryLevel.setVisibility(mShowBatteryText ? View.VISIBLE : View.GONE);
-        mSpacer.setVisibility(mShowBatteryTextSpacer ? View.VISIBLE : View.GONE);
-
-        mBattery.updateBatteryIconSettings();
-        updateBatteryLevelText();
-    }
-
     private void updateBatteryLevelText() {
         if (mBatteryIsCharging & mShowBatteryTextCharging) {
             mBatteryLevel.setText(mContext.getResources().getString(
@@ -153,35 +116,54 @@ public class SlimBatteryContainer extends LinearLayout implements
         }
     }
 
-    private final class BatterySettingsObserver extends UserContentObserver {
-        BatterySettingsObserver(Handler handler) {
-            super(handler);
-        }
+    private final class BatterySettingsObserver extends OnSettingsChangedListener {
 
-        @Override
         protected void observe() {
-            super.observe();
 
-            ContentResolver resolver = getContext().getContentResolver();
+            Uri[] uris = {
+                SlimSettings.Secure.getUriFor(SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT),
+                SlimSettings.Secure.getUriFor(SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE),
+            };
 
-            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
-                    SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.Secure.getUriFor(
-                    SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE),
-                    false, this, UserHandle.USER_ALL);
+            SlimSettingsManager.getInstance().registerListener(this, uris);
         }
 
         @Override
-        protected void unobserve() {
-            super.unobserve();
-            getContext().getContentResolver().unregisterContentObserver(this);
-        }
+        public void onChanged(String key, String value) {
+            if (key.equals(SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT)) {
+                mShowBatteryText = (value == null ? 0 : Integer.parseInt(value)) == 2;
+            } else if (key.equals(SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE)) {
+                int batteryStyle = value == null ? 0 : Integer.parseInt(value);
 
-        @Override
-        protected void update() {
-            updateSettings();
-        }
+                switch(batteryStyle) {
+                    case 4:
+                        //meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+                        mShowBatteryText = false;
+                        mShowBatteryTextCharging = false;
+                        mShowBatteryTextSpacer = false;
+                        break;
+
+                    case 6:
+                        //meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
+                        mShowBatteryText = true;
+                        mShowBatteryTextCharging = true;
+                        mShowBatteryTextSpacer = false;
+                        break;
+
+                    default:
+                        mShowBatteryTextCharging = false;
+                        mShowBatteryTextSpacer = mShowBatteryText;
+                        break;
+                }
+            }
+
+            // update visibilities
+            mBatteryLevel.setVisibility(mShowBatteryText ? View.VISIBLE : View.GONE);
+            mSpacer.setVisibility(mShowBatteryTextSpacer ? View.VISIBLE : View.GONE);
+
+            mBattery.updateBatteryIconSettings(key, value);
+            updateBatteryLevelText();
+       }
     }
 
     public void setDarkIntensity(float darkIntensity) {

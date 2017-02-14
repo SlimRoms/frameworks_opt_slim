@@ -102,7 +102,7 @@ public class SlimBatteryMeterView extends View implements DemoMode,
 
     private final Handler mHandler;
 
-    protected BatteryMeterMode mMeterMode = null;
+    protected BatteryMeterMode mMeterMode = BatteryMeterMode.BATTERY_METER_ICON_PORTRAIT;
 
     protected boolean mAttached;
 
@@ -119,53 +119,46 @@ public class SlimBatteryMeterView extends View implements DemoMode,
         }
     };
 
-    public void updateBatteryIconSettings() {
-        loadShowBatterySetting();
+    public void updateBatteryIconSettings(String key, String value) {
+        loadShowBatterySetting(key, value);
         postInvalidate();
     };
 
-    private void loadShowBatterySetting() {
+    private void loadShowBatterySetting(String key, String value) {
         ContentResolver resolver = mContext.getContentResolver();
 
-        boolean showInsidePercent = SlimSettings.Secure.getInt(resolver,
-                SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT, 0) == 1;
-
-        int batteryStyle = SlimSettings.Secure.getInt(resolver,
-                SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE, 0);
-        BatteryMeterMode meterMode = BatteryMeterMode.BATTERY_METER_GONE;
-        switch (batteryStyle) {
-            case 0:
-                meterMode = BatteryMeterMode.BATTERY_METER_ICON_PORTRAIT;
-                break;
-
-            case 2:
-                meterMode = BatteryMeterMode.BATTERY_METER_CIRCLE;
-                break;
-
-            case 3:
-                meterMode = BatteryMeterMode.BATTERY_METER_DOTTED_CIRCLE;
-                break;
-
-            case 4:
-                meterMode = BatteryMeterMode.BATTERY_METER_GONE;
-                showInsidePercent = false;
-                break;
-
-            case 5:
-                meterMode = BatteryMeterMode.BATTERY_METER_ICON_LANDSCAPE;
-                break;
-
-            case 6:
-                meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
-                showInsidePercent = false;
-                break;
-
-            default:
-                break;
+        if (key.equals(SlimSettings.Secure.STATUS_BAR_BATTERY_PERCENT)) {
+            boolean showInsidePercent = (value == null ? 0 : Integer.parseInt(value)) == 1;
+            setShowPercent(showInsidePercent);
+        } else if (key.equals(SlimSettings.Secure.STATUS_BAR_BATTERY_STYLE)) {
+            int batteryStyle = value == null ? 0 : Integer.parseInt(value);
+            BatteryMeterMode meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+            switch (batteryStyle) {
+                case 0:
+                    meterMode = BatteryMeterMode.BATTERY_METER_ICON_PORTRAIT;
+                    break;
+                case 2:
+                    meterMode = BatteryMeterMode.BATTERY_METER_CIRCLE;
+                    break;
+                case 3:
+                    meterMode = BatteryMeterMode.BATTERY_METER_DOTTED_CIRCLE;
+                    break;
+                case 4:
+                    meterMode = BatteryMeterMode.BATTERY_METER_GONE;
+                    setShowPercent(false);
+                    break;
+                case 5:
+                    meterMode = BatteryMeterMode.BATTERY_METER_ICON_LANDSCAPE;
+                    break;
+                case 6:
+                    meterMode = BatteryMeterMode.BATTERY_METER_TEXT;
+                    setShowPercent(false);
+                    break;
+                default:
+                    break;
+            }
+            setMode(meterMode);
         }
-
-        setMode(meterMode);
-        setShowPercent(showInsidePercent);
     }
 
     public SlimBatteryMeterView(Context context) {
@@ -214,7 +207,6 @@ public class SlimBatteryMeterView extends View implements DemoMode,
                 context.getColor(R.color.light_mode_icon_color_dual_tone_background);
         mLightModeFillColor = context.getColor(R.color.light_mode_icon_color_dual_tone_fill);
 
-        loadShowBatterySetting();
         mBatteryMeterDrawable = createBatteryMeterDrawable(mMeterMode);
     }
 
@@ -355,8 +347,12 @@ public class SlimBatteryMeterView extends View implements DemoMode,
             }
 
             setVisibility(View.VISIBLE);
-            postInvalidate();
-            requestLayout();
+            post(new Runnable() {
+                public void run() {
+                    postInvalidate();
+                    requestLayout();
+                }
+            });
         }
     }
 

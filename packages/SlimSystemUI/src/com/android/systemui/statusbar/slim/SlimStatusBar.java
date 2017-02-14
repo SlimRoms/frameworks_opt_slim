@@ -81,6 +81,8 @@ import java.util.List;
 
 import slim.action.SlimActionsManager;
 import slim.provider.SlimSettings;
+import slim.provider.SlimSettingsManager;
+import slim.provider.SlimSettingsManager.OnSettingsChangedListener;
 import slim.utils.UserContentObserver;
 
 import static com.android.systemui.statusbar.phone.BarTransitions.MODE_LIGHTS_OUT;
@@ -118,132 +120,59 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
     private int mDensity;
 
-    class SettingsObserver extends UserContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
-
-        @Override
+    class SettingsObserver extends OnSettingsChangedListener {
         protected void observe() {
-            super.observe();
 
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.USE_SLIM_RECENTS), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_BG_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_SHOW),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_CONFIG),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_CAN_MOVE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_LOCATION),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_VISIBILITY),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_TIMEOUT),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ALPHA),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_TOUCH_ANYWHERE),
-                    false, this, UserHandle.USER_ALL);
+            Uri[] uris = {
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT),
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE),
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_GLOW_TINT),
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_SHOW),
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_CONFIG),
+                SlimSettings.System.getUriFor(SlimSettings.System.NAVIGATION_BAR_CAN_MOVE),
+                SlimSettings.System.getUriFor(SlimSettings.System.MENU_LOCATION),
+                SlimSettings.System.getUriFor(SlimSettings.System.MENU_VISIBILITY),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS_TIMEOUT),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS_ALPHA),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION),
+                SlimSettings.System.getUriFor(SlimSettings.System.DIM_NAV_BUTTONS_TOUCH_ANYWHERE),
+            };
+
+            SlimSettingsManager.getInstance().registerListener(this, uris);
         }
 
         @Override
-        protected void update(Uri uri) {
-            if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.USE_SLIM_RECENTS))) {
+        public void onChanged(String key, String value) {
+            if (key.equals(SlimSettings.System.USE_SLIM_RECENTS)) {
                 updateRecents();
-            } else if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_BG_COLOR))
-                    || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_TEXT_COLOR))) {
+            } else if (key.equals(SlimSettings.System.RECENT_CARD_BG_COLOR)
+                    || key.equals(SlimSettings.System.RECENT_CARD_TEXT_COLOR)) {
                 rebuildRecentsScreen();
-            } else if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_CONFIG))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_GLOW_TINT))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_LOCATION))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.MENU_VISIBILITY))) {
+            } else if (key.equals(SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT)
+                || key.equals(SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT_MODE)
+                || key.equals(SlimSettings.System.NAVIGATION_BAR_CONFIG)
+                || key.equals(SlimSettings.System.NAVIGATION_BAR_GLOW_TINT)
+                || key.equals(SlimSettings.System.MENU_LOCATION)
+                || key.equals(SlimSettings.System.MENU_VISIBILITY)) {
                 if (mSlimNavigationBarView != null) {
                     mSlimNavigationBarView.recreateNavigationBar();
                     prepareNavigationBarView();
                 }
-            } else if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_CAN_MOVE))) {
+            } else if (key.equals(SlimSettings.System.NAVIGATION_BAR_CAN_MOVE)) {
                 prepareNavigationBarView();
-            } else if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_TIMEOUT))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ALPHA))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION))
-                || uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.DIM_NAV_BUTTONS_TOUCH_ANYWHERE))) {
+            } else if (key.equals(SlimSettings.System.DIM_NAV_BUTTONS)
+                || key.equals(SlimSettings.System.DIM_NAV_BUTTONS_TIMEOUT)
+                || key.equals(SlimSettings.System.DIM_NAV_BUTTONS_ALPHA)
+                || key.equals(SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE)
+                || key.equals(SlimSettings.System.DIM_NAV_BUTTONS_ANIMATE_DURATION)
+                || key.equals(SlimSettings.System.DIM_NAV_BUTTONS_TOUCH_ANYWHERE)) {
                 if (mSlimNavigationBarView != null) {
                     mSlimNavigationBarView.updateNavigationBarSettings();
                     mSlimNavigationBarView.onNavButtonTouched();
                 }
-            } else if (uri.equals(SlimSettings.System.getUriFor(
-                    SlimSettings.System.NAVIGATION_BAR_SHOW))) {
-                updateNavigationBarVisibility();
-            }
-        }
-
-        @Override
-        protected void update() {
-            // update recents
-            updateRecents();
-            rebuildRecentsScreen();
-
-            // update nav bar
-            if (mSlimNavigationBarView != null) {
-                mSlimNavigationBarView.recreateNavigationBar();
-                prepareNavigationBarView();
-                mSlimNavigationBarView.updateNavigationBarSettings();
-                mSlimNavigationBarView.onNavButtonTouched();
+            } else if (key.equals(SlimSettings.System.NAVIGATION_BAR_SHOW)) {
                 updateNavigationBarVisibility();
             }
         }
@@ -266,7 +195,7 @@ public class SlimStatusBar extends PhoneStatusBar implements
         mSlimCommandQueue = new SlimCommandQueue(this);
         slimActionsManager.registerSlimStatusBar(mSlimCommandQueue);
 
-        SettingsObserver observer = new SettingsObserver(mHandler);
+        SettingsObserver observer = new SettingsObserver();
         observer.observe();
     }
 
@@ -385,7 +314,11 @@ public class SlimStatusBar extends PhoneStatusBar implements
             home.setOnTouchListener(mHomeActionListener);
         }*/
 
-        mAssistManager.onConfigurationChanged();
+        mStatusBarView.post(new Runnable() {
+            public void run() {
+                mAssistManager.onConfigurationChanged();
+            }
+        });
     }
 
     @Override
