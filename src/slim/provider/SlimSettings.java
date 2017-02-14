@@ -386,6 +386,8 @@ public final class SlimSettings {
         private final String mCallGetCommand;
         private final String mCallSetCommand;
 
+        private SlimSettingsManager mSlimSettingsManager;
+
         @GuardedBy("this")
         private GenerationTracker mGenerationTracker;
 
@@ -415,6 +417,10 @@ public final class SlimSettings {
                 arg.putInt(CALL_METHOD_USER_KEY, userHandle);
                 IContentProvider cp = lazyGetProvider(cr);
                 cp.call(cr.getPackageName(), mCallSetCommand, name, arg);
+                if (mSlimSettingsManager == null) {
+                    mSlimSettingsManager = SlimSettingsManager.getInstance();
+                }
+                mSlimSettingsManager.onChange(Settings.NameValueTable.getUriFor(mUri, name), value);
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't set key " + name + " in " + mUri, e);
                 return false;
