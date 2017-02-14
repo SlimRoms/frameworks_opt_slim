@@ -65,6 +65,8 @@ import com.android.systemui.recents.misc.Utilities;
 import com.android.systemui.statusbar.BaseStatusBar;
 
 import slim.provider.SlimSettings;
+import slim.provider.SlimSettingsManager;
+import slim.provider.SlimSettingsManager.OnSettingsChangedListener;
 import slim.utils.UserContentObserver;
 
 /**
@@ -91,6 +93,15 @@ public class RecentController implements RecentPanelView.OnExitListener,
     private int mAnimationState = ANIMATION_STATE_NONE;
 
     public static float DEFAULT_SCALE_FACTOR = 1.0f;
+
+    private static final Uri[] SETTINGS_URIS = {
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_PANEL_GRAVITY),
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_PANEL_SCALE_FACTOR),
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_PANEL_EXPANDED_MODE),
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_PANEL_SHOW_TOPMOST),
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_PANEL_BG_COLOR),
+        SlimSettings.System.getUriFor(SlimSettings.System.RECENT_SHOW_RUNNING_TASKS),
+    };
 
     private Context mContext;
     private WindowManager mWindowManager;
@@ -229,9 +240,9 @@ public class RecentController implements RecentPanelView.OnExitListener,
             }
         });
 
-        // Settings observer
-        SettingsObserver observer = new SettingsObserver(mHandler);
-        observer.observe();
+        // Settings listener
+        SlimSettingsManager.getInstance(mContext.getContentResolver()).registerListener(
+                new SettingsListener(), SETTINGS_URIS);
     }
 
     /**
@@ -544,90 +555,42 @@ public class RecentController implements RecentPanelView.OnExitListener,
         }
     };
 
-    /**
-     * Settingsobserver to take care of the user settings.
-     * Either gravity or scale factor of our recent panel can change.
-     */
-    private class SettingsObserver extends UserContentObserver {
-        SettingsObserver(Handler handler) {
-            super(handler);
-        }
+    private class SettingsListener implements OnSettingsChangedListener {
 
-        @Override
-        protected void observe() {
-            super.observe();
-            ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_PANEL_GRAVITY),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_PANEL_SCALE_FACTOR),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_PANEL_EXPANDED_MODE),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_PANEL_SHOW_TOPMOST),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_PANEL_BG_COLOR),
-                    false, this, UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_SHOW_RUNNING_TASKS),
-                    false, this, UserHandle.USER_ALL);
-            update();
-        }
-
-        @Override
-        protected void update() {
-            // Close recent panel if it is opened.
+        public void onChanged(String key, String value) {
             hideRecents(false);
 
-            ContentResolver resolver = mContext.getContentResolver();
-
-            // Get user gravity.
-            mUserGravity = SlimSettings.System.getIntForUser(
-                    resolver, SlimSettings.System.RECENT_PANEL_GRAVITY, Gravity.RIGHT,
-                    UserHandle.USER_CURRENT);
-
-            // Set main gravity and background images.
-            setGravityAndImageResources();
-
-            // Get user scale factor.
-            float scaleFactor = SlimSettings.System.getIntForUser(
-                    resolver, SlimSettings.System.RECENT_PANEL_SCALE_FACTOR, 100,
-                    UserHandle.USER_CURRENT) / 100.0f;
-
-            // If changed set new scalefactor, rebuild the recent panel
-            // and notify RecentPanelView about new value.
-            if (scaleFactor != mScaleFactor) {
-                mScaleFactor = scaleFactor;
-                rebuildRecentsScreen();
-            }
-            if (mRecentPanelView != null) {
-                mRecentPanelView.setScaleFactor(mScaleFactor);
-                mRecentPanelView.setExpandedMode(SlimSettings.System.getIntForUser(
-                    resolver, SlimSettings.System.RECENT_PANEL_EXPANDED_MODE,
-                    mRecentPanelView.EXPANDED_MODE_AUTO,
-                    UserHandle.USER_CURRENT));
-                mRecentPanelView.setShowTopTask(SlimSettings.System.getIntForUser(
-                    resolver, SlimSettings.System.RECENT_PANEL_SHOW_TOPMOST, 0,
-                    UserHandle.USER_CURRENT) == 1);
-                mRecentPanelView.setShowOnlyRunningTasks(SlimSettings.System.getIntForUser(
-                    resolver, SlimSettings.System.RECENT_SHOW_RUNNING_TASKS, 0,
-                    UserHandle.USER_CURRENT) == 1);
-            }
-
-            // Update colors in RecentPanelView
-            mPanelColor = SlimSettings.System.getIntForUser(resolver,
-                    SlimSettings.System.RECENT_PANEL_BG_COLOR, 0x00ffffff, UserHandle.USER_CURRENT);
-
-            mRecentContent.setElevation(50);
-            if (mPanelColor != 0x00ffffff) {
-                mRecentContent.setBackgroundColor(mPanelColor);
-            } else {
-                mRecentContent.setBackgroundColor(
-                        mContext.getResources().getColor(R.color.recent_background));
+            switch (key) {
+                case SlimSettings.System.RECENT_PANEL_GRAVITY:
+                    mUserGravity = Integer.parseInt(value);
+                    setGravityAndImageResources();
+                    break;
+                case SlimSettings.System.RECENT_PANEL_SCALE_FACTOR:
+                    float scaleFactor = Integer.parseInt(value) / 100.0f;
+                    if (scaleFactor != mScaleFactor) {
+                        mScaleFactor = scaleFactor;
+                        rebuildRecentsScreen();
+                        mRecentPanelView.setScaleFactor(mScaleFactor);
+                    }
+                    break;
+                case SlimSettings.System.RECENT_PANEL_EXPANDED_MODE:
+                    mRecentPanelView.setExpandedMode(Integer.parseInt(value));
+                    break;
+                case SlimSettings.System.RECENT_PANEL_SHOW_TOPMOST:
+                    mRecentPanelView.setShowTopTask(Integer.parseInt(value) == 1);
+                    break;
+                case SlimSettings.System.RECENT_SHOW_RUNNING_TASKS:
+                    mRecentPanelView.setShowOnlyRunningTasks(Integer.parseInt(value) == 1);
+                    break;
+                case SlimSettings.System.RECENT_PANEL_BG_COLOR:
+                    mPanelColor = Integer.parseInt(value);
+                    if (mPanelColor != 0x0ffffff) {
+                        mRecentContent.setBackgroundColor(mPanelColor);
+                    } else {
+                        mRecentContent.setBackgroundColor(
+                                mContext.getResources().getColor(R.color.recent_background));
+                    }
+                    break;
             }
         }
     }
