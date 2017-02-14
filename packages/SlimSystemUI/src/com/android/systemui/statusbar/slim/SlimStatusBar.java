@@ -129,15 +129,6 @@ public class SlimStatusBar extends PhoneStatusBar implements
 
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.USE_SLIM_RECENTS), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_BG_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
-                    SlimSettings.System.RECENT_CARD_TEXT_COLOR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.NAVIGATION_BAR_BUTTON_TINT),
                     false, this, UserHandle.USER_ALL);
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
