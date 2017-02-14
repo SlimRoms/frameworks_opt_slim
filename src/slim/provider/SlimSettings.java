@@ -415,6 +415,7 @@ public final class SlimSettings {
                 arg.putInt(CALL_METHOD_USER_KEY, userHandle);
                 IContentProvider cp = lazyGetProvider(cr);
                 cp.call(cr.getPackageName(), mCallSetCommand, name, arg);
+                SlimSettingsManager.getInstance().onChange(Settings.NameValueTable.getUriFor(mUri, name));
             } catch (RemoteException e) {
                 Log.w(TAG, "Can't set key " + name + " in " + mUri, e);
                 return false;
