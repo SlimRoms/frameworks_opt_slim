@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_d961b5d4",
+        "filename": "packages/SlimSettings/res/drawable/ring_notif_increasing.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-02-16T02:03:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aaae553_f6e1209b",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 38
+      },
+      "revId": "0ed62e0e6af8d6d1e99ffa0d41279fde1919698b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_b6f3a872",
         "filename": "res/res/drawable/ring_notif_increasing.xml",
         "patchSetId": 9
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_999b3dc9",
+        "filename": "res/res/drawable/ring_notif_increasing.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-02-16T02:03:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aaae553_b6f3a872",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 38
+      },
+      "revId": "0ed62e0e6af8d6d1e99ffa0d41279fde1919698b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_56e8347c",
         "filename": "res/res/values/public.xml",
         "patchSetId": 9
@@ -59,6 +107,30 @@
       "writtenOn": "2017-02-15T14:21:45Z",
       "side": 1,
       "message": "trailing space",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 2
+      },
+      "revId": "0ed62e0e6af8d6d1e99ffa0d41279fde1919698b",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_b9a079f5",
+        "filename": "res/res/values/public.xml",
+        "patchSetId": 9
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-02-16T02:03:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5aaae553_56e8347c",
       "range": {
         "startLine": 78,
         "startChar": 0,
