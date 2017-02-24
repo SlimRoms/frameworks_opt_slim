@@ -22,11 +22,13 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManagerNative;
 import android.app.IActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -249,8 +251,21 @@ public class SlimStatusBar extends PhoneStatusBar implements
         mSlimCommandQueue = new SlimCommandQueue(this);
         slimActionsManager.registerSlimStatusBar(mSlimCommandQueue);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_OVERLAY_ADDED);
+        filter.addAction(Intent.ACTION_OVERLAY_REMOVED);
+        filter.addAction(Intent.ACTION_OVERLAY_CHANGED);
+        mContext.registerReceiver(new OverlayReceiver(), filter);
+
         SettingsObserver observer = new SettingsObserver(mHandler);
         observer.observe();
+    }
+
+    private class OverlayReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d("OverlayReceiver", "action=" + intent.getAction());
+        }
     }
 
     @Override
