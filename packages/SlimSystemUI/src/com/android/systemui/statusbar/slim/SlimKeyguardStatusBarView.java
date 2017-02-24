@@ -41,9 +41,18 @@ public class SlimKeyguardStatusBarView extends KeyguardStatusBarView {
     }
 
     @Override
-    public void setBatteryController(BatteryController controller) {
+    public void setBatteryController(final BatteryController controller) {
         super.setBatteryController(controller);
-        ((SlimBatteryContainer) findViewById(R.id.slim_battery_container))
-                .setBatteryController(controller);
+        AutoReinflateContainer batteryContainer = (AutoReinflateContainer)
+                findViewById(R.id.slim_reinflate_battery_container);
+        if (batteryContainer != null) {
+            batteryContainer.addInflateListener(new InflateListener() {
+                @Override
+                public void onInflated(View v) {
+                    ((SlimBatteryContainer) v.findViewById(R.id.slim_battery_container))
+                            .setBatteryController(controller);
+                }
+            });
+        }
     }
 }
