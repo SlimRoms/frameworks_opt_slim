@@ -19,6 +19,7 @@ package com.android.systemui.slimrecent;
 
 import android.app.ActivityManager;
 import android.app.ActivityManagerNative;
+import android.app.ActivityOptions;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -803,7 +804,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
         ActivityManager.RunningTaskInfo runningTask = ssp.getRunningTask();
         int createMode = ActivityManager.DOCKED_STACK_CREATE_MODE_TOP_OR_LEFT;
         if (ssp.startTaskInDockedMode(runningTask.id, createMode)) {
-            openLastApptoBottom();
+            openLastAppPanelToggle();
             if (!isShowing()) {
                 showRecents();
             }
@@ -824,6 +825,20 @@ public class RecentController implements RecentPanelView.OnExitListener,
         final ActivityManager am =
                 (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         am.moveTaskToFront(taskid, ActivityManager.MOVE_TASK_NO_USER_ACTION);
+    }
+
+    public void openLastAppPanelToggle() {
+        final ActivityOptions animations = ActivityOptions.makeCustomAnimation(mContext,
+                mMainGravity == Gravity.LEFT ? com.android.internal.R.anim.recent_screen_enter_left :
+                com.android.internal.R.anim.recent_screen_enter,
+                com.android.internal.R.anim.recent_screen_fade_out);
+        final ActivityManager am =
+                (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.RunningTaskInfo lastTask = getLastTask(am);
+
+        if (lastTask != null) {
+            am.moveTaskToFront(lastTask.id, ActivityManager.MOVE_TASK_NO_USER_ACTION, animations.toBundle());
+        }
     }
 
     private ActivityManager.RunningTaskInfo getLastTask(final ActivityManager am) {
