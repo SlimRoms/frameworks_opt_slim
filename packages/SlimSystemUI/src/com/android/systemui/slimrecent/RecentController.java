@@ -820,6 +820,12 @@ public class RecentController implements RecentPanelView.OnExitListener,
         }
     }
 
+    public void openOnDraggedApptoOtherSide(int taskid) {
+        final ActivityManager am =
+                (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        am.moveTaskToFront(taskid, ActivityManager.MOVE_TASK_NO_USER_ACTION);
+    }
+
     private ActivityManager.RunningTaskInfo getLastTask(final ActivityManager am) {
         final String defaultHomePackage = resolveCurrentLauncherPackage();
         List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(5);
