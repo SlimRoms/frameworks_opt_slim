@@ -38,6 +38,7 @@ import android.os.RemoteException;
 import android.os.SystemClock;
 import android.os.UserHandle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -55,8 +56,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
-import com.android.cards.recyclerview.view.CardRecyclerView;
 
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
@@ -169,9 +168,10 @@ public class RecentController implements RecentPanelView.OnExitListener,
         mRecentWarningContent =
                 (LinearLayout) mRecentContainer.findViewById(R.id.recent_warning_content);
 
-        final CardRecyclerView cardRecyclerView =
-                (CardRecyclerView) mRecentContainer.findViewById(R.id.recent_list);
+        final RecyclerView cardRecyclerView =
+                (RecyclerView) mRecentContainer.findViewById(R.id.recent_list);
 
+        cardRecyclerView.setHasFixedSize(true);
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setReverseLayout(true);
         cardRecyclerView.setLayoutManager(llm);
@@ -654,10 +654,10 @@ public class RecentController implements RecentPanelView.OnExitListener,
 
         // Views we need and are passed trough the constructor.
         private LinearLayout mRecentWarningContent;
-        private CardRecyclerView mCardRecyclerView;
+        private RecyclerView mCardRecyclerView;
 
         RecentListOnScaleGestureListener(
-                LinearLayout recentWarningContent, CardRecyclerView cardRecyclerView) {
+                LinearLayout recentWarningContent, RecyclerView cardRecyclerView) {
             mRecentWarningContent = recentWarningContent;
             mCardRecyclerView = cardRecyclerView;
         }

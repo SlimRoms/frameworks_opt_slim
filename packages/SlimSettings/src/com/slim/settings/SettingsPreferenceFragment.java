@@ -58,7 +58,7 @@ import java.util.UUID;
  * Base class for Settings fragments, with some helper functions and dialog management.
  */
 public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceFragment
-        implements DialogCreatable, SlimActionsPreference.SlimActionsPreferenceCallback {
+        implements DialogCreatable {
 
     private static final String TAG = "SettingsPreferenceFragment";
 
@@ -89,19 +89,6 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        PreferenceScreen ps = getPreferenceScreen();
-        for (int i = 0; i < ps.getPreferenceCount(); i++) {
-            Preference p = ps.getPreference(i);
-            if (p instanceof SlimActionsPreference) {
-                ((SlimActionsPreference) p).setCallback(this);
-             }
-         }
-    }
-
-    @Override
-    public PreferenceFragment getPreferenceFragment() {
-        return this;
     }
 
     /**
@@ -332,16 +319,5 @@ public abstract class SettingsPreferenceFragment extends InstrumentedPreferenceF
                     + ", requestCode: " + requestCode + ")");
             return false;
         }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        PreferenceScreen ps = getPreferenceScreen();
-        for (int i = 0; i < ps.getPreferenceCount(); i++) {
-            Preference p = ps.getPreference(i);
-            if (p instanceof SlimActionsPreference) {
-                ((SlimActionsPreference) p).onActivityResult(requestCode, resultCode, data);
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 }
