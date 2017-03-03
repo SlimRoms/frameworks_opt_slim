@@ -58,8 +58,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.cards.recyclerview.view.CardRecyclerView;
-
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.recents.misc.Utilities;
@@ -171,8 +169,8 @@ public class RecentController implements RecentPanelView.OnExitListener,
         mRecentWarningContent =
                 (LinearLayout) mRecentContainer.findViewById(R.id.recent_warning_content);
 
-        final CardRecyclerView cardRecyclerView =
-                (CardRecyclerView) mRecentContainer.findViewById(R.id.recent_list);
+        final RecyclerView cardRecyclerView =
+                (RecyclerView) mRecentContainer.findViewById(R.id.recent_list);
 
         cardRecyclerView.setHasFixedSize(true);
         CacheMoreCardsLayoutManager llm = new CacheMoreCardsLayoutManager(context, mWindowManager);
@@ -474,10 +472,9 @@ public class RecentController implements RecentPanelView.OnExitListener,
             mIsToggled = false;
             mIsShowing = false;
             mRecentPanelView.setTasksLoaded(false);
-            mRecentPanelView.dismissPopup();
             if (forceHide) {
                 if (DEBUG) Log.d(TAG, "force hide recent window");
-                CacheController.getInstance(mContext).setRecentScreenShowing(false);
+                //CacheController.getInstance(mContext).setRecentScreenShowing(false);
                 mAnimationState = ANIMATION_STATE_NONE;
                 mHandler.removeCallbacks(mRecentRunnable);
                 mWindowManager.removeViewImmediate(mParentView);
@@ -502,7 +499,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
         sendCloseSystemWindows(BaseStatusBar.SYSTEM_DIALOG_REASON_RECENT_APPS);
         mAnimationState = ANIMATION_STATE_NONE;
         mHandler.removeCallbacks(mRecentRunnable);
-        CacheController.getInstance(mContext).setRecentScreenShowing(true);
+        //CacheController.getInstance(mContext).setRecentScreenShowing(true);
         mWindowManager.addView(mParentView, generateLayoutParameter());
         mRecentPanelView.scrollToFirst();
     }
@@ -539,7 +536,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
         public void run() {
             if (mAnimationState == ANIMATION_STATE_OUT) {
                 if (DEBUG) Log.d(TAG, "out animation finished");
-                CacheController.getInstance(mContext).setRecentScreenShowing(false);
+                //CacheController.getInstance(mContext).setRecentScreenShowing(false);
             }
             mAnimationState = ANIMATION_STATE_NONE;
         }
@@ -657,10 +654,10 @@ public class RecentController implements RecentPanelView.OnExitListener,
 
         // Views we need and are passed trough the constructor.
         private LinearLayout mRecentWarningContent;
-        private CardRecyclerView mCardRecyclerView;
+        private RecyclerView mCardRecyclerView;
 
         RecentListOnScaleGestureListener(
-                LinearLayout recentWarningContent, CardRecyclerView cardRecyclerView) {
+                LinearLayout recentWarningContent, RecyclerView cardRecyclerView) {
             mRecentWarningContent = recentWarningContent;
             mCardRecyclerView = cardRecyclerView;
         }
