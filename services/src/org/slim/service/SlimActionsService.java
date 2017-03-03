@@ -86,6 +86,7 @@ public class SlimActionsService extends SlimSystemService {
                     mBar.toggleLastApp();
                 } catch (RemoteException ex) {}
             }
+            cancelPreloadRecentApps();
         }
 
         @Override
