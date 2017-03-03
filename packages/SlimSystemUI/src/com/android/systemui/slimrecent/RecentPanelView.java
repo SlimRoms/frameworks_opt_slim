@@ -31,9 +31,18 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.os.Process;
 import android.os.RemoteException;
 import android.os.UserHandle;
@@ -51,12 +60,15 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.android.cards.recyclerview.internal.BaseRecyclerViewAdapter.CardViewHolder;
-import com.android.cards.recyclerview.internal.CardArrayRecyclerViewAdapter;
-import com.android.cards.recyclerview.view.CardRecyclerView;
-import com.android.cards.internal.Card;
 import com.android.systemui.R;
+import com.android.systemui.SystemUIApplication;
+import com.android.systemui.statusbar.phone.PhoneStatusBar;
 
+import com.android.systemui.slimrecent.ExpandableCardAdapter.ExpandableCard;
+import com.android.systemui.slimrecent.ExpandableCardAdapter.OptionsItem;
+
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -102,13 +114,13 @@ public class RecentPanelView {
     private final Context mContext;
     private final ImageView mEmptyRecentView;
 
-    private final CardRecyclerView mCardRecyclerView;
-    private CardArrayRecyclerViewAdapter mCardAdapter;
+    private final RecyclerView mCardRecyclerView;
+    private ExpandableCardAdapter mCardAdapter;
 
     private final RecentController mController;
 
     // Array list of all current cards
-    private ArrayList<Card> mCards;
+    private ArrayList<CardHolder> mCards = new ArrayList<>();
     // Our first task which is not displayed but needed for internal references.
     protected TaskDescription mFirstTask;
     // Array list of all expanded states of apps accessed during the session
@@ -124,6 +136,166 @@ public class RecentPanelView {
     private int mExpandedMode = EXPANDED_MODE_AUTO;
     private boolean mShowTopTask;
     private boolean mOnlyShowRunningTasks;
+
+    final static BitmapFactory.Options sBitmapOptions;
+
+    static {
+        sBitmapOptions = new BitmapFactory.Options();
+        sBitmapOptions.inMutable = true;
+    }
+
+    private static final int OPTION_INFO = 1001;
+    private static final int OPTION_MARKET = 1002;
+    private static final int OPTION_MULTIWINDOW = 1003;
+    private static final int OPTION_CLOSE = 1004;
+
+    private class CardHolder {
+        ExpandableCard card;
+        TaskDescription task;
+        int position;
+
+        private CardHolder(ExpandableCard card, TaskDescription task) {
+            this.card = card;
+            setTask(task);
+        }
+
+        private void setTask(TaskDescription task) {
+            this.task = task;
+            updateExpandState();
+
+            card.favorite = task.getIsFavorite();
+            card.appIconLongClickListener = new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    card.favorite = !card.favorite;
+                    handleFavoriteEntry(task);
+                    mCardAdapter.notifyItemChanged(position);
+                    return true;
+                }
+            };
+
+            card.expandListener = new ExpandableCardAdapter.ExpandListener() {
+                @Override
+                public void onExpanded(boolean expanded) {
+                    final int oldState = task.getExpandedState();
+                    int state;
+                    if (expanded) {
+                        state = EXPANDED_STATE_EXPANDED;
+                    } else {
+                        state = EXPANDED_STATE_COLLAPSED;
+                    }
+                    if ((oldState & EXPANDED_STATE_BY_SYSTEM) != 0) {
+                        state |= EXPANDED_STATE_BY_SYSTEM;
+                    }
+                    task.setExpandedState(state);
+                }
+            };
+
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int id = v.getId();
+                    Intent intent = null;
+                    if (id == OPTION_INFO) {
+                        intent = getAppInfoIntent();
+                    } else if (id == OPTION_MARKET) {
+                        intent = getStoreIntent();
+                    } else if (id == OPTION_MULTIWINDOW) {
+                        ActivityOptions options = ActivityOptions.makeBasic();
+                        options.setDockCreateMode(0);
+                        options.setLaunchStackId(ActivityManager.StackId.DOCKED_STACK_ID);
+                        try {
+                            ActivityManagerNative.getDefault().startActivityFromRecents(
+                                task.persistentTaskId, options.toBundle());
+                        } catch (RemoteException e) {}
+                    }
+                    if (intent != null) {
+                        RecentController.sendCloseSystemWindows("close_recents");
+                        intent.setComponent(intent.resolveActivity(mContext.getPackageManager()));
+                        TaskStackBuilder.create(mContext)
+                                .addNextIntentWithParentStack(intent).startActivities(
+                                    getAnimation(mContext, mMainGravity));
+                    }
+                }
+            };
+
+            card.clearOptions();
+            card.addOption(new OptionsItem(
+                    mContext.getDrawable(R.drawable.ic_info), OPTION_INFO, listener));
+            if (checkAppInstaller(task.packageName, AMAZON_REFERENCE)
+                    || checkAppInstaller(task.packageName, PLAYSTORE_REFERENCE)) {
+                card.addOption(new OptionsItem(
+                        mContext.getDrawable(R.drawable.ic_shop), OPTION_MARKET, listener));
+            }
+            card.addOption(new OptionsItem(
+                    mContext.getDrawable(R.drawable.ic_multiwindow), OPTION_MULTIWINDOW, listener));
+            card.addOption(new OptionsItem(
+                    mContext.getDrawable(R.drawable.ic_done), OPTION_CLOSE, true));
+        }
+
+        private void updateExpandState() {
+            // Read flags and set accordingly initial expanded state.
+            final boolean isTopTask =
+                    (task.getExpandedState() & EXPANDED_STATE_TOPTASK) != 0;
+
+            final boolean isSystemExpanded =
+                    (task.getExpandedState() & EXPANDED_STATE_BY_SYSTEM) != 0;
+
+            final boolean isUserExpanded =
+                    (task.getExpandedState() & EXPANDED_STATE_EXPANDED) != 0;
+
+            final boolean isUserCollapsed =
+                    (task.getExpandedState() & EXPANDED_STATE_COLLAPSED) != 0;
+
+            final boolean isExpanded =
+                    ((isSystemExpanded && !isUserCollapsed) || isUserExpanded) && !isTopTask;
+
+            boolean screenPinningEnabled = screenPinningEnabled();
+            card.expanded = isExpanded;
+            card.expandVisible = !isTopTask;
+            card.customIcon = isTopTask && screenPinningEnabled;
+            card.custom = mContext.getDrawable(R.drawable.recents_lock_to_app_pin);
+            card.customClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context appContext = mContext.getApplicationContext();
+                    if (appContext == null) appContext = mContext;
+                    if (appContext instanceof SystemUIApplication) {
+                        SystemUIApplication app = (SystemUIApplication) appContext;
+                        PhoneStatusBar statusBar = app.getComponent(PhoneStatusBar.class);
+                        if (statusBar != null) {
+                            statusBar.showScreenPinningRequest(task.persistentTaskId, false);
+                        }
+                    }
+                }
+            };
+        }
+
+        private boolean screenPinningEnabled() {
+            return Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.LOCK_TO_APP_ENABLED, 0) != 0;
+        }
+
+        private Intent getAppInfoIntent() {
+            return new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.fromParts("package", task.packageName, null));
+        }
+
+        private Intent getStoreIntent() {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            String reference;
+            if (checkAppInstaller(task.packageName, AMAZON_REFERENCE)) {
+                reference = AMAZON_REFERENCE;
+                intent.setData(Uri.parse(AMAZON_APP_URI_QUERY + task.packageName));
+            } else {
+                reference = PLAYSTORE_REFERENCE;
+                intent.setData(Uri.parse(PLAYSTORE_APP_URI_QUERY + task.packageName));
+            }
+            // Exclude from recents if the store is not in our task list.
+            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+            return intent;
+        }
+    }
 
     public interface OnExitListener {
         void onExit();
@@ -144,7 +316,7 @@ public class RecentPanelView {
     }
 
     public RecentPanelView(Context context, RecentController controller,
-            CardRecyclerView recyclerView, ImageView emptyRecentView) {
+            RecyclerView recyclerView, ImageView emptyRecentView) {
         mContext = context;
         mCardRecyclerView = recyclerView;
         mEmptyRecentView = emptyRecentView;
@@ -159,8 +331,7 @@ public class RecentPanelView {
      * Build card list and arrayadapter we need to fill with tasks
      */
     protected void buildCardListAndAdapter() {
-        mCards = new ArrayList<>();
-        mCardAdapter = new CardArrayRecyclerViewAdapter(mContext, mCards);
+        mCardAdapter = new ExpandableCardAdapter(mContext);
         if (mCardRecyclerView != null) {
             mCardRecyclerView.setAdapter(mCardAdapter);
         }
@@ -169,7 +340,7 @@ public class RecentPanelView {
     private void setupItemTouchHelper() {
         ItemTouchHelper touchHelper = new ItemTouchHelper(new ItemTouchHelper.Callback() {
             @Override
-            public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, 
+            public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder,
                     ViewHolder target) {
                 return true;
             }
@@ -177,10 +348,10 @@ public class RecentPanelView {
             @Override
             public void onSwiped(ViewHolder viewHolder, int direction) {
                 int pos = viewHolder.getAdapterPosition();
-                RecentCard card = (RecentCard) mCards.get(pos);
+                CardHolder card = mCards.get(pos);
                 mCards.remove(pos);
-                removeApplication(card.getTaskDescription());
-                mCardAdapter.notifyItemRemoved(pos);
+                mCardAdapter.removeCard(pos);
+                removeApplication(card.task);
             }
 
             @Override
@@ -198,20 +369,20 @@ public class RecentPanelView {
     /**
      * Assign the listeners to the card.
      */
-    private RecentCard assignListeners(final RecentCard card, final TaskDescription td) {
+    private ExpandableCard assignListeners(final ExpandableCard card, final TaskDescription td) {
         if (DEBUG) Log.v(TAG, "add listeners to task card");
 
         // Listen for onClick to start the app with custom animation
-        card.setOnClickListener(new Card.OnCardClickListener() {
+        /*card.setOnClickListener(new Card.OnCardClickListener() {
             @Override
             public void onClick(Card card, View view) {
                 startApplication(td);
             }
-        });
+        });*/
 
         // App icon has own onLongClick action. Listen for it and
         // process the favorite action for it.
-        card.addPartialOnLongClickListener(Card.CLICK_LISTENER_THUMBNAIL_VIEW,
+        /*card.addPartialOnLongClickListener(Card.CLICK_LISTENER_THUMBNAIL_VIEW,
                 new Card.OnLongCardClickListener() {
             @Override
             public boolean onLongClick(Card card, View view) {
@@ -221,10 +392,10 @@ public class RecentPanelView {
                 handleFavoriteEntry(td);
                 return true;
             }
-        });
+        });*/
 
         // Listen for card is expanded to save current value for next recent call
-        card.setOnExpandAnimatorEndListener(new Card.OnExpandAnimatorEndListener() {
+        /*card.setOnExpandAnimatorEndListener(new Card.OnExpandAnimatorEndListener() {
             @Override
             public void onExpandEnd(Card card) {
                 if (DEBUG) Log.v(TAG, td.getLabel() + " is expanded");
@@ -235,9 +406,9 @@ public class RecentPanelView {
                 }
                 td.setExpandedState(state);
             }
-        });
+        });*/
         // Listen for card is collapsed to save current value for next recent call
-        card.setOnCollapseAnimatorEndListener(new Card.OnCollapseAnimatorEndListener() {
+        /*card.setOnCollapseAnimatorEndListener(new Card.OnCollapseAnimatorEndListener() {
             @Override
             public void onCollapseEnd(Card card) {
                 if (DEBUG) Log.v(TAG, td.getLabel() + " is collapsed");
@@ -248,8 +419,41 @@ public class RecentPanelView {
                 }
                 td.setExpandedState(state);
             }
-        });
+        });*/
         return card;
+    }
+
+    /**
+     * Check if the requested app was installed by the reference store.
+     */
+    private boolean checkAppInstaller(String packageName, String reference) {
+        if (packageName == null) {
+            return false;
+        }
+        PackageManager pm = mContext.getPackageManager();
+        if (!isReferenceInstalled(reference, pm)) {
+            return false;
+        }
+
+        String installer = pm.getInstallerPackageName(packageName);
+        if (DEBUG) Log.d(TAG, "Package was installed by: " + installer);
+        if (reference.equals(installer)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Check is store reference is installed.
+     */
+    private boolean isReferenceInstalled(String packagename, PackageManager pm) {
+        try {
+            pm.getPackageInfo(packagename, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (NameNotFoundException e) {
+            if (DEBUG) Log.e(TAG, "Store is not installed: " + packagename, e);
+            return false;
+        }
     }
 
     /**
@@ -327,7 +531,7 @@ public class RecentPanelView {
         }
 
         // All apps were removed? Close recents panel.
-        if (mCards.size() == 0) {
+        if (mCardAdapter.getItemCount() == 0) {
             setVisibility();
             exit();
         }
@@ -340,10 +544,10 @@ public class RecentPanelView {
         final ActivityManager am = (ActivityManager)
                 mContext.getSystemService(Context.ACTIVITY_SERVICE);
         boolean hasFavorite = false;
-        int size = mCards.size() - 1;
+        int size = mCardAdapter.getItemCount() - 1;
         for (int i = size; i >= 0; i--) {
-            RecentCard card = (RecentCard) mCards.get(i);;
-            TaskDescription td = card.getTaskDescription();
+            CardHolder holder = mCards.get(i);;
+            TaskDescription td = holder.task;
             // User favorites are not removed.
             if (td.getIsFavorite()) {
                 hasFavorite = true;
@@ -354,29 +558,29 @@ public class RecentPanelView {
                 am.removeTask(td.persistentTaskId);
             }
             // Remove the card.
-            removeRecentCard(card);
+            removeRecentCard(holder);
             // Remove bitmap and expanded state.
             removeApplicationBitmapCacheAndExpandedState(td);
         }
         return !hasFavorite;
     }
 
-    private void removeRecentCard(RecentCard card) {
-        int pos = mCards.indexOf(card);
+    private void removeRecentCard(CardHolder holder) {
+        int pos = mCards.indexOf(holder);
         mCards.remove(pos);
-        mCardAdapter.notifyItemRemoved(pos);
+        mCardAdapter.removeCard(pos);
     }
 
     /**
      * Remove application bitmaps from LRU cache and expanded state list.
      */
     private void removeApplicationBitmapCacheAndExpandedState(TaskDescription td) {
-        // Remove application thumbnail.
+        /* Remove application thumbnail.
         CacheController.getInstance(mContext)
                 .removeBitmapFromMemCache(String.valueOf(td.persistentTaskId));
-        // Remove application icon.
+         Remove application icon.
         CacheController.getInstance(mContext)
-                .removeBitmapFromMemCache(td.identifier);
+                .removeBitmapFromMemCache(td.identifier);*/
         // Remove from expanded state list.
         removeExpandedTaskState(td.identifier);
     }
@@ -430,9 +634,8 @@ public class RecentPanelView {
         if (mFirstTask != null && uriReference.equals(mFirstTask.packageName)) {
             return true;
         }
-        for (Card c : mCards) {
-            TaskDescription task = ((RecentCard) c).getTaskDescription();
-            if (uriReference.equals(task.packageName)) {
+        for (CardHolder c : mCards) {
+            if (uriReference.equals(c.task.packageName)) {
                 return true;
             }
         }
@@ -508,8 +711,8 @@ public class RecentPanelView {
      * Set correct visibility states for the listview and the empty recent icon.
      */
     private void setVisibility() {
-        mEmptyRecentView.setVisibility(mCards.size() == 0 ? View.VISIBLE : View.GONE);
-        mCardRecyclerView.setVisibility(mCards.size() == 0 ? View.GONE : View.VISIBLE);
+        mEmptyRecentView.setVisibility((mCardAdapter.getItemCount() == 0) ? View.VISIBLE : View.GONE);
+        mCardRecyclerView.setVisibility((mCardAdapter.getItemCount() == 0) ? View.GONE : View.VISIBLE);
     }
 
     /**
@@ -517,19 +720,18 @@ public class RecentPanelView {
      * Update the List for actual apps.
      */
     private void updateExpandedTaskStates() {
-        for (Card card : mCards) {
-            TaskDescription item = ((RecentCard) card).getTaskDescription();
+        for (CardHolder holder : mCards) {
             boolean updated = false;
             for (TaskExpandedStates expandedState : mExpandedTaskStates) {
-                if (item.identifier.equals(expandedState.getIdentifier())) {
+                if (holder.task.identifier.equals(expandedState.getIdentifier())) {
                     updated = true;
-                    expandedState.setExpandedState(item.getExpandedState());
+                    expandedState.setExpandedState(holder.task.getExpandedState());
                 }
             }
             if (!updated) {
                 mExpandedTaskStates.add(
                         new TaskExpandedStates(
-                                item.identifier, item.getExpandedState()));
+                                holder.task.identifier, holder.task.getExpandedState()));
             }
         }
     }
@@ -590,12 +792,6 @@ public class RecentPanelView {
         return mTasksLoaded;
     }
 
-    protected void dismissPopup() {
-        for (Card card : mCards) {
-            card.hideOptions(-1, -1);
-        }
-    }
-
     protected void setMainGravity(int gravity) {
         mMainGravity = gravity;
     }
@@ -617,9 +813,8 @@ public class RecentPanelView {
     }
 
     protected boolean hasFavorite() {
-        for (Card card : mCards) {
-            TaskDescription td = ((RecentCard) card).getTaskDescription();
-            if (td.getIsFavorite()) {
+        for (CardHolder holder : mCards) {
+            if (holder.task.getIsFavorite()) {
                 return true;
             }
         }
@@ -627,9 +822,8 @@ public class RecentPanelView {
     }
 
     protected boolean hasClearableTasks() {
-        for (Card card : mCards) {
-            TaskDescription td = ((RecentCard) card).getTaskDescription();
-            if (!td.getIsFavorite()) {
+        for (CardHolder holder : mCards) {
+            if (!holder.task.getIsFavorite()) {
                 return true;
             }
         }
@@ -641,9 +835,11 @@ public class RecentPanelView {
      */
     private void tasksLoaded() {
         if (mOnTasksLoadedListener != null) {
-            setTasksLoaded(true);
             mIsLoading = false;
-            mOnTasksLoadedListener.onTasksLoaded();
+            if (!isCancelledByUser()) {
+                setTasksLoaded(true);
+                mOnTasksLoadedListener.onTasksLoaded();
+           }
         }
     }
 
@@ -651,6 +847,7 @@ public class RecentPanelView {
      * Notify listener that we exit recents panel now.
      */
     private void exit() {
+        setTasksLoaded(false);
         if (mOnExitListener != null) {
             mOnExitListener.onExit();
         }
@@ -672,10 +869,12 @@ public class RecentPanelView {
      *       See #link:RecentCard, #link:RecentExpandedCard
      *       #link:RecentAppIcon and #link AppIconLoader
      */
-    private class CardLoader extends AsyncTask<Void, Void, Boolean> {
+    private class CardLoader extends AsyncTask<Void, ExpandableCard, Boolean> {
 
        //private int mOrigPri;
         private int mCounter;
+
+        //private ArrayList<ExpandableCard> cards = new ArrayList<>();
 
         public CardLoader() {
         }
@@ -687,7 +886,7 @@ public class RecentPanelView {
             //mOrigPri = Process.getThreadPriority(Process.myTid());
             Process.setThreadPriority(Process.THREAD_PRIORITY_FOREGROUND);
 
-            final int oldSize = mCards.size();
+            final int oldSize = mCardAdapter.getItemCount();
             mCounter = 0;
 
             // Check and get user favorites.
@@ -802,6 +1001,7 @@ public class RecentPanelView {
                         } else {
                             // Skip the first task for our list but save it for later use.
                            mFirstTask = item;
+                           newSize--;
                         }
                     } else {
                         // FirstExpandedItems value forces to show always the app screenshot
@@ -854,22 +1054,28 @@ public class RecentPanelView {
                     if (DEBUG) Log.v(TAG,
                             "loading tasks - remove not needed old card - position=" + i);
                     mCards.remove(i);
+                    mCardAdapter.removeCard(i);
                 }
             }
 
             return true;
         }
 
-        private void addCard(TaskDescription task, int oldSize, boolean topTask) {
-            RecentCard card = null;
+        private void addCard(final TaskDescription task, int oldSize, boolean topTask) {
+            ExpandableCard card = null;
 
+            final int index = mCounter;
             // We may have allready constructed and inflated card.
             // Let us reuse them and just update the content.
             if (mCounter < oldSize) {
-                card = (RecentCard) mCards.get(mCounter);
-                if (card != null) {
+                CardHolder holder = mCards.get(mCounter);
+                if (holder != null) {
+                    card = holder.card;
                     if (DEBUG) Log.v(TAG, "loading tasks - update old card");
-                    card.updateCardContent(task, mScaleFactor);
+                    card.appName = task.getLabel();
+                    holder.setTask(task);
+                    holder.task = task;
+//                    card.updateCardContent(task, mScaleFactor);
                     card = assignListeners(card, task);
                 }
             }
@@ -877,11 +1083,53 @@ public class RecentPanelView {
             // No old card was present to update....so add a new one.
             if (card == null) {
                 if (DEBUG) Log.v(TAG, "loading tasks - create new card");
-                card = new RecentCard(mContext, task, mScaleFactor);
+                card = new ExpandableCard(task.getLabel(), null);
                 card = assignListeners(card, task);
-                mCards.add(card);
+                CardHolder holder = new CardHolder(card, task);
+                holder.position = index;
+                mCards.add(holder);
             }
+
+            // Set card color
+            card.cardBackgroundColor = getCardBackgroundColor(task);
+
+            final ExpandableCard ec = card;
+            AppIconLoader.getInstance(mContext).loadAppIcon(task.resolveInfo,
+                            task.identifier, new AppIconLoader.IconCallback() {
+                        @Override
+                        public void onDrawableLoaded(Drawable drawable) {
+                            ec.appIcon = drawable;
+                            mCardAdapter.notifyItemChanged(index);
+                        }
+                    }, mScaleFactor);
+                    new BitmapDownloaderTask(mContext, mScaleFactor, new DownloaderCallback() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap) {
+                            ec.screenshot = bitmap;
+                            mCardAdapter.notifyItemChanged(index);
+                        }
+                    }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, task.persistentTaskId);
+                    card.cardClickListener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startApplication(task);
+                        }
+                    };
+            if (mCounter == 0) {
+                mCardAdapter.clearOldCards();
+            }
+            mCardAdapter.addCard(card);
             mCounter++;
+            publishProgress(card);
+        }
+
+        @Override
+        protected void onProgressUpdate(ExpandableCard... card) {
+            if (mCardAdapter.getItemCount() == 1) {
+                //we have at least one task and card, so can show the panel while we
+                //load more tasks and cards
+               setVisibility();
+            }
         }
 
         @Override
@@ -896,14 +1144,29 @@ public class RecentPanelView {
             // Restore original thread priority.
             //Process.setThreadPriority(mOrigPri);
 
+            //mCardAdapter.setCards(cards);
+
             // Set correct view visibilitys
-            setVisibility();
+            //setVisibility();
 
             // Notify arrayadapter that data set has changed
             if (DEBUG) Log.v(TAG, "notifiy arrayadapter that data has changed");
             notifyDataSetChanged(true);
             // Notfiy controller that tasks are completly loaded.
             tasksLoaded();
+        }
+    }
+
+    private int getCardBackgroundColor(TaskDescription task) {
+        int color = SlimSettings.System.getIntForUser(mContext.getContentResolver(),
+            SlimSettings.System.RECENT_CARD_BG_COLOR, 0x00ffffff, UserHandle.USER_CURRENT);
+        if (color != 0x0ffffff) {
+            return color;
+        } else if (task != null && task.cardColor != 0) {
+            return task.cardColor;
+        } else {
+            return mContext.getResources()
+                    .getColor(R.color.recents_task_bar_default_background_color);
         }
     }
 
@@ -943,6 +1206,154 @@ public class RecentPanelView {
 
         public void setExpandedState(int expandedState) {
             mExpandedState = expandedState;
+        }
+    }
+
+    // Loads the actual task bitmap.
+    private static Bitmap loadThumbnail(int persistentTaskId, Context context, float scaleFactor) {
+        if (context == null) {
+            return null;
+        }
+        final ActivityManager am = (ActivityManager)
+                context.getSystemService(Context.ACTIVITY_SERVICE);
+        return getResizedBitmap(getThumbnail(am, persistentTaskId), context, scaleFactor);
+    }
+
+    /**
+     * Returns a task thumbnail from the activity manager
+     */
+    public static Bitmap getThumbnail(ActivityManager activityManager, int taskId) {
+        ActivityManager.TaskThumbnail taskThumbnail = activityManager.getTaskThumbnail(taskId);
+        if (taskThumbnail == null) return null;
+
+        Bitmap thumbnail = taskThumbnail.mainThumbnail;
+        ParcelFileDescriptor descriptor = taskThumbnail.thumbnailFileDescriptor;
+        if (thumbnail == null && descriptor != null) {
+            thumbnail = BitmapFactory.decodeFileDescriptor(descriptor.getFileDescriptor(),
+                    null, sBitmapOptions);
+        }
+        if (descriptor != null) {
+            try {
+                descriptor.close();
+            } catch (IOException e) {
+            }
+        }
+        return thumbnail;
+    }
+
+    // Resize and crop the task bitmap to the overlay values.
+    private static Bitmap getResizedBitmap(Bitmap source, Context context, float scaleFactor) {
+        if (source == null || source.isRecycled()) {
+            return null;
+        }
+
+        final Resources res = context.getResources();
+        final int thumbnailWidth =
+                (int) (res.getDimensionPixelSize(
+                        R.dimen.recent_thumbnail_width) * scaleFactor);
+        final int thumbnailHeight =
+                (int) (res.getDimensionPixelSize(
+                        R.dimen.recent_thumbnail_height) * scaleFactor);
+
+        final int sourceWidth = source.getWidth();
+        final int sourceHeight = source.getHeight();
+
+        // Compute the scaling factors to fit the new height and width, respectively.
+        // To cover the final image, the final scaling will be the bigger
+        // of these two.
+        final float xScale = (float) thumbnailWidth / sourceWidth;
+        final float yScale = (float) thumbnailHeight / sourceHeight;
+        final float scale = Math.max(xScale, yScale);
+
+        // Now get the size of the source bitmap when scaled
+        final float scaledWidth = scale * sourceWidth;
+        final float scaledHeight = scale * sourceHeight;
+
+        // Let's find out the left coordinates if the scaled bitmap
+        // should be centered in the new size given by the parameters
+        final float left = (thumbnailWidth - scaledWidth) / 2;
+
+        // The target rectangle for the new, scaled version of the source bitmap
+        final RectF targetRect = new RectF(left, 0.0f, left + scaledWidth, scaledHeight);
+
+        final Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
+        paint.setAntiAlias(true);
+
+        // Finally, we create a new bitmap of the specified size and draw our new,
+        // scaled bitmap onto it.
+        final Bitmap dest = Bitmap.createBitmap(thumbnailWidth, thumbnailHeight, Config.ARGB_8888);
+        final Canvas canvas = new Canvas(dest);
+        canvas.drawBitmap(source, null, targetRect, paint);
+
+        return dest;
+    }
+
+    interface DownloaderCallback {
+        void onBitmapLoaded(Bitmap bitmap);
+    }
+
+    // AsyncTask loader for the task bitmap.
+    private static class BitmapDownloaderTask extends AsyncTask<Integer, Void, Bitmap> {
+
+        private boolean mLoaded;
+
+        private final WeakReference<Context> rContext;
+
+        private int mOrigPri;
+        private float mScaleFactor;
+
+        private String mLRUCacheKey;
+
+        private DownloaderCallback mCallback;
+
+        public BitmapDownloaderTask(Context context, float scaleFactor,
+                                    DownloaderCallback callback) {
+            rContext = new WeakReference<Context>(context);
+            mScaleFactor = scaleFactor;
+            mCallback = callback;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Integer... params) {
+            mLoaded = false;
+            mLRUCacheKey = null;
+            // Save current thread priority and set it during the loading
+            // to background priority.
+            //mOrigPri = Process.getThreadPriority(Process.myTid());
+            Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+            if (isCancelled() || rContext == null) {
+                return null;
+            }
+            mLRUCacheKey = String.valueOf(params[0]);
+            // Load and return bitmap
+            return loadThumbnail(params[0], rContext.get(), mScaleFactor);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (isCancelled()) {
+                bitmap = null;
+            }
+            // Restore original thread priority.
+            //Process.setThreadPriority(mOrigPri);
+
+            // Assign image to the view.
+                mLoaded = true;
+                if (mCallback != null) {
+                    mCallback.onBitmapLoaded(bitmap);
+                    /*if (bitmap != null && rContext != null) {
+                        final Context context = rContext.get();
+                        if (context != null) {
+                            // Put the loaded bitmap into the LRU cache for later use.
+                            CacheController.getInstance(context)
+                                    .addBitmapToMemoryCache(mLRUCacheKey, bitmap);
+                        }
+                    }*/
+                }
+        }
+
+        public boolean isLoaded() {
+            return mLoaded;
         }
     }
 }
