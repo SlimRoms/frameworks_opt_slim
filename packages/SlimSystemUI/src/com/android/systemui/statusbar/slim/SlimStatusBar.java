@@ -68,6 +68,7 @@ import com.android.systemui.AutoReinflateContainer.InflateListener;
 import com.android.systemui.R;
 import com.android.systemui.slimrecent.RecentController;
 import com.android.systemui.slimrecent.SlimScreenPinningRequest;
+import com.android.systemui.stackdivider.WindowManagerProxy;
 import com.android.systemui.statusbar.ExpandableNotificationRow;
 import com.android.systemui.statusbar.SlimNotificationGuts;
 import com.android.systemui.statusbar.StatusBarState;
@@ -76,6 +77,8 @@ import com.android.systemui.statusbar.phone.NavigationBarView;
 import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.phone.PhoneStatusBarView;
 import com.android.systemui.statusbar.phone.SystemUIDialog;
+import com.android.systemui.recents.events.activity.UndockingTaskEvent;
+import com.android.systemui.recents.events.EventBus;
 import com.android.systemui.statusbar.slim.SlimQuickStatusBarHeader;
 
 import java.util.List;
@@ -495,6 +498,23 @@ public class SlimStatusBar extends PhoneStatusBar implements
             super.hideRecents(triggeredFromAltTab, triggeredFromHomeKey);
         }
     }
+
+    @Override
+   protected void toggleSplitScreenMode(int metricsDockAction, int metricsUndockAction) {
+       if (mSlimRecents != null) {
+           int dockSide = WindowManagerProxy.getInstance().getDockSide();
+           if (dockSide == WindowManager.DOCKED_INVALID) {
+               mSlimRecents.startMultiWin();
+           } else {
+               EventBus.getDefault().send(new UndockingTaskEvent());
+               if (metricsUndockAction != -1) {
+                   MetricsLogger.action(mContext, metricsUndockAction);
+               }
+           }
+       } else {
+           super.toggleSplitScreenMode(metricsDockAction, metricsUndockAction);
+       }
+   }
 
     @Override
     protected void toggleRecents() {
