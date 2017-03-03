@@ -58,8 +58,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.android.cards.recyclerview.view.CardRecyclerView;
-
 import com.android.systemui.R;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.recents.misc.Utilities;
@@ -171,8 +169,8 @@ public class RecentController implements RecentPanelView.OnExitListener,
         mRecentWarningContent =
                 (LinearLayout) mRecentContainer.findViewById(R.id.recent_warning_content);
 
-        final CardRecyclerView cardRecyclerView =
-                (CardRecyclerView) mRecentContainer.findViewById(R.id.recent_list);
+        final RecyclerView cardRecyclerView =
+                (RecyclerView) mRecentContainer.findViewById(R.id.recent_list);
 
         cardRecyclerView.setHasFixedSize(true);
         CacheMoreCardsLayoutManager llm = new CacheMoreCardsLayoutManager(context, mWindowManager);
@@ -657,10 +655,10 @@ public class RecentController implements RecentPanelView.OnExitListener,
 
         // Views we need and are passed trough the constructor.
         private LinearLayout mRecentWarningContent;
-        private CardRecyclerView mCardRecyclerView;
+        private RecyclerView mCardRecyclerView;
 
         RecentListOnScaleGestureListener(
-                LinearLayout recentWarningContent, CardRecyclerView cardRecyclerView) {
+                LinearLayout recentWarningContent, RecyclerView cardRecyclerView) {
             mRecentWarningContent = recentWarningContent;
             mCardRecyclerView = cardRecyclerView;
         }
