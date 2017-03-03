@@ -53,6 +53,10 @@ public class AppIconLoader {
 
     private Context mContext;
 
+    public interface IconCallback {
+        void onDrawableLoaded(Drawable drawable);
+    }
+
     /**
      * Get the instance.
      */
@@ -78,9 +82,9 @@ public class AppIconLoader {
      * @params imageView
      */
     protected void loadAppIcon(ResolveInfo info, String identifier,
-            RecentImageView imageView, float scaleFactor) {
+            IconCallback callback, float scaleFactor) {
         final BitmapDownloaderTask task =
-                new BitmapDownloaderTask(imageView, mContext, scaleFactor, identifier);
+                new BitmapDownloaderTask(callback, mContext, scaleFactor, identifier);
         task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, info);
     }
 
@@ -175,17 +179,18 @@ public class AppIconLoader {
 
         private Drawable mAppIcon;
 
-        private final WeakReference<RecentImageView> rImageViewReference;
         private final WeakReference<Context> rContext;
+
+        private IconCallback mCallback;
 
         private int mOrigPri;
         private float mScaleFactor;
 
         private String mLRUCacheKey;
 
-        public BitmapDownloaderTask(RecentImageView imageView,
+        public BitmapDownloaderTask(IconCallback callback,
                 Context context, float scaleFactor, String identifier) {
-            rImageViewReference = new WeakReference<RecentImageView>(imageView);
+            mCallback = callback;
             rContext = new WeakReference<Context>(context);
             mScaleFactor = scaleFactor;
             mLRUCacheKey = identifier;
@@ -220,17 +225,14 @@ public class AppIconLoader {
             }
             // Assign image to the view if the view was passed through.
             // #link:loadAppIcon
-            if (rImageViewReference != null) {
-                final RecentImageView imageView = rImageViewReference.get();
-                if (imageView != null) {
-                    imageView.setImageDrawable(bitmap);
+                if (mCallback != null) {
+                    mCallback.onDrawableLoaded(bitmap);
                 }
                 if (bitmap != null && context != null && bitmap instanceof BitmapDrawable) {
                     // Put our bitmap intu LRU cache for later use.
                     CacheController.getInstance(context)
                             .addBitmapDrawableToMemoryCache(mLRUCacheKey, (BitmapDrawable)bitmap);
                 }
-            }
         }
     }
 
