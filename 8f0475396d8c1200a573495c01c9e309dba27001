@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_905c6727",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/AppIconLoader.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "Might as well remove unused code vs commenting out, unless there are plans to reimplement?",
+      "range": {
+        "startLine": 229,
+        "startChar": 16,
+        "endLine": 233,
+        "endChar": 19
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_3041f339",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentController.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 477,
+        "startChar": 16,
+        "endLine": 477,
+        "endChar": 86
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_f04a7b54",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentController.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 502,
+        "startChar": 8,
+        "endLine": 502,
+        "endChar": 77
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_1048775a",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentController.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 539,
+        "startChar": 16,
+        "endLine": 539,
+        "endChar": 86
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_706e8bcb",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "Should be removed unless planing on reimplementation",
+      "range": {
+        "startLine": 375,
+        "startChar": 8,
+        "endLine": 422,
+        "endChar": 13
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_907307b1",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 577,
+        "startChar": 0,
+        "endLine": 583,
+        "endChar": 59
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_306813ba",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 1150,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "Unused code, remove",
+      "range": {
+        "startLine": 1144,
+        "startChar": 0,
+        "endLine": 1150,
+        "endChar": 30
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_105f1710",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 1322,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 1322,
+        "startChar": 12,
+        "endLine": 1322,
+        "endChar": 68
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_50658fdf",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 1338,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 1337,
+        "startChar": 12,
+        "endLine": 1338,
+        "endChar": 50
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_b09ba3c8",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 21
+      },
+      "lineNbr": 1351,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-05T20:27:43Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 1344,
+        "startChar": 20,
+        "endLine": 1351,
+        "endChar": 23
+      },
+      "revId": "8f0475396d8c1200a573495c01c9e309dba27001",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
