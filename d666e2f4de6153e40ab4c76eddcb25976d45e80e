@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5aaae553_d0c17fe5",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:41:06Z",
+      "side": 1,
+      "message": "needs\nimport com.android.systemui.stackdivider.WindowManager",
+      "range": {
+        "startLine": 206,
+        "startChar": 40,
+        "endLine": 206,
+        "endChar": 53
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_b0bc036e",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:41:06Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 221,
+        "startChar": 31,
+        "endLine": 221,
+        "endChar": 32
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_70b68b8c",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:41:06Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 365,
+        "startChar": 92,
+        "endLine": 365,
+        "endChar": 93
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_90bb0772",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:41:06Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 379,
+        "startChar": 59,
+        "endLine": 379,
+        "endChar": 60
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5aaae553_30b0138b",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:41:06Z",
+      "side": 1,
+      "message": "trailing space",
+      "range": {
+        "startLine": 399,
+        "startChar": 61,
+        "endLine": 399,
+        "endChar": 62
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
