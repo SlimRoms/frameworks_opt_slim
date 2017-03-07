@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5aaae553_f0a91b25",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
+        "patchSetId": 43
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-07T16:51:09Z",
+      "side": 1,
+      "message": "\u003e needs\n \u003e import com.android.systemui.stackdivider.WindowManager\n\nI\u0027m a derp needs\nimport android.view.WindowManager;",
+      "parentUuid": "5aaae553_d0c17fe5",
+      "range": {
+        "startLine": 206,
+        "startChar": 40,
+        "endLine": 206,
+        "endChar": 53
+      },
+      "revId": "d666e2f4de6153e40ab4c76eddcb25976d45e80e",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5aaae553_b0bc036e",
         "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/RecentPanelView.java",
         "patchSetId": 43
