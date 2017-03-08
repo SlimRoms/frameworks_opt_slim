@@ -21,7 +21,7 @@
   <string name="menu_save">保存</string>
   <string name="menu_cancel">取消</string>
   <!-- Slim settings screens -->
-  <string name="navigation_settings_title">导航栏</string>
+  <string name="navigation_settings_title">虚拟按键</string>
   <string name="interface_settings_title">用户界面</string>
   <string name="advanced_settings">高级</string>
   <string name="quick_settings">快速设置</string>
@@ -335,8 +335,8 @@
   <string name="status_bar_battery_percentage_text_inside">图标内</string>
   <string name="status_bar_battery_percentage_text_next">图标旁</string>
   <!-- Navigation bar -->
-  <string name="navigation_bar">导航栏</string>
-  <string name="navigation_settings_category">导航</string>
+  <string name="navigation_bar">虚拟按键</string>
+  <string name="navigation_settings_category">虚拟键</string>
   <string name="navigation_bar_size_42_dp_default">42 dp (默认值)</string>
   <string name="navigation_bar_size_36_dp">36 dp</string>
   <string name="navigation_bar_size_30_dp">30 dp</string>
@@ -352,26 +352,26 @@
   <string name="navigation_menu_default_jb_behavior">请求时显示(默认值)</string>
   <string name="navigation_menu_never_show">从不显示</string>
   <string name="navigation_menu_always_show">始终显示</string>
-  <string name="navbar_button_cat">导航栏按钮</string>
+  <string name="navbar_button_cat">虚拟键按钮</string>
   <string name="title_pref_menu_location">菜单键位置</string>
   <string name="summary_pref_menu_location">您想在哪里显示菜单按钮?</string>
   <string name="title_pref_menu_display">菜单键可见性</string>
   <string name="summary_pref_menu_display">你想菜单键在什么情况下显示？</string>
-  <string name="navbar_enable_bar">启用导航栏</string>
-  <string name="navbar_enable_bar_summary">启用导航栏</string>
-  <string name="navigation_bar_height_title">导航栏高度</string>
-  <string name="navigation_bar_height_summary">竖屏时导航栏高度</string>
-  <string name="navigation_bar_height_landscape_title">横屏时导航栏高度</string>
-  <string name="navigation_bar_height_landscape_summary">设置横屏时导航栏高度。</string>
-  <string name="navigation_bar_width_title">导航栏宽度</string>
-  <string name="navigation_bar_width_summary">导航栏靠一侧时的高度。</string>
+  <string name="navbar_enable_bar">启用虚拟键</string>
+  <string name="navbar_enable_bar_summary">启用虚拟键</string>
+  <string name="navigation_bar_height_title">虚拟键高度</string>
+  <string name="navigation_bar_height_summary">竖屏时虚拟键高度</string>
+  <string name="navigation_bar_height_landscape_title">横屏时虚拟键高度</string>
+  <string name="navigation_bar_height_landscape_summary">设置横屏时虚拟键高度。</string>
+  <string name="navigation_bar_width_title">虚拟键宽度</string>
+  <string name="navigation_bar_width_summary">虚拟键靠一侧时的高度。</string>
   <string name="navbar_can_move">横屏显示</string>
-  <string name="navbar_can_move_summary">横屏时导航栏在底部</string>
+  <string name="navbar_can_move_summary">横屏时虚拟键在底部</string>
   <string name="navbar_style_dimen_title">尺寸</string>
-  <string name="navbar_style_dimen_summary">更改导航栏高度</string>
+  <string name="navbar_style_dimen_summary">更改虚拟键高度</string>
   <string name="navbar_button_title">按钮</string>
-  <string name="navbar_button_summary">配置要显示在导航栏上的按钮</string>
-  <string name="navbar_cat">导航栏</string>
+  <string name="navbar_button_summary">配置要显示在虚拟键上的按钮</string>
+  <string name="navbar_cat">虚拟键</string>
   <string name="navbar_dimensions_reset_message">重置所有尺寸设置为默认？</string>
   <string name="navbar_button_style_reset_message">重置所有的样式设定为默认值吗？</string>
   <!-- SlimDim -->
@@ -391,12 +391,12 @@
   <string name="dim_nav_buttons_touch_anywhere_summary_off">仅触摸导航栏时按钮亮起</string>
   <!-- Navigation bar button style -->
   <string name="nav_bar_button_style">按钮样式：</string>
-  <string name="nav_bar_button_style_summary">更改导航栏按钮的样式</string>
+  <string name="nav_bar_button_style_summary">更改虚拟键按钮的样式</string>
   <string name="button_transparency_title">按钮透明度</string>
   <string name="navigation_bar_icon_tint_title">按钮颜色</string>
   <string name="nav_button_color_mode_title">色彩模式</string>
   <string name="nav_button_color_mode_dialog_title">着色</string>
-  <string name="nav_button_color_mode_summary">更改导航栏按钮的色彩模式</string>
+  <string name="nav_button_color_mode_summary">更改虚拟键按钮的色彩模式</string>
   <string name="navigation_bar_glow_tint_title">按钮发光颜色</string>
   <!-- Icon color options -->
   <string name="icon_color_mode_all_icons">所有图标</string>
