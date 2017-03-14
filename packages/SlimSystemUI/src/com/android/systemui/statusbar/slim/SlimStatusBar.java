@@ -634,8 +634,8 @@ public class SlimStatusBar extends PhoneStatusBar implements
                     defaultHomePackage = res.activityInfo.packageName;
                 }
                 boolean targetKilled = false;
-                IActivityManager am = ActivityManagerNative.getDefault();
-                List<RunningAppProcessInfo> apps = am.getRunningAppProcesses();
+                IActivityManager iam = ActivityManagerNative.getDefault();
+                List<RunningAppProcessInfo> apps = iam.getRunningAppProcesses();
                 for (RunningAppProcessInfo appInfo : apps) {
                     int uid = appInfo.uid;
                     // Make sure it's a foreground user application (not system,
@@ -646,7 +646,27 @@ public class SlimStatusBar extends PhoneStatusBar implements
                             for (String pkg : appInfo.pkgList) {
                                 if (!pkg.equals("com.android.systemui")
                                         && !pkg.equals(defaultHomePackage)) {
-                                    am.forceStopPackage(pkg, UserHandle.USER_CURRENT);
+                                    iam.forceStopPackage(pkg, UserHandle.USER_CURRENT);
+
+                                    //Now remove the app from recent task list so it won't show in the Recents panel
+                                    final ActivityManager am = (ActivityManager)
+                                            mContext.getSystemService(Context.ACTIVITY_SERVICE);
+                                    final List<ActivityManager.RecentTaskInfo> recentTasks =
+                                            am.getRecentTasksForUser(ActivityManager.getMaxRecentTasksStatic(),
+                                            ActivityManager.RECENT_IGNORE_HOME_STACK_TASKS
+                                                    | ActivityManager.RECENT_INGORE_PINNED_STACK_TASKS
+                                                    | ActivityManager.RECENT_IGNORE_UNAVAILABLE
+                                                    | ActivityManager.RECENT_INCLUDE_PROFILES,
+                                                    UserHandle.CURRENT.getIdentifier());
+                                    final int size = recentTasks.size();
+                                    for (int i = 0; i < size; i++) {
+                                        ActivityManager.RecentTaskInfo recentInfo = recentTasks.get(i);
+                                        if (recentInfo.baseIntent.getComponent().getPackageName().equals(pkg)) {
+                                            int taskid = recentInfo.persistentId;
+                                            am.removeTask(taskid);
+                                        }
+                                    }
+
                                     targetKilled = true;
                                     break;
                                 }
