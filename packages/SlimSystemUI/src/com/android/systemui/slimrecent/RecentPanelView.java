@@ -36,6 +36,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -43,6 +44,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.Process;
 import android.os.RemoteException;
@@ -1141,29 +1143,50 @@ public class RecentPanelView {
             card.cardBackgroundColor = getCardBackgroundColor(task);
 
             final ExpandableCard ec = card;
-            AppIconLoader.getInstance(mContext).loadAppIcon(task.resolveInfo,
-                            task.identifier, new AppIconLoader.IconCallback() {
-                        @Override
-                        public void onDrawableLoaded(Drawable drawable) {
-                            ec.appIcon = drawable;
-                            mCardAdapter.notifyItemChanged(index);
-                        }
-                    }, mScaleFactor);
-                    new BitmapDownloaderTask(mContext, mScaleFactor, new DownloaderCallback() {
-                        @Override
-                        public void onBitmapLoaded(Bitmap bitmap) {
-                            ec.screenshot = bitmap;
-                            mCardAdapter.notifyItemChanged(index);
-                        }
-                    }).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, task.persistentTaskId);
-                    card.cardClickListener = new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startApplication(task);
-                        }
-                    };
+            final Drawable appIcon =
+                    CacheController.getInstance(mContext).getBitmapFromMemCache(task.identifier);
+            if (appIcon != null) {
+                ec.appIcon = appIcon;
+                postnotifyItemChanged(mCardRecyclerView, index);
+            } else {
+                AppIconLoader.getInstance(mContext).loadAppIcon(task.resolveInfo,
+                        task.identifier, new AppIconLoader.IconCallback() {
+                            @Override
+                            public void onDrawableLoaded(Drawable drawable) {
+                                ec.appIcon = drawable;
+                                postnotifyItemChanged(mCardRecyclerView, index);
+                            }
+                }, mScaleFactor);
+            }
+            new BitmapDownloaderTask(mContext, mScaleFactor, new DownloaderCallback() {
+                @Override
+                public void onBitmapLoaded(Bitmap bitmap) {
+                    ec.screenshot = bitmap;
+                    postnotifyItemChanged(mCardRecyclerView, index);
+                }
+            }).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, task.persistentTaskId);
+            card.cardClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startApplication(task);
+                }
+            };
             mCounter++;
             publishProgress(card);
+        }
+
+        private void postnotifyItemChanged(final RecyclerView recyclerView, int index) {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (!recyclerView.isComputingLayout()) {
+                        mCardAdapter.notifyItemChanged(index);
+                    } else {
+                        postnotifyItemChanged(recyclerView, index);
+                    }
+                }
+            });
         }
 
         @Override
