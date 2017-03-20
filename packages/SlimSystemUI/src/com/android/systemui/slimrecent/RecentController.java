@@ -639,6 +639,8 @@ public class RecentController implements RecentPanelView.OnExitListener,
         }
     };
 
+    protected static boolean shouldHidePanel = true;
+
     /**
      * Settingsobserver to take care of the user settings.
      * Either gravity or scale factor of our recent panel can change.
@@ -674,12 +676,15 @@ public class RecentController implements RecentPanelView.OnExitListener,
             resolver.registerContentObserver(SlimSettings.System.getUriFor(
                     SlimSettings.System.SLIM_RECENTS_ICON_PACK),
                     false, this, UserHandle.USER_ALL);
-            update();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.RECENT_PANEL_FAVORITES),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCK_TO_APP_ENABLED),
+                    false, this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.RECENTS_MAX_APPS),
+                    false, this, UserHandle.USER_ALL);
             update();
         }
 
@@ -707,6 +712,7 @@ public class RecentController implements RecentPanelView.OnExitListener,
             if (scaleFactor != mScaleFactor) {
                 mScaleFactor = scaleFactor;
                 rebuildRecentsScreen();
+                CacheController.getInstance(mContext).clearCache();
             }
             if (mRecentPanelView != null) {
                 mRecentPanelView.setScaleFactor(mScaleFactor);
@@ -723,6 +729,15 @@ public class RecentController implements RecentPanelView.OnExitListener,
                 mRecentPanelView.setCardColor(SlimSettings.System.getIntForUser(
                     resolver, SlimSettings.System.RECENT_CARD_BG_COLOR, 0x00ffffff,
                     UserHandle.USER_CURRENT));
+                mRecentPanelView.setCurrentFavorites(Settings.System.getStringForUser(
+                        resolver, Settings.System.RECENT_PANEL_FAVORITES,
+                        UserHandle.USER_CURRENT));
+                mRecentPanelView.isScreenPinningEnabled(Settings.System.getIntForUser(
+                        resolver, Settings.System.LOCK_TO_APP_ENABLED, 0,
+                        UserHandle.USER_CURRENT) == 1);
+                mRecentPanelView.setMaxAppsToLoad(Settings.System.getIntForUser(
+                        resolver, Settings.System.RECENTS_MAX_APPS, 15,
+                        UserHandle.USER_CURRENT));
             }
 
             // Update colors in RecentPanelView
