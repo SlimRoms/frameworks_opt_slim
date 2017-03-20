@@ -196,11 +196,14 @@ public class AppIconLoader {
 
         private float mScaleFactor;
 
+        private String mLRUCacheKey;
+
         public BitmapDownloaderTask(IconCallback callback,
                 Context context, float scaleFactor, String identifier) {
             mCallback = callback;
             rContext = new WeakReference<Context>(context);
             mScaleFactor = scaleFactor;
+            mLRUCacheKey = identifier;
         }
 
         @Override
@@ -230,7 +233,11 @@ public class AppIconLoader {
             if (mCallback != null) {
                 mCallback.onDrawableLoaded(bitmap);
             }
+            if (bitmap != null && context != null && bitmap instanceof BitmapDrawable) {
+                // Put our bitmap intu LRU cache for later use.
+                CacheController.getInstance(context)
+                        .addBitmapDrawableToMemoryCache(mLRUCacheKey, (BitmapDrawable)bitmap);
+            }
         }
     }
-
 }
