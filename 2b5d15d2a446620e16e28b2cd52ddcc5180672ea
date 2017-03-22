@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa7f18b_beff09aa",
+        "filename": "slim_framework.mk",
+        "patchSetId": 6
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-03-22T22:49:37Z",
+      "side": 1,
+      "message": "Is this legit?",
+      "revId": "2b5d15d2a446620e16e28b2cd52ddcc5180672ea",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
