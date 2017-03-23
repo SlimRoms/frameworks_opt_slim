@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa7f18b_1e441d73",
+        "filename": "packages/SlimSettings/res/layout/dialog_iconpack.xml",
+        "patchSetId": 3
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000131
+      },
+      "writtenOn": "2017-03-23T13:23:41Z",
+      "side": 1,
+      "message": "frameworks/opt/slim/packages/SlimSettings/res/layout/dialog_iconpack.xml:18: error: Error: No resource found that matches the given name (at \u0027paddingStart\u0027 with value \u0027@dimen/alert_dialog_padding_material\u0027).",
+      "revId": "8745b6dc466a45dbe3916cd45799bbe6a9149369",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
