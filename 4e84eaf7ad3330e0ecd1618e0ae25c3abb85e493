@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa7f18b_19fe776c",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/CacheController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-23T20:14:39Z",
+      "side": 1,
+      "message": "ERROR: /home/prbassplayer/Slim7/frameworks/opt/slim/packages/SlimSystemUI/src/com/android/systemui/slimrecent/CacheController.java:118: RECENT_PANEL_FAVORITES cannot be resolved or is not a field\nERROR: /home/prbassplayer/Slim7/frameworks/opt/slim/packages/SlimSystemUI/src/com/android/systemui/slimrecent/CacheController.java:136: RECENT_PANEL_FAVORITES cannot be resolved or is not a field",
+      "revId": "4e84eaf7ad3330e0ecd1618e0ae25c3abb85e493",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3aa7f18b_39033375",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/slimrecent/CacheController.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1000043
+      },
+      "writtenOn": "2017-03-23T20:14:39Z",
+      "side": 1,
+      "message": "ERROR: /home/prbassplayer/Slim7/frameworks/opt/slim/packages/SlimSystemUI/src/com/android/systemui/slimrecent/CacheController.java:151: RECENTS_MAX_APPS cannot be resolved or is not a field\n[ 89% 28241/31403] target R.java/Manifest.java: Settings (/h...t/target/common/obj/APPS/Settings_intermediates/src/R.stamp)",
+      "range": {
+        "startLine": 151,
+        "startChar": 16,
+        "endLine": 151,
+        "endChar": 53
+      },
+      "revId": "4e84eaf7ad3330e0ecd1618e0ae25c3abb85e493",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
