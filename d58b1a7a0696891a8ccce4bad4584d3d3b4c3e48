@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aa7f18b_2b6e7aca",
+        "filename": "packages/SlimSettings/Android.mk",
+        "patchSetId": 11
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-03-25T21:17:13Z",
+      "side": 1,
+      "message": "frameworks/opt/slim/preference/res",
+      "revId": "d58b1a7a0696891a8ccce4bad4584d3d3b4c3e48",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
