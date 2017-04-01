@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1aa4ed85_6394a237",
+        "filename": "packages/SlimSystemUI/src/com/android/systemui/statusbar/phone/SlimNavigationBarView.java",
+        "patchSetId": 12
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000017
+      },
+      "writtenOn": "2017-04-01T14:46:05Z",
+      "side": 1,
+      "message": "Think we need to turn this off...",
+      "revId": "0878088fd14afc35c74424d9842355f9e1204596",
+      "serverId": "f8201d64-d729-4630-b91d-5f8be02869f0",
+      "unresolved": false
+    }
+  ]
+}
